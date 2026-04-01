@@ -834,7 +834,7 @@
           <button class="choice-btn" onclick="answer('alder','31-45'); goTo(4)">31 – 45</button>
           <button class="choice-btn" onclick="answer('alder','25-30'); goTo(4)">25 – 30</button>
           <button class="choice-btn" onclick="answer('alder','18-24'); goTo(4)">18 – 24</button>
-          <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(4)">Under 18</button>
+          <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(7)">Under 18</button>
         </div>
         <div class="quiz-footer">
           <a href="https://talkmore.no/vilkar/personvern" target="_blank">Kampanjen er utarbeidet i samarbeid med Meisel A/S. Les deres personvernerklæring her.</a>
@@ -929,6 +929,26 @@
     </div>
   </div>
 
+  <!-- SCREEN 7: DISQUALIFIED (Under 18) -->
+  <div id="screen-7" class="screen">
+    <div class="confirm-screen">
+      <div class="confirm-box fade-in">
+        <div class="confirm-icon">😔</div>
+        <div class="confirm-title">Takk for at du svarte!</div>
+        <p class="confirm-sub">
+          Dessverre kan vi ikke inkludere deg i denne konkurransen. Konkurransen er kun åpen for personer over 18 år, og vi er derfor nødt til å ekskludere deg fra trekningen.
+        </p>
+        <div class="confirm-prize" style="text-align: center;">
+          <div class="confirm-prize-label">Vi håper du prøver igjen</div>
+          <div class="confirm-prize-amount" style="font-size: 20px; color: #888;">når du fyller 18 🎉</div>
+        </div>
+        <p class="confirm-disclaimer">
+          Har du spørsmål? Ta kontakt med Talkmore på <a href="https://talkmore.no" target="_blank">talkmore.no</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
   <script>
     const answers = {};
 
@@ -937,6 +957,7 @@
       3: { label: 'Spørsmål 2 av 3', pct: 66 },
       4: { label: 'Spørsmål 3 av 3', pct: 100 },
       5: { label: 'Nesten ferdig!',   pct: 100 },
+      7: null,
     };
 
     function showScreen(n) {
@@ -945,7 +966,7 @@
       window.scrollTo(0, 0);
 
       const wrap = document.getElementById('progress-wrap');
-      if (progressConfig[n]) {
+      if (progressConfig[n] && progressConfig[n] !== null) {
         wrap.classList.add('visible');
         document.getElementById('progress-label').textContent = progressConfig[n].label;
         document.getElementById('progress-fill').style.width = progressConfig[n].pct + '%';
