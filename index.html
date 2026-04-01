@@ -28,7 +28,7 @@
     nav {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       padding: 16px 40px;
       background: #fff;
       border-bottom: 1px solid #e8f0df;
@@ -51,28 +51,7 @@
       display: block;
     }
 
-    .nav-badge {
-      display: flex; align-items: center; gap: 7px;
-      background: var(--green-light);
-      border: 1px solid #c5e0b0;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 13px;
-      color: var(--green-mid);
-      font-weight: 500;
-    }
 
-    .pulse {
-      width: 8px; height: 8px;
-      background: #3db35c;
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50% { opacity:0.5; transform:scale(0.8); }
-    }
 
     .progress-wrap {
       background: #fff;
@@ -299,8 +278,8 @@
       padding: 24px 50px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+      justify-content: center;
+      gap: 40px;
       border-top: 1px solid #eef4e7;
       border-bottom: 1px solid #eef4e7;
       flex-wrap: wrap;
@@ -727,10 +706,7 @@
     <div class="logo">
       <img src="Talkmore-Logo-RGB.png" alt="Talkmore" class="logo-img"/>
     </div>
-    <div class="nav-badge">
-      <div class="pulse"></div>
-      Konkurranse pågår nå
-    </div>
+
   </nav>
 
   <div class="progress-wrap" id="progress-wrap">
@@ -744,10 +720,7 @@
   <div id="screen-1" class="screen active">
     <div class="hero">
       <div class="hero-left fade-in">
-        <div class="eyebrow eyebrow-desktop">
-          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#3db35c"/></svg>
-          Eksklusivt tilbud
-        </div>
+
         <h1>
           Norges mest<br>fornøyde kunder<br>
           <span class="prize">vinner 10 000,– kr</span>
@@ -761,10 +734,7 @@
             <path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
-        <div class="eyebrow eyebrow-mobile">
-          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#3db35c"/></svg>
-          Eksklusivt tilbud
-        </div>
+
         <div class="trust-row">
           <div class="trust-item"><div class="trust-icon">🔒</div>Ingen spam</div>
           <div class="trust-item"><div class="trust-icon">⚡</div>Tar 60 sekunder</div>
@@ -962,7 +932,7 @@
       5: { label: 'Nesten ferdig!',   pct: 100 },
     };
 
-    function goTo(n) {
+    function showScreen(n) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + n).classList.add('active');
       window.scrollTo(0, 0);
@@ -982,6 +952,30 @@
         el.style.animation = '';
       });
     }
+
+    function goTo(n) {
+      // Push state so browser back/forward works
+      history.pushState({ screen: n }, '', '#steg-' + n);
+      showScreen(n);
+    }
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function(e) {
+      const screen = (e.state && e.state.screen) ? e.state.screen : 1;
+      showScreen(screen);
+    });
+
+    // Handle direct URL load with hash
+    (function() {
+      const hash = window.location.hash;
+      const match = hash.match(/steg-(\d+)/);
+      if (match) {
+        showScreen(parseInt(match[1]));
+      } else {
+        // Set initial state so back button works from screen 1
+        history.replaceState({ screen: 1 }, '', window.location.href);
+      }
+    })();
 
     function answer(key, val) { answers[key] = val; }
 
