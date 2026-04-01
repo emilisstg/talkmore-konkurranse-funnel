@@ -35,27 +35,20 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      transition: transform 0.3s ease;
     }
 
-    .logo { display: flex; align-items: center; gap: 10px; }
-
-    .logo-mark {
-      width: 36px; height: 36px;
-      background: var(--green-dark);
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      color: #fff;
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 12px;
+    nav.nav-hidden {
+      /* desktop: never hide */
+      transform: none;
     }
 
-    .logo-text {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 18px;
-      color: var(--green-dark);
-      letter-spacing: -0.5px;
+    .logo { display: flex; align-items: center; }
+
+    .logo-img {
+      height: 40px;
+      width: auto;
+      display: block;
     }
 
     .nav-badge {
@@ -677,7 +670,7 @@
 
       .proof-bar { padding: 20px 24px; gap: 12px; justify-content: center; text-align: center; }
       .stat-divider { display: none; }
-      .award { width: 100%; justify-content: center; }
+      .award { width: fit-content; justify-content: center; }
 
       .btn-primary { width: 100%; justify-content: center; }
 
@@ -687,6 +680,9 @@
       .form-outer { padding: 32px 24px; }
       .confirm-box { padding: 36px 24px; }
       .progress-wrap { padding: 10px 20px; }
+
+      /* Hide nav on scroll down, show on scroll up */
+      nav.nav-hidden { transform: translateY(-100%); }
     }
   </style>
 </head>
@@ -694,8 +690,7 @@
 
   <nav>
     <div class="logo">
-      <div class="logo-mark">tm</div>
-      <span class="logo-text">talkmore</span>
+      <img src="Talkmore-Logo-RGB.png" alt="Talkmore" class="logo-img"/>
     </div>
     <div class="nav-badge">
       <div class="pulse"></div>
@@ -944,6 +939,32 @@
     }
 
     function answer(key, val) { answers[key] = val; }
+
+    // ── MOBILE SCROLL-HIDE NAV ──
+    (function() {
+      let lastY = 0;
+      let ticking = false;
+      const nav = document.querySelector('nav');
+
+      window.addEventListener('scroll', function() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function() {
+          if (window.innerWidth <= 768) {
+            const y = window.scrollY;
+            if (y > lastY && y > 60) {
+              nav.classList.add('nav-hidden');
+            } else {
+              nav.classList.remove('nav-hidden');
+            }
+            lastY = y;
+          } else {
+            nav.classList.remove('nav-hidden');
+          }
+          ticking = false;
+        });
+      });
+    })();
 
     function submitForm() {
       const navn    = document.getElementById('navn').value.trim();
