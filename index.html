@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Talkmore — Vinn 10 000 kr</title>
+  <link href="https://fonts.bunny.net/css?family=figtree:400,500,700,800|inter:300,400,500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark: #1a4d2e;
+      --green-mid: #2d7a3e;
+      --green-light: #e8f5e2;
+      --green-bg: #f5f9f0;
+      --border: #dde8d0;
+      --font-display: 'Figtree', system-ui, -apple-system, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--green-bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: #fff;
+      border-bottom: 1px solid #e8f0df;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo { display: flex; align-items: center; gap: 10px; }
+
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--green-dark);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--green-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-badge {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--green-light);
+      border: 1px solid #c5e0b0;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--green-mid);
+      font-weight: 500;
+    }
+
+    .pulse {
+      width: 8px; height: 8px;
+      background: #3db35c;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:0.5; transform:scale(0.8); }
+    }
+
+    .progress-wrap {
+      background: #fff;
+      padding: 10px 40px;
+      border-bottom: 1px solid #eef4e7;
+      display: none;
+    }
+
+    .progress-wrap.visible { display: block; }
+
+    .progress-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+
+    .progress-bar {
+      height: 4px;
+      background: #e5edd8;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--green-dark);
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* SCREEN 1 */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 580px;
+    }
+
+    .hero-left {
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--green-bg);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #c5e0b0;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--green-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 46px;
+      line-height: 1.08;
+      color: #111;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+
+    h1 .prize { color: var(--green-dark); }
+
+    .hero-sub {
+      font-size: 17px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 36px;
+      max-width: 420px;
+      font-weight: 300;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green-dark);
+      color: #fff;
+      border: none;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      width: fit-content;
+    }
+
+    .btn-primary:hover { background: #143d23; transform: translateY(-1px); }
+
+    .trust-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .trust-icon {
+      width: 28px; height: 28px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+
+    .hero-right {
+      background: var(--green-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .prize-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      padding: 36px 40px;
+      text-align: center;
+      width: 100%;
+      max-width: 360px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .prize-label {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+
+    .prize-amount {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 64px;
+      color: #fff;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .prize-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 28px;
+    }
+
+    .prize-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      margin: 0 0 24px;
+    }
+
+    .steps { text-align: left; display: flex; flex-direction: column; gap: 14px; }
+
+    .step {
+      display: flex; align-items: flex-start; gap: 12px;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px; line-height: 1.4;
+    }
+
+    .step-num {
+      width: 24px; height: 24px; min-width: 24px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #fff;
+    }
+
+    .prize-cta {
+      margin-top: 24px;
+      background: #fff;
+      color: var(--green-dark);
+      border: none;
+      padding: 14px 28px;
+      font-size: 15px; font-weight: 700;
+      font-family: var(--font-body);
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .prize-cta:hover { background: #f0f9e8; transform: translateY(-1px); }
+    .prize-disclaimer { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 12px; }
+
+    .proof-bar {
+      background: #fff;
+      padding: 24px 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-top: 1px solid #eef4e7;
+      border-bottom: 1px solid #eef4e7;
+      flex-wrap: wrap;
+    }
+
+    .stat { text-align: center; }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 26px;
+      color: var(--green-dark);
+      letter-spacing: -0.8px;
+      display: block;
+    }
+
+    .stat-label { font-size: 12px; color: #888; }
+    .stat-divider { width: 1px; height: 40px; background: #e5edd8; }
+
+    .award {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--green-bg);
+      border: 1px solid #d4e8c0;
+      border-radius: 12px;
+      padding: 10px 18px;
+    }
+
+    .award-icon {
+      width: 36px; height: 36px;
+      background: var(--green-dark);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .award-title { font-size: 13px; font-weight: 700; color: var(--green-dark); display: block; }
+    .award-sub { font-size: 11px; color: #777; }
+
+    /* QUIZ SCREENS */
+    .quiz-screen {
+      min-height: calc(100vh - 120px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .quiz-inner { width: 100%; max-width: 760px; }
+
+    .quiz-question {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 36px;
+      color: var(--green-dark);
+      text-align: center;
+      margin-bottom: 40px;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .choice-btn {
+      background: var(--green-dark);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 22px 24px;
+      font-size: 18px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .choice-btn:hover { background: #143d23; transform: translateY(-2px); }
+    .choice-btn.full { grid-column: 1 / -1; }
+
+    .yn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .yn-btn {
+      background: var(--green-dark);
+      border: none;
+      border-radius: 16px;
+      padding: 40px 20px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-body);
+    }
+
+    .yn-btn:hover { background: #143d23; transform: translateY(-2px); }
+
+    .yn-icon {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 700;
+    }
+
+    .yn-icon.yes { background: rgba(61,179,92,0.25); color: #3db35c; }
+    .yn-icon.no  { background: rgba(220,80,80,0.25);  color: #e05555; }
+    .yn-label { font-size: 24px; font-weight: 700; color: #fff; }
+
+    .quiz-footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .quiz-footer a { color: #aaa; }
+
+    /* FORM SCREEN */
+    .form-screen {
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .form-outer {
+      background: var(--green-dark);
+      border-radius: 24px;
+      padding: 48px 44px;
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .form-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 28px;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .field-wrap {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.12);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 0 16px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .field-wrap:focus-within { border-color: rgba(255,255,255,0.6); }
+
+    .field-icon { font-size: 16px; margin-right: 10px; opacity: 0.6; }
+
+    .field-wrap input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      padding: 15px 0;
+      font-size: 15px;
+      font-family: var(--font-body);
+      color: #fff;
+    }
+
+    .field-wrap input::placeholder { color: rgba(255,255,255,0.45); }
+
+    .phone-prefix {
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.8);
+      font-size: 14px; font-weight: 500;
+      padding-right: 10px;
+      border-right: 1px solid rgba(255,255,255,0.2);
+      margin-right: 10px;
+      white-space: nowrap;
+    }
+
+    .consent-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 20px 0 24px;
+    }
+
+    .consent-wrap input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px; height: 20px; min-width: 20px;
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 5px;
+      background: transparent;
+      cursor: pointer;
+      margin-top: 2px;
+      position: relative;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .consent-wrap input[type="checkbox"]:checked {
+      background: #3db35c;
+      border-color: #3db35c;
+    }
+
+    .consent-wrap input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px; top: 1px;
+      width: 5px; height: 10px;
+      border: 2px solid #fff;
+      border-top: none; border-left: none;
+      transform: rotate(45deg);
+    }
+
+    .consent-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.55;
+    }
+
+    .consent-text strong { color: #fff; font-weight: 600; }
+
+    .btn-submit {
+      width: 100%;
+      background: #4ade80;
+      color: var(--green-dark);
+      border: none;
+      padding: 16px;
+      font-size: 16px; font-weight: 700;
+      font-family: var(--font-body);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:hover { background: #22c55e; transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.5;
+    }
+
+    .form-footer a { color: rgba(255,255,255,0.45); }
+
+    .error-msg {
+      color: #fca5a5;
+      font-size: 12px;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: none;
+      padding-left: 4px;
+    }
+
+    /* CONFIRMATION */
+    .confirm-screen {
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .confirm-box {
+      background: #fff;
+      border-radius: 24px;
+      padding: 56px 40px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 2px 40px rgba(26,77,46,0.08);
+    }
+
+    .confirm-icon {
+      width: 80px; height: 80px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 24px;
+    }
+
+    .confirm-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 28px;
+      color: #111;
+      letter-spacing: -0.8px;
+      margin-bottom: 12px;
+    }
+
+    .confirm-sub {
+      font-size: 16px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .confirm-prize {
+      background: var(--green-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .confirm-prize-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    .confirm-prize-amount {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--green-dark);
+      letter-spacing: -0.8px;
+    }
+
+    .confirm-prize-sub { font-size: 13px; color: #777; margin-top: 2px; }
+
+    .confirm-disclaimer { font-size: 12px; color: #bbb; line-height: 1.5; }
+    .confirm-disclaimer a { color: var(--green-dark); }
+
+    .fade-in { animation: fadeUp 0.4s ease both; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 40px 24px; }
+      h1 { font-size: 32px; }
+      .hero-right { padding: 40px 24px; }
+      .prize-amount { font-size: 48px; }
+      .proof-bar { padding: 20px 24px; gap: 16px; }
+      .stat-divider { display: none; }
+      .quiz-question { font-size: 26px; }
+      .choice-grid { grid-template-columns: 1fr; }
+      .choice-btn.full { grid-column: 1; }
+      .form-outer { padding: 32px 24px; }
+      .confirm-box { padding: 36px 24px; }
+      .progress-wrap { padding: 10px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <div class="logo-mark">tm</div>
+      <span class="logo-text">talkmore</span>
+    </div>
+    <div class="nav-badge">
+      <div class="pulse"></div>
+      Konkurranse pågår nå
+    </div>
+  </nav>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-label" id="progress-label">Spørsmål 1 av 3</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 33%"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 1: LANDING -->
+  <div id="screen-1" class="screen active">
+    <div class="hero">
+      <div class="hero-left fade-in">
+        <div class="eyebrow">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#3db35c"/></svg>
+          Eksklusivt tilbud
+        </div>
+        <h1>
+          Norges mest<br>fornøyde kunder<br>
+          <span class="prize">vinner 10 000 kr</span>
+        </h1>
+        <p class="hero-sub">
+          Svar på noen raske spørsmål om ditt mobilabonnement — og bli med i trekningen om et gavekort på 10 000,– kr til dagligvarebutikk.
+        </p>
+        <button class="btn-primary" onclick="goTo(2)">
+          Delta nå — gratis
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="trust-row">
+          <div class="trust-item"><div class="trust-icon">🔒</div>Ingen spam</div>
+          <div class="trust-item"><div class="trust-icon">⚡</div>Tar 60 sekunder</div>
+          <div class="trust-item"><div class="trust-icon">🎁</div>Gratis å delta</div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="prize-card fade-in">
+          <div class="prize-label">Premie</div>
+          <div class="prize-amount">10 000</div>
+          <div class="prize-sub">kr gavekort til dagligvarebutikk</div>
+          <hr class="prize-divider">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><span>Svar på noen enkle spørsmål om mobilabonnement</span></div>
+            <div class="step"><div class="step-num">2</div><span>Legg igjen kontaktinfo</span></div>
+            <div class="step"><div class="step-num">3</div><span>Bli med i trekningen og motta et godt tilbud</span></div>
+          </div>
+          <button class="prize-cta" onclick="goTo(2)">Start konkurransen →</button>
+          <p class="prize-disclaimer">Trekning håndteres av Meisel A/S. Ingen kjøpsplikt.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="proof-bar">
+      <div class="stat">
+        <span class="stat-num">+500k</span>
+        <span class="stat-label">fornøyde kunder</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">#1</span>
+        <span class="stat-label">mest fornøyde mobilkunder</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">4.7★</span>
+        <span class="stat-label">kundetilfredshet</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="award">
+        <div class="award-icon">🏆</div>
+        <div>
+          <span class="award-title">Kundefavoritt Jan. 2026</span>
+          <span class="award-sub">bytt.no kåring</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: JA / NEI -->
+  <div id="screen-2" class="screen">
+    <div class="quiz-screen">
+      <div class="quiz-inner fade-in">
+        <div class="quiz-question">Betaler du mobilabonnement for deg selv eller andre i familien?</div>
+        <div class="yn-grid">
+          <button class="yn-btn" onclick="answer('betaler','Ja'); goTo(3)">
+            <div class="yn-icon yes">✓</div>
+            <span class="yn-label">Ja</span>
+          </button>
+          <button class="yn-btn" onclick="answer('betaler','Nei'); goTo(3)">
+            <div class="yn-icon no">✕</div>
+            <span class="yn-label">Nei</span>
+          </button>
+        </div>
+        <div class="quiz-footer">
+          <a href="https://www.talkmore.no/personvern" target="_blank">Kampanjen er utarbeidet i samarbeid med Meisel A/S. Les deres personvernerklæring her.</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: ALDER -->
+  <div id="screen-3" class="screen">
+    <div class="quiz-screen">
+      <div class="quiz-inner fade-in">
+        <div class="quiz-question">Hvor gammel er du?</div>
+        <div class="choice-grid">
+          <button class="choice-btn" onclick="answer('alder','45+'); goTo(4)">45+</button>
+          <button class="choice-btn" onclick="answer('alder','31-45'); goTo(4)">31 – 45</button>
+          <button class="choice-btn" onclick="answer('alder','25-30'); goTo(4)">25 – 30</button>
+          <button class="choice-btn" onclick="answer('alder','18-24'); goTo(4)">18 – 24</button>
+          <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(4)">Under 18</button>
+        </div>
+        <div class="quiz-footer">
+          <a href="https://www.talkmore.no/personvern" target="_blank">Kampanjen er utarbeidet i samarbeid med Meisel A/S. Les deres personvernerklæring her.</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: OPERATØR -->
+  <div id="screen-4" class="screen">
+    <div class="quiz-screen">
+      <div class="quiz-inner fade-in">
+        <div class="quiz-question">Hva er din nåværende mobiloperatør?</div>
+        <div class="choice-grid">
+          <button class="choice-btn" onclick="answer('operator','Bedriftsabonnement'); goTo(5)">Jeg har bedriftsabonnement</button>
+          <button class="choice-btn" onclick="answer('operator','Fjordkraft'); goTo(5)">Fjordkraft</button>
+          <button class="choice-btn" onclick="answer('operator','ICE'); goTo(5)">ICE</button>
+          <button class="choice-btn" onclick="answer('operator','MyCall'); goTo(5)">MyCall</button>
+          <button class="choice-btn" onclick="answer('operator','OneCall'); goTo(5)">OneCall</button>
+          <button class="choice-btn" onclick="answer('operator','Telia'); goTo(5)">Telia</button>
+          <button class="choice-btn" onclick="answer('operator','Telenor'); goTo(5)">Telenor</button>
+          <button class="choice-btn" onclick="answer('operator','Talkmore'); goTo(5)">Talkmore</button>
+          <button class="choice-btn full" onclick="answer('operator','Annet'); goTo(5)">Annet</button>
+        </div>
+        <div class="quiz-footer">
+          <a href="https://www.talkmore.no/personvern" target="_blank">Kampanjen er utarbeidet i samarbeid med Meisel A/S. Les deres personvernerklæring her.</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: KONTAKTSKJEMA -->
+  <div id="screen-5" class="screen">
+    <div class="form-screen">
+      <div class="form-outer fade-in">
+        <div class="form-title">Nesten i mål! Fyll ut skjemaet og delta i konkurransen.</div>
+
+        <div class="field-wrap">
+          <span class="field-icon">👤</span>
+          <input type="text" id="navn" placeholder="Ditt for- og etternavn" autocomplete="name"/>
+        </div>
+        <div class="error-msg" id="err-navn">Vennligst fyll inn navn</div>
+
+        <div class="field-wrap">
+          <span class="field-icon">✉️</span>
+          <input type="email" id="epost" placeholder="Din e-postadresse" autocomplete="email"/>
+        </div>
+        <div class="error-msg" id="err-epost">Vennligst fyll inn gyldig e-post</div>
+
+        <div class="field-wrap">
+          <div class="phone-prefix">🇳🇴 +47</div>
+          <input type="tel" id="telefon" placeholder="Ditt telefonnummer" autocomplete="tel"/>
+        </div>
+        <div class="error-msg" id="err-telefon">Vennligst fyll inn gyldig mobilnummer</div>
+
+        <div class="consent-wrap">
+          <input type="checkbox" id="consent"/>
+          <label for="consent" class="consent-text">
+            Ja, jeg er over <strong>18 år</strong> og Talkmore kan kontakte meg på telefon med et godt tilbud, selv om jeg har reservert meg mot det i reservasjonsregisteret.
+          </label>
+        </div>
+
+        <button class="btn-submit" id="submit-btn" onclick="submitForm()">Send inn</button>
+
+        <p class="form-footer">
+          Premien er et gavekort til en verdi av 10 000,–. Trekning håndteres av Meisel A/S.<br>
+          <a href="https://www.talkmore.no/personvern" target="_blank">Les om personvern fra Talkmore her</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 6: BEKREFTELSE -->
+  <div id="screen-6" class="screen">
+    <div class="confirm-screen">
+      <div class="confirm-box fade-in">
+        <div class="confirm-icon">🎉</div>
+        <div class="confirm-title">Du er med i trekningen!</div>
+        <p class="confirm-sub">
+          Takk for at du deltok. Vi tar kontakt med et godt tilbud på mobilabonnement — og hvis du vinner, hører du fra oss etter trekning.
+        </p>
+        <div class="confirm-prize">
+          <div class="confirm-prize-label">Du er med og kjemper om</div>
+          <div class="confirm-prize-amount">10 000 kr</div>
+          <div class="confirm-prize-sub">Gavekort til dagligvarebutikk</div>
+        </div>
+        <p class="confirm-disclaimer">
+          Konkurransen fra Talkmore går til og med kampanjeslutt. Trekning og premieutdeling håndteres av Meisel A/S.
+          Les om <a href="https://www.talkmore.no/personvern" target="_blank">personvern fra Talkmore her</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const answers = {};
+
+    const progressConfig = {
+      2: { label: 'Spørsmål 1 av 3', pct: 33 },
+      3: { label: 'Spørsmål 2 av 3', pct: 66 },
+      4: { label: 'Spørsmål 3 av 3', pct: 100 },
+      5: { label: 'Nesten ferdig!',   pct: 100 },
+    };
+
+    function goTo(n) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + n).classList.add('active');
+      window.scrollTo(0, 0);
+
+      const wrap = document.getElementById('progress-wrap');
+      if (progressConfig[n]) {
+        wrap.classList.add('visible');
+        document.getElementById('progress-label').textContent = progressConfig[n].label;
+        document.getElementById('progress-fill').style.width = progressConfig[n].pct + '%';
+      } else {
+        wrap.classList.remove('visible');
+      }
+
+      document.querySelectorAll('#screen-' + n + ' .fade-in').forEach(el => {
+        el.style.animation = 'none';
+        el.offsetHeight;
+        el.style.animation = '';
+      });
+    }
+
+    function answer(key, val) { answers[key] = val; }
+
+    function submitForm() {
+      const navn    = document.getElementById('navn').value.trim();
+      const epost   = document.getElementById('epost').value.trim();
+      const telefon = document.getElementById('telefon').value.trim();
+      const consent = document.getElementById('consent').checked;
+
+      let valid = true;
+      document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+
+      if (!navn) { document.getElementById('err-navn').style.display = 'block'; valid = false; }
+      if (!epost || !epost.includes('@') || !epost.includes('.')) { document.getElementById('err-epost').style.display = 'block'; valid = false; }
+      if (!telefon || telefon.replace(/\s/g,'').length < 8) { document.getElementById('err-telefon').style.display = 'block'; valid = false; }
+      if (!consent) { alert('Du må godta vilkårene for å delta.'); valid = false; }
+      if (!valid) return;
+
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Sender...';
+
+      // Replace these after setting up Airtable:
+      const AIRTABLE_PAT = 'YOUR_AIRTABLE_PAT';
+      const BASE_ID      = 'YOUR_BASE_ID';
+      const TABLE_NAME   = 'Leads';
+
+      fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${AIRTABLE_PAT}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fields: {
+            'Navn':               navn,
+            'Epost':              epost,
+            'Telefon':            '+47 ' + telefon,
+            'Betaler abonnement': answers.betaler  || '',
+            'Alder':              answers.alder    || '',
+            'Operatør':           answers.operator || '',
+            'Dato':               new Date().toISOString()
+          }
+        })
+      })
+      .then(res => { if (res.ok) { goTo(6); } else { return res.json().then(e => { throw e; }); } })
+      .catch(err => { console.error('Airtable error:', err); goTo(6); });
+    }
+  </script>
+</body>
+</html>
