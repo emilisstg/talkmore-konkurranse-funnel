@@ -660,6 +660,8 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    .eyebrow-mobile { display: none; }
+
     @media (max-width: 768px) {
       nav { padding: 14px 20px; }
       .hero { grid-template-columns: 1fr; }
@@ -667,8 +669,18 @@
       h1 { font-size: 32px; }
       .hero-right { padding: 40px 24px; }
       .prize-amount { font-size: 48px; }
-      .proof-bar { padding: 20px 24px; gap: 16px; }
+
+      .eyebrow-desktop { display: none; }
+      .eyebrow-mobile { display: inline-flex; margin-bottom: 0; margin-top: 20px; }
+
+      .trust-row { justify-content: center; gap: 16px; }
+
+      .proof-bar { padding: 20px 24px; gap: 12px; justify-content: center; text-align: center; }
       .stat-divider { display: none; }
+      .award { width: 100%; justify-content: center; }
+
+      .btn-primary { width: 100%; justify-content: center; }
+
       .quiz-question { font-size: 26px; }
       .choice-grid { grid-template-columns: 1fr; }
       .choice-btn.full { grid-column: 1; }
@@ -702,13 +714,13 @@
   <div id="screen-1" class="screen active">
     <div class="hero">
       <div class="hero-left fade-in">
-        <div class="eyebrow">
+        <div class="eyebrow eyebrow-desktop">
           <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#3db35c"/></svg>
           Eksklusivt tilbud
         </div>
         <h1>
           Norges mest<br>fornøyde kunder<br>
-          <span class="prize">vinner 10 000 kr</span>
+          <span class="prize">vinner 10 000,– kr</span>
         </h1>
         <p class="hero-sub">
           Svar på noen raske spørsmål om ditt mobilabonnement — og bli med i trekningen om et gavekort på 10 000,– kr til dagligvarebutikk.
@@ -719,6 +731,10 @@
             <path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
+        <div class="eyebrow eyebrow-mobile">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#3db35c"/></svg>
+          Eksklusivt tilbud
+        </div>
         <div class="trust-row">
           <div class="trust-item"><div class="trust-icon">🔒</div>Ingen spam</div>
           <div class="trust-item"><div class="trust-icon">⚡</div>Tar 60 sekunder</div>
@@ -729,7 +745,7 @@
       <div class="hero-right">
         <div class="prize-card fade-in">
           <div class="prize-label">Premie</div>
-          <div class="prize-amount">10 000</div>
+          <div class="prize-amount">10 000,–</div>
           <div class="prize-sub">kr gavekort til dagligvarebutikk</div>
           <hr class="prize-divider">
           <div class="steps">
@@ -885,7 +901,7 @@
         </p>
         <div class="confirm-prize">
           <div class="confirm-prize-label">Du er med og kjemper om</div>
-          <div class="confirm-prize-amount">10 000 kr</div>
+          <div class="confirm-prize-amount">10 000,– kr</div>
           <div class="confirm-prize-sub">Gavekort til dagligvarebutikk</div>
         </div>
         <p class="confirm-disclaimer">
