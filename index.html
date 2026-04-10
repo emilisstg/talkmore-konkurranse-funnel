@@ -1256,16 +1256,51 @@
       .catch(err => { console.error('Airtable error full:', JSON.stringify(err)); answers.tmSamtykke = consentTM; goTo(6); });
     }
 
-    // ── MODALS ──
+    // ── MODALS (hash-based) ──
     function openModal(id) {
+      // Map modal id to hash
+      const hashMap = { 'privacy-modal': 'personvern', 'rules-modal': 'regler' };
+      const hash = hashMap[id] || id;
+      history.pushState({ modal: id }, '', '#' + hash);
+      showModalById(id);
+    }
+
+    function closeModal(id) {
+      history.pushState({}, '', window.location.pathname + window.location.search);
+      hideModalById(id);
+    }
+
+    function showModalById(id) {
       document.getElementById(id).classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
-    function closeModal(id) {
+    function hideModalById(id) {
       document.getElementById(id).classList.remove('open');
       document.body.style.overflow = '';
     }
+
+    function hideAllModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.classList.remove('open');
+      });
+      document.body.style.overflow = '';
+    }
+
+    // Handle hash on page load (e.g. someone visits #personvern directly)
+    function checkHashForModal() {
+      const hash = window.location.hash;
+      if (hash === '#personvern') showModalById('privacy-modal');
+      else if (hash === '#regler') showModalById('rules-modal');
+      else hideAllModals();
+    }
+
+    window.addEventListener('popstate', function(e) {
+      checkHashForModal();
+    });
+
+    // Check on load
+    checkHashForModal();
 
     // Close modal on overlay click
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -1274,37 +1309,28 @@
       });
     });
 
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        hideAllModals();
+        history.pushState({}, '', window.location.pathname + window.location.search);
+      }
+    });
+
     // ── COOKIES ──
     function acceptCookies() {
-      localStorage.setItem('cookie-consent', 'accepted');
       document.getElementById('cookie-banner').classList.remove('show');
-      loadMetaPixel();
     }
 
     function declineCookies() {
-      localStorage.setItem('cookie-consent', 'declined');
       document.getElementById('cookie-banner').classList.remove('show');
     }
 
-    function loadMetaPixel() {
-      // Replace YOUR_PIXEL_ID with your actual Meta Pixel ID
-      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-      document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'YOUR_PIXEL_ID');
-      fbq('track', 'PageView');
-    }
+    function loadMetaPixel() { /* Pixel not configured */ }
 
-    // Check cookie consent on load
+    // Always show cookie banner on load
     (function() {
-      const consent = localStorage.getItem('cookie-consent');
-      if (!consent) {
-        document.getElementById('cookie-banner').classList.add('show');
-      } else if (consent === 'accepted') {
-        loadMetaPixel();
-      }
+      document.getElementById('cookie-banner').classList.add('show');
     })();
 
   </script>
@@ -1314,7 +1340,7 @@
   <!-- ══════════════════════════════ -->
   <div class="cookie-banner" id="cookie-banner">
     <div class="cookie-text">
-      Vi bruker informasjonskapsler (cookies) for analyse og markedsføring, inkludert Meta Pixel. Ved å klikke «Godta» samtykker du til dette. Du kan lese mer i vår <button class="modal-link" onclick="openModal('privacy-modal')">personvernerklæring</button>.
+      Vi bruker informasjonskapsler (cookies) for analyse og funksjonalitet. Ved å klikke «Godta» samtykker du til dette. Du kan lese mer i vår <button class="modal-link" onclick="openModal('privacy-modal')">personvernerklæring</button>.
     </div>
     <div class="cookie-btns">
       <button class="cookie-decline" onclick="declineCookies()">Avvis</button>
@@ -1402,7 +1428,7 @@
 
       <div class="modal-section">
         <h3>5. Informasjonskapsler (cookies)</h3>
-        <p>Vi bruker Meta Pixel for markedsføringsformål, kun dersom du har samtykket til dette via cookie-banneret. Nødvendige cookies brukes alltid. Du kan når som helst endre ditt samtykke ved å slette cookies i nettleseren din.</p>
+        <p>Vi bruker informasjonskapsler for analyse- og funksjonalitetsformål. Nødvendige cookies brukes alltid. Du kan når som helst endre ditt samtykke ved å slette cookies i nettleseren din.</p>
       </div>
 
       <div class="modal-section">
