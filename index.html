@@ -663,6 +663,164 @@
       text-underline-offset: 2px;
     }
 
+
+    /* ── MODALS ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 40px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #888;
+      line-height: 1;
+    }
+
+    .modal-close:hover { color: #333; }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 22px;
+      color: #111;
+      letter-spacing: -0.5px;
+      margin-bottom: 20px;
+    }
+
+    .modal-section {
+      margin-bottom: 18px;
+    }
+
+    .modal-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-section p, .modal-section li {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.65;
+    }
+
+    .modal-section ul {
+      padding-left: 18px;
+    }
+
+    .modal-link {
+      color: var(--green-mid);
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 0;
+    }
+
+    /* ── COOKIE BANNER ── */
+    .cookie-banner {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 20px 40px;
+      z-index: 999;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      border-top: 3px solid var(--green-dark);
+    }
+
+    .cookie-banner.show { display: flex; }
+
+    .cookie-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.55;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .cookie-text a { color: #7dcf7d; text-decoration: underline; cursor: pointer; }
+
+    .cookie-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .cookie-accept {
+      background: var(--green-dark);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .cookie-accept:hover { background: #143d23; }
+
+    .cookie-decline {
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .cookie-decline:hover { border-color: rgba(255,255,255,0.6); }
+
+    @media (max-width: 768px) {
+      .modal-box { padding: 28px 20px; }
+      .cookie-banner { padding: 16px 20px; }
+    }
+
     .fade-in { animation: fadeUp 0.4s ease both; }
 
     @keyframes fadeUp {
@@ -768,7 +926,7 @@
 
     <!-- Legal text above proof bar -->
     <div class="legal-text">
-      Premien er et gavekort til en verdi av 10.000,–. Konkurransen fra Talkmore går fra DAG. MND til og med DAG. MND 2026. Trekningen av vinneren og utdelingen av premien håndteres av Meisel A/S. <a href="https://talkmore.no/vilkar/personvern" target="_blank">Les om personvern fra Talkmore her</a>.
+      Premien er et gavekort til en verdi av 10.000,–. Konkurransen fra Talkmore går fra 10. april 2026 til og med 10. april 2027. Trekningen av vinneren og utdelingen av premien håndteres av Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern her</button>. <button class="modal-link" onclick="openModal('rules-modal')">Se fullstendige konkurranseregler</button>.
     </div>
 
     <div class="proof-bar">
@@ -798,7 +956,7 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      Kampanjen er utarbeidet i samarbeid med Meisel A/S. <a href="https://usenvision.perspectivefunnel.com/69c25fc5f5c939bfe5f82497/page_6z25fm" target="_blank">Les deres personvernerklæring her</a>.
+      Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')" style="color:var(--green-mid);">Les personvernerklæringen her</button>.
     </footer>
   </div>
 
@@ -818,7 +976,7 @@
           </button>
         </div>
         <div class="quiz-footer">
-          <a href="https://talkmore.no/vilkar/personvern" target="_blank">Kampanjen er utarbeidet i samarbeid med Meisel A/S. Les deres personvernerklæring her.</a>
+          Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')" style="color:#aaa;">Les personvernerklæringen her</button>.
         </div>
       </div>
     </div>
@@ -837,7 +995,7 @@
           <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(7)">Under 18</button>
         </div>
         <div class="quiz-footer">
-          <a href="https://talkmore.no/vilkar/personvern" target="_blank">Kampanjen er utarbeidet i samarbeid med Meisel A/S. Les deres personvernerklæring her.</a>
+          Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')" style="color:#aaa;">Les personvernerklæringen her</button>.
         </div>
       </div>
     </div>
@@ -860,7 +1018,7 @@
           <button class="choice-btn full" onclick="answer('operator','Annet'); goTo(5)">Annet</button>
         </div>
         <div class="quiz-footer">
-          <a href="https://talkmore.no/vilkar/personvern" target="_blank">Kampanjen er utarbeidet i samarbeid med Meisel A/S. Les deres personvernerklæring her.</a>
+          Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')" style="color:#aaa;">Les personvernerklæringen her</button>.
         </div>
       </div>
     </div>
@@ -891,9 +1049,15 @@
         <div class="error-msg" id="err-telefon">Vennligst fyll inn gyldig mobilnummer</div>
 
         <div class="consent-wrap">
-          <input type="checkbox" id="consent"/>
-          <label for="consent" class="consent-text">
-            Ja, jeg er over <strong>18 år</strong> og Talkmore kan kontakte meg på telefon med et godt tilbud, selv om jeg har reservert meg mot det i reservasjonsregisteret.
+          <input type="checkbox" id="consent-age"/>
+          <label for="consent-age" class="consent-text">
+            Jeg bekrefter at jeg er over <strong>18 år</strong> og ønsker å delta i trekningen om 10 000,– kr gavekort til REMA 1000. <span style="color:rgba(255,255,255,0.5);font-size:12px;">(Påkrevd)</span>
+          </label>
+        </div>
+        <div class="consent-wrap" style="margin-top: -8px;">
+          <input type="checkbox" id="consent-tm"/>
+          <label for="consent-tm" class="consent-text">
+            Jeg ønsker å bli kontaktet per telefon av Meisel AS med tilbud på mobilabonnement fra Talkmore. <span style="color:rgba(255,255,255,0.5);font-size:12px;">(Valgfritt)</span>
           </label>
         </div>
 
@@ -901,7 +1065,7 @@
 
         <p class="form-footer">
           Premien er et gavekort til en verdi av 10 000,–. Trekning håndteres av Meisel A/S.<br>
-          <a href="https://talkmore.no/vilkar/personvern" target="_blank">Les om personvern fra Talkmore her</a>.
+          <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern her</button>. <button class="modal-link" onclick="openModal('rules-modal')">Se fullstendige konkurranseregler</button>.
         </p>
       </div>
     </div>
@@ -913,8 +1077,8 @@
       <div class="confirm-box fade-in">
         <div class="confirm-icon">🎉</div>
         <div class="confirm-title">Du er med i trekningen!</div>
-        <p class="confirm-sub">
-          Takk for at du deltok. Vi tar kontakt med et godt tilbud på mobilabonnement — og hvis du vinner, hører du fra oss etter trekning.
+        <p class="confirm-sub" id="confirm-sub-text">
+          Takk for at du deltok. Hvis du vinner, hører du fra oss etter trekning.
         </p>
         <div class="confirm-prize">
           <div class="confirm-prize-label">Du er med og kjemper om</div>
@@ -964,6 +1128,7 @@
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + n).classList.add('active');
       window.scrollTo(0, 0);
+      if (n === 6) updateConfirmScreen();
 
       const wrap = document.getElementById('progress-wrap');
       if (progressConfig[n] && progressConfig[n] !== null) {
@@ -1007,6 +1172,16 @@
 
     function answer(key, val) { answers[key] = val; }
 
+    // Update confirmation screen based on TM consent
+    function updateConfirmScreen() {
+      const sub = document.getElementById('confirm-sub-text');
+      if (sub) {
+        sub.textContent = answers.tmSamtykke
+          ? 'Takk for at du deltok. Vi tar kontakt med et godt tilbud på mobilabonnement — og hvis du vinner, hører du fra oss etter trekning.'
+          : 'Takk for at du deltok. Hvis du vinner, hører du fra oss etter trekning.';
+      }
+    }
+
     // ── MOBILE SCROLL-HIDE NAV ──
     (function() {
       let lastY = 0;
@@ -1037,7 +1212,8 @@
       const navn    = document.getElementById('navn').value.trim();
       const epost   = document.getElementById('epost').value.trim();
       const telefon = document.getElementById('telefon').value.trim();
-      const consent = document.getElementById('consent').checked;
+      const consentAge = document.getElementById('consent-age').checked;
+      const consentTM  = document.getElementById('consent-tm').checked;
 
       let valid = true;
       document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
@@ -1045,7 +1221,7 @@
       if (!navn) { document.getElementById('err-navn').style.display = 'block'; valid = false; }
       if (!epost || !epost.includes('@') || !epost.includes('.')) { document.getElementById('err-epost').style.display = 'block'; valid = false; }
       if (!telefon || telefon.replace(/\s/g,'').length < 8) { document.getElementById('err-telefon').style.display = 'block'; valid = false; }
-      if (!consent) { alert('Du må godta vilkårene for å delta.'); valid = false; }
+      if (!consentAge) { alert('Du må bekrefte at du er over 18 år for å delta i trekningen.'); valid = false; }
       if (!valid) return;
 
       const btn = document.getElementById('submit-btn');
@@ -1071,13 +1247,187 @@
             'Betaler abonnement': answers.betaler  || '',
             'Alder':              answers.alder    || '',
             'Operatør':           answers.operator || '',
+            'TM Samtykke':        consentTM ? 'Ja' : 'Nei',
             'Dato':               new Date().toLocaleDateString('no-NO', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})
           }
         })
       })
-      .then(res => { if (res.ok) { goTo(6); } else { return res.json().then(e => { throw e; }); } })
-      .catch(err => { console.error('Airtable error full:', JSON.stringify(err)); goTo(6); });
+      .then(res => { if (res.ok) { answers.tmSamtykke = consentTM; goTo(6); } else { return res.json().then(e => { throw e; }); } })
+      .catch(err => { console.error('Airtable error full:', JSON.stringify(err)); answers.tmSamtykke = consentTM; goTo(6); });
     }
+
+    // ── MODALS ──
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Close modal on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModal(overlay.id);
+      });
+    });
+
+    // ── COOKIES ──
+    function acceptCookies() {
+      localStorage.setItem('cookie-consent', 'accepted');
+      document.getElementById('cookie-banner').classList.remove('show');
+      loadMetaPixel();
+    }
+
+    function declineCookies() {
+      localStorage.setItem('cookie-consent', 'declined');
+      document.getElementById('cookie-banner').classList.remove('show');
+    }
+
+    function loadMetaPixel() {
+      // Replace YOUR_PIXEL_ID with your actual Meta Pixel ID
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', 'YOUR_PIXEL_ID');
+      fbq('track', 'PageView');
+    }
+
+    // Check cookie consent on load
+    (function() {
+      const consent = localStorage.getItem('cookie-consent');
+      if (!consent) {
+        document.getElementById('cookie-banner').classList.add('show');
+      } else if (consent === 'accepted') {
+        loadMetaPixel();
+      }
+    })();
+
   </script>
+
+  <!-- ══════════════════════════════ -->
+  <!-- COOKIE BANNER                 -->
+  <!-- ══════════════════════════════ -->
+  <div class="cookie-banner" id="cookie-banner">
+    <div class="cookie-text">
+      Vi bruker informasjonskapsler (cookies) for analyse og markedsføring, inkludert Meta Pixel. Ved å klikke «Godta» samtykker du til dette. Du kan lese mer i vår <button class="modal-link" onclick="openModal('privacy-modal')">personvernerklæring</button>.
+    </div>
+    <div class="cookie-btns">
+      <button class="cookie-decline" onclick="declineCookies()">Avvis</button>
+      <button class="cookie-accept" onclick="acceptCookies()">Godta alle</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- COMPETITION RULES MODAL       -->
+  <!-- ══════════════════════════════ -->
+  <div class="modal-overlay" id="rules-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('rules-modal')">✕</button>
+      <div class="modal-title">Fullstendige konkurranseregler</div>
+
+      <div class="modal-section">
+        <h3>Arrangør</h3>
+        <p>Konkurransen arrangeres av Meisel AS, org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. E-post: vian@meisel.no. Konkurransen gjennomføres på vegne av Talkmore AS, org.nr. 876 839 342.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Konkurranseperiode</h3>
+        <p>Konkurransen løper fra 10. april 2026 til og med 10. april 2027. Bidrag mottatt etter dette tidspunktet er ikke gyldige.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Hvem kan delta</h3>
+        <p>Konkurransen er åpen for alle som er bosatt i Norge og har fylt 18 år. Ansatte hos Meisel AS og Talkmore AS, samt deres nærstående familiemedlemmer, kan ikke delta.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Slik deltar du</h3>
+        <p>For å delta må du: (1) besvare spørsmålene i skjemaet, (2) oppgi navn, e-postadresse og telefonnummer, og (3) bekrefte at du er over 18 år. Deltakelse er gratis og ingen kjøpsplikt foreligger.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Premie</h3>
+        <p>Én (1) vinner trekkes. Premien er et gavekort til REMA 1000 til en verdi av kr 10 000,–. Gavekortet kan ikke byttes inn i kontanter. Premien er ikke overførbar.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Trekning og varsling</h3>
+        <p>Vinneren trekkes tilfeldig blant alle gyldige deltakere etter konkurranseperiodens slutt, innen 30 dager etter 10. april 2027. Vinneren varsles per telefon og/eller e-post. Dersom vinneren ikke svarer innen 14 dager, forbeholder arrangøren seg retten til å trekke en ny vinner.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Personopplysninger</h3>
+        <p>Opplysningene du oppgir brukes til gjennomføring av konkurransen og, dersom du har samtykket til det, til markedsføring fra Talkmore. Les mer i vår <button class="modal-link" onclick="closeModal('rules-modal'); openModal('privacy-modal')">personvernerklæring</button>.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Øvrige vilkår</h3>
+        <p>Arrangøren forbeholder seg retten til å diskvalifisere deltakere som forsøker å manipulere konkurransen. Arrangøren er ikke ansvarlig for tekniske feil som hindrer deltakelse. Konkurransen er underlagt norsk rett, jf. markedsføringsloven.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- PRIVACY POLICY MODAL          -->
+  <!-- ══════════════════════════════ -->
+  <div class="modal-overlay" id="privacy-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('privacy-modal')">✕</button>
+      <div class="modal-title">Personvernerklæring</div>
+
+      <div class="modal-section">
+        <h3>1. Behandlingsansvarlig</h3>
+        <p>Denne nettsiden og konkurransen drives av Meisel AS («Meisel»), org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. Kontakt: vian@meisel.no. Konkurransen gjennomføres på vegne av Talkmore AS, org.nr. 876 839 342, som er selvstendig behandlingsansvarlig for videre behandling av dine data dersom du har samtykket til kontakt fra Talkmore.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>2. Formål og rettslig grunnlag</h3>
+        <p>Vi behandler dine personopplysninger for å: (1) gjennomføre konkurransen og kontakte vinneren – rettslig grunnlag: oppfyllelse av avtale (GDPR art. 6 (1) b), og (2) markedsføre Talkmores mobilabonnement per telefon dersom du har samtykket til dette – rettslig grunnlag: samtykke (GDPR art. 6 (1) a).</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>3. Hvilke opplysninger samler vi inn</h3>
+        <p>Vi samler inn: navn, e-postadresse, telefonnummer, samt svar på spørsmål om mobilabonnement, alder og nåværende operatør. Kilden er alltid deg selv.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>4. Mottakere</h3>
+        <p>Dine opplysninger deles med Talkmore AS dersom du har samtykket til markedsføring fra Talkmore. Talkmore er da selvstendig behandlingsansvarlig. Vi benytter Airtable (USA) som databehandler for lagring, med standard databehandleravtale og EU SCCs.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>5. Informasjonskapsler (cookies)</h3>
+        <p>Vi bruker Meta Pixel for markedsføringsformål, kun dersom du har samtykket til dette via cookie-banneret. Nødvendige cookies brukes alltid. Du kan når som helst endre ditt samtykke ved å slette cookies i nettleseren din.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>6. Lagringstid</h3>
+        <p>Kontaktopplysninger lagres så lenge konkurransen pågår, og slettes senest 3 måneder etter trekning. Dersom du har samtykket til markedsføring fra Talkmore, gjelder Talkmores egne lagringsregler. Du kan lese mer på <a href="https://talkmore.no/vilkar/personvern" target="_blank" style="color:var(--green-mid);">talkmore.no/vilkar/personvern</a>.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>7. Dine rettigheter</h3>
+        <ul>
+          <li>Rett til innsyn i dine personopplysninger</li>
+          <li>Rett til retting eller sletting</li>
+          <li>Rett til å trekke tilbake samtykke når som helst</li>
+          <li>Rett til dataportabilitet</li>
+          <li>Rett til å klage til Datatilsynet: <a href="https://www.datatilsynet.no" target="_blank" style="color:var(--green-mid);">datatilsynet.no</a></li>
+        </ul>
+        <p style="margin-top:8px;">Kontakt oss på vian@meisel.no for å benytte dine rettigheter.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>8. Sikkerhet</h3>
+        <p>Vi benytter leverandører som overholder god IT-sikkerhetspraksis. Data lagres innenfor EØS eller i land med tilstrekkelig databeskyttelsesnivå.</p>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
