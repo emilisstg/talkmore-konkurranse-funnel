@@ -1328,10 +1328,10 @@
 
     function loadMetaPixel() { /* Pixel not configured */ }
 
-    // Always show cookie banner on load
-    (function() {
+    // Always show cookie banner - wait for DOM to be fully ready
+    window.addEventListener('DOMContentLoaded', function() {
       document.getElementById('cookie-banner').classList.add('show');
-    })();
+    });
 
   </script>
 
