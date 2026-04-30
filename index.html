@@ -3,373 +3,401 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Talkmore — Vinn 10 000 kr</title>
-  <link href="https://fonts.bunny.net/css?family=figtree:400,500,700,800|inter:300,400,500&display=swap" rel="stylesheet"/>
+  <title>Talkmore — Vinn 10 000,– i gavekort</title>
+
+  <!-- Favicon (Talkmore mark) -->
+  <link rel="icon" type="image/png" href="assets/favicon.png"/>
+  <link rel="apple-touch-icon" href="assets/favicon.png"/>
+
+  <!--
+    BRAND FONT: Talkmore uses CircularXX (paid). Montserrat is the
+    officially listed FREE backup in the brand guide — using it here.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ═══════════════════════════════════════════════════════════
+       TALKMORE BRAND TOKENS
+       Colors per brand guide — DO NOT change these values.
+       =══════════════════════════════════════════════════════════ */
     :root {
-      --green-dark: #1a4d2e;
-      --green-mid: #2d7a3e;
-      --green-light: #e8f5e2;
-      --green-bg: #f5f9f0;
-      --border: #dde8d0;
-      --font-display: 'Figtree', system-ui, -apple-system, sans-serif;
-      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      /* Primary brand greens */
+      --tm-green:        #004400;   /* Primary CTA, dark green */
+      --tm-green-hover:  #006600;
+      --tm-green-light:  #D4FFBC;   /* Approved light bg */
+      --tm-green-pale:   #EFFAE9;   /* Palest green (Template C alt bg) */
+
+      /* Accents */
+      --tm-lime:         #D0FF73;   /* Value-bomb / decorative */
+      --tm-purple:       #9094FF;   /* Alternate value-bomb */
+
+      /* Neutrals */
+      --tm-black:        #111;
+      --tm-text:         #1a1a1a;
+      --tm-text-muted:   #555;
+      --tm-border:       #E5E5E5;   /* 1px outline on input containers */
+      --tm-error:        #C8102E;
+
+      /* Typography per brand backup font (Montserrat) */
+      --font: 'Montserrat', system-ui, -apple-system, sans-serif;
     }
 
-    body {
-      font-family: var(--font-body);
-      background: var(--green-bg);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px 40px;
+    html, body {
+      font-family: var(--font);
       background: #fff;
-      border-bottom: 1px solid #e8f0df;
+      color: var(--tm-text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body { min-height: 100vh; overflow-x: hidden; }
+
+    /* ═══════════════════════════════════════════════════════════
+       HEADER (Talkmore logo + 4 USPs)
+       Per brand: only used at top of page, on white background.
+       =══════════════════════════════════════════════════════════ */
+    .tm-header {
+      background: #fff;
+      border-bottom: 1px solid #f0f0f0;
       position: sticky;
       top: 0;
       z-index: 100;
       transition: transform 0.3s ease;
     }
 
-    nav.nav-hidden {
-      /* desktop: never hide */
-      transform: none;
+    .tm-header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
     }
 
-    .logo { display: flex; align-items: center; }
-
-    .logo-img {
-      height: 40px;
+    /* Talkmore official wordmark */
+    .tm-logo {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .tm-logo-img {
+      height: 44px;
       width: auto;
       display: block;
     }
 
-
-
-    .progress-wrap {
-      background: #fff;
-      padding: 10px 40px;
-      border-bottom: 1px solid #eef4e7;
-      display: none;
-    }
-
-    .progress-wrap.visible { display: block; }
-
-    .progress-label { font-size: 12px; color: #888; margin-bottom: 6px; }
-
-    .progress-bar {
-      height: 4px;
-      background: #e5edd8;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: var(--green-dark);
-      border-radius: 4px;
-      transition: width 0.4s ease;
-    }
-
-    .screen { display: none; }
-    .screen.active { display: block; }
-
-    /* SCREEN 1 */
-    .hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 580px;
-    }
-
-    .hero-left {
-      padding: 60px 50px;
+    /* USP row — official Talkmore icons (lime-square w/ black icon) */
+    .tm-usps {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: var(--green-bg);
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      flex-wrap: wrap;
     }
-
-    .eyebrow {
+    .tm-usp {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: #fff;
-      border: 1px solid #c5e0b0;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 12px;
+      padding: 4px 14px 4px 4px;
+      border-radius: 999px;
+      font-size: 13px;
       font-weight: 500;
-      color: var(--green-mid);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 24px;
-      width: fit-content;
+      color: var(--tm-text);
+      white-space: nowrap;
+    }
+    .tm-usp-icon-img {
+      width: 32px;
+      height: 32px;
+      display: block;
+      flex-shrink: 0;
     }
 
-    h1 {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 46px;
-      line-height: 1.08;
-      color: #111;
-      letter-spacing: -1.5px;
+    /* ═══════════════════════════════════════════════════════════
+       PROGRESS BAR
+       =══════════════════════════════════════════════════════════ */
+    .progress-wrap {
+      background: #fff;
+      padding: 12px 40px;
+      border-bottom: 1px solid #f0f0f0;
+      display: none;
+    }
+    .progress-wrap.visible { display: block; }
+    .progress-inner { max-width: 1440px; margin: 0 auto; }
+    .progress-label {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .progress-bar {
+      height: 4px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--tm-green);
+      border-radius: 4px;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       SCREEN VISIBILITY
+       =══════════════════════════════════════════════════════════ */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ═══════════════════════════════════════════════════════════
+       SCREEN 1 — LANDING (Template B layout)
+       Image on left, title/body/CTA on right. White background.
+       =══════════════════════════════════════════════════════════ */
+    .landing {
+      background: #fff;
+      min-height: calc(100vh - 64px);
+    }
+
+    .landing-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    /* Left: image + value bomb */
+    .hero-image-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 420px;
+    }
+    .hero-image {
+      width: 100%;
+      max-width: 480px;
+      height: auto;
+      display: block;
+    }
+
+    /* Value bomb — graphic circle.
+       Per brand: lime (#D0FF73) or purple (#9094FF), black text, CircularXX Book.
+       Format prices as 1000,– (not "kr 1000" or "1000 kr"). */
+    .value-bomb {
+      position: absolute;
+      top: 8%;
+      right: 4%;
+      width: 132px;
+      height: 132px;
+      background: var(--tm-lime);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--tm-black);
+      font-weight: 500;
+      transform: rotate(-8deg);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+    .value-bomb-amount {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .value-bomb-label {
+      font-size: 13px;
+      font-weight: 400;
+      margin-top: 4px;
+      opacity: 0.85;
+    }
+
+    /* Right: copy column */
+    .hero-copy { max-width: 520px; }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--tm-green-light);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--tm-green);
+      letter-spacing: 0.4px;
       margin-bottom: 20px;
     }
 
-    h1 .prize { color: var(--green-dark); }
-
-    .hero-sub {
-      font-size: 17px;
-      color: #555;
-      line-height: 1.6;
-      margin-bottom: 36px;
-      max-width: 420px;
-      font-weight: 300;
+    h1.hero-title {
+      font-family: var(--font);
+      font-weight: 400;            /* per brand: NOT bold on titles */
+      font-size: 45px;
+      line-height: 1.3;
+      color: var(--tm-black);
+      letter-spacing: -1px;
+      margin-bottom: 20px;
     }
 
+    .hero-body {
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.55;
+      color: var(--tm-text-muted);
+      margin-bottom: 28px;
+    }
+
+    /* Steps list */
+    .hero-steps {
+      list-style: none;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .hero-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 15px;
+      color: var(--tm-text);
+      line-height: 1.5;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      background: var(--tm-green);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       PRIMARY CTA BUTTON (per brand spec)
+       Talkmore green #004400, 18px, 50px corner radius,
+       no exclamation marks, no all-caps.
+       =══════════════════════════════════════════════════════════ */
     .btn-primary {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: var(--green-dark);
+      background: var(--tm-green);
       color: #fff;
       border: none;
       padding: 16px 32px;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
-      font-family: var(--font-body);
-      border-radius: 12px;
+      font-family: var(--font);
+      border-radius: 999px;        /* fully rounded — 50px+ */
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
-      width: fit-content;
+      text-decoration: none;
     }
+    .btn-primary:hover { background: var(--tm-green-hover); }
+    .btn-primary:active { transform: translateY(1px); }
+    .btn-primary:disabled,
+    .btn-primary.disabled {
+      background: #e0e0e0;
+      color: #999;
+      cursor: not-allowed;
+    }
+    .btn-primary svg { stroke: currentColor; }
 
-    .btn-primary:hover { background: #143d23; transform: translateY(-1px); }
-
-    .trust-row {
+    /* Award badge (official Talkmore + Bytt.no Kundefavoritt combined image)
+       Per brand: only on white background, never on photos */
+    .award-row {
+      margin-top: 28px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 32px;
-      margin-top: 36px;
-      padding: 28px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
     }
-
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 17px;
-      font-weight: 600;
-      color: #222;
-    }
-
-    .trust-icon {
-      width: 44px; height: 44px;
-      background: var(--green-light);
-      border: 1.5px solid #c5e0b0;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .hero-right {
-      background: var(--green-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 50px 40px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-right::before {
-      content: '';
-      position: absolute;
-      top: -80px; right: -80px;
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.04);
-    }
-
-    .prize-card {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 20px;
-      padding: 36px 40px;
-      text-align: center;
+    .award-badge-img {
+      max-width: 380px;
       width: 100%;
-      max-width: 360px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .prize-label {
-      font-size: 12px; font-weight: 500;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 8px;
-    }
-
-    .prize-amount {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 64px;
-      color: #fff;
-      letter-spacing: -2px;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .prize-sub {
-      font-size: 14px;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 28px;
-    }
-
-    .prize-divider {
-      border: none;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      margin: 0 0 24px;
-    }
-
-    .steps { text-align: left; display: flex; flex-direction: column; gap: 18px; }
-
-    .step {
-      display: flex; align-items: flex-start; gap: 12px;
-      color: rgba(255,255,255,0.85);
-      font-size: 14px; line-height: 1.4;
-    }
-
-    .step-num {
-      width: 24px; height: 24px; min-width: 24px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: #fff;
-    }
-
-    .prize-cta {
-      margin-top: 24px;
-      background: #fff;
-      color: var(--green-dark);
-      border: none;
-      padding: 14px 28px;
-      font-size: 15px; font-weight: 700;
-      font-family: var(--font-body);
-      border-radius: 10px;
-      cursor: pointer;
-      width: 100%;
-      transition: background 0.2s, transform 0.1s;
-    }
-
-    .prize-cta:hover { background: #f0f9e8; transform: translateY(-1px); }
-    .prize-disclaimer { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 12px; }
-
-    .proof-bar {
-      background: #fff;
-      padding: 24px 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 40px;
-      border-top: 1px solid #eef4e7;
-      border-bottom: 1px solid #eef4e7;
-      flex-wrap: wrap;
-    }
-
-    .stat { text-align: center; }
-
-    .stat-num {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 26px;
-      color: var(--green-dark);
-      letter-spacing: -0.8px;
+      height: auto;
       display: block;
     }
 
-    .stat-label { font-size: 12px; color: #888; }
-    .stat-divider { width: 1px; height: 40px; background: #e5edd8; }
-
-    .award {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--green-bg);
-      border: 1px solid #d4e8c0;
-      border-radius: 12px;
-      padding: 10px 18px;
-      margin-top: 8px;
+    /* Legal text below landing */
+    .legal-text {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 40px 40px;
+      font-size: 12px;
+      color: #888;
+      line-height: 1.6;
+      text-align: center;
+    }
+    .legal-text a, .legal-text button.modal-link {
+      color: var(--tm-green);
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
 
-    .award-icon {
-      width: 36px; height: 36px;
-      background: var(--green-dark);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-    }
-
-    .award-title { font-size: 13px; font-weight: 700; color: var(--green-dark); display: block; }
-    .award-sub { font-size: 11px; color: #777; }
-
-    /* QUIZ SCREENS */
+    /* ═══════════════════════════════════════════════════════════
+       QUIZ SCREENS (Screens 2, 3, 4)
+       White background per brand. CTAs in green #004400.
+       =══════════════════════════════════════════════════════════ */
     .quiz-screen {
+      background: #fff;
       min-height: calc(100vh - 120px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 60px 20px;
+      padding: 60px 24px;
     }
 
-    .quiz-inner { width: 100%; max-width: 760px; }
+    .quiz-inner {
+      width: 100%;
+      max-width: 720px;
+    }
 
     .quiz-question {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 36px;
-      color: var(--green-dark);
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 38px;
+      color: var(--tm-black);
       text-align: center;
       margin-bottom: 40px;
       letter-spacing: -0.8px;
-      line-height: 1.15;
+      line-height: 1.25;
     }
 
     .choice-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      gap: 12px;
     }
-
     .choice-btn {
-      background: var(--green-dark);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
+      background: #fff;
+      color: var(--tm-text);
+      border: 2px solid var(--tm-border);
+      border-radius: 16px;
       padding: 22px 24px;
-      font-size: 18px;
-      font-weight: 600;
-      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 500;
+      font-family: var(--font);
       cursor: pointer;
       text-align: left;
-      transition: background 0.15s, transform 0.1s;
+      transition: all 0.15s;
     }
-
-    .choice-btn:hover { background: #143d23; transform: translateY(-2px); }
+    .choice-btn:hover {
+      border-color: var(--tm-green);
+      background: var(--tm-green-pale);
+      transform: translateY(-1px);
+    }
     .choice-btn.full { grid-column: 1 / -1; }
 
+    /* Yes/No tiles */
     .yn-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -377,299 +405,364 @@
       max-width: 560px;
       margin: 0 auto;
     }
-
     .yn-btn {
-      background: var(--green-dark);
-      border: none;
-      border-radius: 16px;
+      background: #fff;
+      border: 2px solid var(--tm-border);
+      border-radius: 20px;
       padding: 40px 20px;
       cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
+      transition: all 0.15s;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
-      font-family: var(--font-body);
+      font-family: var(--font);
     }
-
-    .yn-btn:hover { background: #143d23; transform: translateY(-2px); }
-
+    .yn-btn:hover {
+      border-color: var(--tm-green);
+      background: var(--tm-green-pale);
+      transform: translateY(-2px);
+    }
     .yn-icon {
       width: 56px; height: 56px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 26px; font-weight: 700;
+      font-size: 26px;
+      font-weight: 700;
     }
-
-    .yn-icon.yes { background: rgba(61,179,92,0.25); color: #3db35c; }
-    .yn-icon.no  { background: rgba(220,80,80,0.25);  color: #e05555; }
-    .yn-label { font-size: 24px; font-weight: 700; color: #fff; }
+    .yn-icon.yes { background: var(--tm-green-light); color: var(--tm-green); }
+    .yn-icon.no  { background: #FFE5E5; color: var(--tm-error); }
+    .yn-label {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--tm-text);
+    }
 
     .quiz-footer {
       text-align: center;
-      margin-top: 40px;
-      font-size: 12px;
+      margin-top: 48px;
+      font-size: 11px;
       color: #aaa;
     }
+    .quiz-footer a, .quiz-footer button.modal-link { color: #888; }
 
-    .quiz-footer a { color: #aaa; }
-
-    /* FORM SCREEN */
+    /* ═══════════════════════════════════════════════════════════
+       FORM SCREEN (Screen 5)
+       Per brand: input container w/ 1px grey outline, 16px corners,
+       white background. Inputs stacked tidy. Max 6 fields.
+       =══════════════════════════════════════════════════════════ */
     .form-screen {
+      background: #fff;
       min-height: calc(100vh - 120px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 60px 20px;
+      padding: 60px 24px;
     }
 
-    .form-outer {
-      background: var(--green-dark);
-      border-radius: 24px;
-      padding: 48px 44px;
-      max-width: 560px;
+    .form-card {
       width: 100%;
+      max-width: 520px;
     }
 
     .form-title {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 24px;
-      color: #fff;
-      margin-bottom: 28px;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 32px;
+      color: var(--tm-black);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
       text-align: center;
-      line-height: 1.3;
     }
-
-    .field-wrap {
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,0.12);
-      border: 1.5px solid rgba(255,255,255,0.2);
-      border-radius: 12px;
-      padding: 0 16px;
-      margin-bottom: 14px;
-      transition: border-color 0.2s;
-    }
-
-    .field-wrap:focus-within { border-color: rgba(255,255,255,0.6); }
-
-    .field-icon { font-size: 16px; margin-right: 10px; opacity: 0.6; }
-
-    .field-wrap input {
-      background: transparent;
-      border: none;
-      outline: none;
-      width: 100%;
-      padding: 15px 0;
+    .form-sub {
       font-size: 15px;
-      font-family: var(--font-body);
-      color: #fff;
+      color: var(--tm-text-muted);
+      text-align: center;
+      margin-bottom: 32px;
+      line-height: 1.5;
     }
 
-    .field-wrap input::placeholder { color: rgba(255,255,255,0.45); }
+    /* Input container per brand: white bg, 1px grey outline, 16px radius */
+    .form-fields {
+      background: #fff;
+      border: 1px solid var(--tm-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
 
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--tm-text);
+      margin-bottom: 6px;
+    }
+
+    .field {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: var(--font);
+      color: var(--tm-text);
+      background: #fff;
+      border: 1px solid var(--tm-border);
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 14px;
+    }
+    .field::placeholder { color: #aaa; }
+    .field:focus { border-color: var(--tm-green); }
+    .field.error { border-color: var(--tm-error); }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .phone-wrap {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--tm-border);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .phone-wrap.focused { border-color: var(--tm-green); }
+    .phone-wrap.error { border-color: var(--tm-error); }
     .phone-prefix {
       display: flex; align-items: center; gap: 6px;
-      color: rgba(255,255,255,0.8);
-      font-size: 14px; font-weight: 500;
-      padding-right: 10px;
-      border-right: 1px solid rgba(255,255,255,0.2);
-      margin-right: 10px;
-      white-space: nowrap;
+      padding: 0 14px;
+      background: #f9f9f9;
+      border-right: 1px solid var(--tm-border);
+      font-size: 14px;
+      color: var(--tm-text-muted);
+      font-weight: 500;
+    }
+    .phone-wrap input {
+      flex: 1;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: var(--font);
+      border: none;
+      outline: none;
+      background: transparent;
     }
 
-    .consent-wrap {
+    .error-msg {
+      color: var(--tm-error);
+      font-size: 12px;
+      margin-top: -10px;
+      margin-bottom: 12px;
+      display: none;
+      padding-left: 4px;
+    }
+    .error-msg.visible { display: block; }
+
+    /* Consent checkboxes */
+    .consent-block {
+      margin-top: 4px;
+    }
+    .consent-row {
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      margin: 20px 0 24px;
+      margin-bottom: 14px;
     }
-
-    .consent-wrap input[type="checkbox"] {
+    .consent-row input[type="checkbox"] {
       appearance: none;
       -webkit-appearance: none;
-      width: 20px; height: 20px; min-width: 20px;
-      border: 2px solid rgba(255,255,255,0.5);
-      border-radius: 5px;
-      background: transparent;
+      width: 22px; height: 22px; min-width: 22px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      background: #fff;
       cursor: pointer;
-      margin-top: 2px;
+      margin-top: 1px;
       position: relative;
-      transition: background 0.2s, border-color 0.2s;
+      transition: all 0.15s;
+      flex-shrink: 0;
     }
-
-    .consent-wrap input[type="checkbox"]:checked {
-      background: #3db35c;
-      border-color: #3db35c;
+    .consent-row input[type="checkbox"]:checked {
+      background: var(--tm-green);
+      border-color: var(--tm-green);
     }
-
-    .consent-wrap input[type="checkbox"]:checked::after {
+    .consent-row input[type="checkbox"]:checked::after {
       content: '';
       position: absolute;
-      left: 4px; top: 1px;
-      width: 5px; height: 10px;
+      left: 5px; top: 1px;
+      width: 6px; height: 11px;
       border: 2px solid #fff;
       border-top: none; border-left: none;
       transform: rotate(45deg);
     }
-
     .consent-text {
       font-size: 13px;
-      color: rgba(255,255,255,0.75);
+      color: var(--tm-text-muted);
       line-height: 1.55;
+      cursor: pointer;
+      user-select: none;
     }
-
-    .consent-text strong { color: #fff; font-weight: 600; }
+    .consent-text strong { color: var(--tm-text); font-weight: 600; }
+    .consent-required { color: #999; font-size: 11px; }
 
     .btn-submit {
       width: 100%;
-      background: #4ade80;
-      color: var(--green-dark);
+      background: var(--tm-green);
+      color: #fff;
       border: none;
-      padding: 16px;
-      font-size: 16px; font-weight: 700;
-      font-family: var(--font-body);
-      border-radius: 12px;
+      padding: 18px;
+      font-size: 18px;
+      font-weight: 600;
+      font-family: var(--font);
+      border-radius: 999px;        /* per brand: 50+ corner radius */
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
+      margin-top: 8px;
     }
-
-    .btn-submit:hover { background: #22c55e; transform: translateY(-1px); }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-submit:hover:not(:disabled) { background: var(--tm-green-hover); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .form-footer {
       text-align: center;
-      margin-top: 16px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.5;
+      margin-top: 18px;
+      font-size: 11px;
+      color: #888;
+      line-height: 1.6;
     }
+    .form-footer button.modal-link { color: var(--tm-green); }
 
-    .form-footer a { color: rgba(255,255,255,0.45); }
-
-    .error-msg {
-      color: #fca5a5;
-      font-size: 12px;
-      margin-top: -10px;
-      margin-bottom: 10px;
-      display: none;
-      padding-left: 4px;
-    }
-
-    /* CONFIRMATION */
+    /* ═══════════════════════════════════════════════════════════
+       CONFIRMATION SCREENS (Screens 6 & 7)
+       Per brand "Confirmation Page B": light green bg #D4FFBC,
+       success icon 72×72 above title, body text.
+       =══════════════════════════════════════════════════════════ */
     .confirm-screen {
-      min-height: calc(100vh - 120px);
+      background: var(--tm-green-light);
+      min-height: calc(100vh - 64px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 60px 20px;
+      padding: 60px 24px;
     }
+    .confirm-screen.disqualified { background: #fff; }
 
-    .confirm-box {
-      background: #fff;
-      border-radius: 24px;
-      padding: 56px 40px;
-      max-width: 480px;
+    .confirm-card {
+      max-width: 600px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 2px 40px rgba(26,77,46,0.08);
     }
 
     .confirm-icon {
-      width: 80px; height: 80px;
-      background: var(--green-light);
+      width: 72px; height: 72px;
+      margin: 0 auto 24px;
+      background: var(--tm-green);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 36px;
-      margin: 0 auto 24px;
     }
+    .confirm-icon svg { width: 36px; height: 36px; stroke: var(--tm-lime); fill: none; }
+    .confirm-icon.sad { background: #fff; border: 2px solid var(--tm-border); }
+    .confirm-icon.sad svg { stroke: #888; }
 
     .confirm-title {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 28px;
-      color: #111;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 38px;
+      color: var(--tm-black);
       letter-spacing: -0.8px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      line-height: 1.2;
     }
 
     .confirm-sub {
-      font-size: 16px;
-      color: #666;
-      line-height: 1.6;
-      margin-bottom: 28px;
+      font-size: 17px;
+      color: var(--tm-text);
+      line-height: 1.55;
+      margin-bottom: 32px;
+      font-weight: 500;
     }
 
-    .confirm-prize {
-      background: var(--green-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px 24px;
+    .confirm-prize-block {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
       margin-bottom: 24px;
       text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
+    .confirm-prize-icon {
+      width: 56px; height: 56px;
+      flex-shrink: 0;
+      background: var(--tm-lime);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .confirm-prize-icon svg { width: 28px; height: 28px; }
 
     .confirm-prize-label {
       font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.6px;
       color: #888;
       margin-bottom: 4px;
+      font-weight: 600;
     }
-
     .confirm-prize-amount {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 28px;
-      color: var(--green-dark);
-      letter-spacing: -0.8px;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--tm-green);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+    .confirm-prize-sub {
+      font-size: 13px;
+      color: var(--tm-text-muted);
+      margin-top: 2px;
     }
 
-    .confirm-prize-sub { font-size: 13px; color: #777; margin-top: 2px; }
-
-    .confirm-disclaimer { font-size: 12px; color: #bbb; line-height: 1.5; }
-    .confirm-disclaimer a { color: var(--green-dark); }
-
-    .legal-text {
-      max-width: 680px;
-      margin: 28px auto 0;
-      padding: 0 40px 32px;
+    .confirm-disclaimer {
       font-size: 12px;
-      color: #888;
-      line-height: 1.7;
-      text-align: center;
-    }
-
-    .legal-text a {
-      color: var(--green-mid);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .site-footer {
-      background: #fff;
-      border-top: 1px solid #eef4e7;
-      padding: 20px 40px;
-      text-align: center;
-      font-size: 12px;
-      color: #aaa;
+      color: #777;
       line-height: 1.6;
     }
+    .confirm-disclaimer a {
+      color: var(--tm-green);
+      text-decoration: underline;
+    }
 
-    .site-footer a {
-      color: var(--green-mid);
+    /* ═══════════════════════════════════════════════════════════
+       SITE FOOTER
+       =══════════════════════════════════════════════════════════ */
+    .site-footer {
+      background: #fff;
+      border-top: 1px solid #f0f0f0;
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 11px;
+      color: #888;
+      line-height: 1.6;
+    }
+    .site-footer a, .site-footer button.modal-link {
+      color: var(--tm-green);
       text-decoration: underline;
       text-underline-offset: 2px;
     }
 
-
-    /* ── MODALS ── */
+    /* ═══════════════════════════════════════════════════════════
+       MODALS
+       =══════════════════════════════════════════════════════════ */
     .modal-overlay {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.55);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -698,43 +791,36 @@
       color: #888;
       line-height: 1;
     }
-
     .modal-close:hover { color: #333; }
 
     .modal-title {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 22px;
-      color: #111;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 26px;
+      color: var(--tm-black);
       letter-spacing: -0.5px;
       margin-bottom: 20px;
     }
 
-    .modal-section {
-      margin-bottom: 18px;
-    }
-
+    .modal-section { margin-bottom: 18px; }
     .modal-section h3 {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      color: #333;
+      color: var(--tm-text);
       margin-bottom: 6px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
-    .modal-section p, .modal-section li {
+    .modal-section p,
+    .modal-section li {
       font-size: 13px;
-      color: #555;
+      color: var(--tm-text-muted);
       line-height: 1.65;
     }
+    .modal-section ul { padding-left: 18px; }
 
-    .modal-section ul {
-      padding-left: 18px;
-    }
-
-    .modal-link {
-      color: var(--green-mid);
+    button.modal-link {
+      color: var(--tm-green);
       background: none;
       border: none;
       font-family: inherit;
@@ -743,717 +829,759 @@
       cursor: pointer;
       text-decoration: underline;
       text-underline-offset: 2px;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
-      font-size: inherit;
-      padding: 0;
     }
 
-    /* ── COOKIE BANNER ── */
+    /* ═══════════════════════════════════════════════════════════
+       COOKIE BANNER
+       =══════════════════════════════════════════════════════════ */
     .cookie-banner {
       display: none;
       position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: #1a1a1a;
-      color: #fff;
-      padding: 20px 40px;
+      bottom: 16px; left: 16px; right: 16px;
+      max-width: 720px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid var(--tm-border);
+      border-radius: 16px;
+      padding: 20px 24px;
       z-index: 999;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
       flex-wrap: wrap;
-      border-top: 3px solid var(--green-dark);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
     }
-
     .cookie-banner.show { display: flex; }
 
     .cookie-text {
       font-size: 13px;
-      color: rgba(255,255,255,0.8);
+      color: var(--tm-text-muted);
       line-height: 1.55;
       flex: 1;
       min-width: 250px;
     }
-
-    .cookie-text a { color: #7dcf7d; text-decoration: underline; cursor: pointer; }
+    .cookie-text button.modal-link { color: var(--tm-green); }
 
     .cookie-btns {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .cookie-accept {
-      background: var(--green-dark);
+      background: var(--tm-green);
       color: #fff;
       border: none;
       padding: 10px 22px;
-      border-radius: 8px;
+      border-radius: 999px;
       font-size: 14px;
       font-weight: 600;
-      font-family: var(--font-body);
+      font-family: var(--font);
       cursor: pointer;
-      transition: background 0.2s;
     }
-
-    .cookie-accept:hover { background: #143d23; }
+    .cookie-accept:hover { background: var(--tm-green-hover); }
 
     .cookie-decline {
       background: transparent;
-      color: rgba(255,255,255,0.6);
-      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--tm-text-muted);
+      border: 1px solid var(--tm-border);
       padding: 10px 22px;
-      border-radius: 8px;
+      border-radius: 999px;
       font-size: 14px;
-      font-family: var(--font-body);
+      font-family: var(--font);
       cursor: pointer;
-      transition: border-color 0.2s;
     }
+    .cookie-decline:hover { border-color: #888; }
 
-    .cookie-decline:hover { border-color: rgba(255,255,255,0.6); }
-
-    @media (max-width: 768px) {
-      .modal-box { padding: 28px 20px; }
-      .cookie-banner { padding: 16px 20px; }
-    }
-
-    .fade-in { animation: fadeUp 0.4s ease both; }
-
+    /* ═══════════════════════════════════════════════════════════
+       ANIMATIONS
+       =══════════════════════════════════════════════════════════ */
+    .fade-in { animation: fadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .eyebrow-mobile { display: none; }
+    /* ═══════════════════════════════════════════════════════════
+       MOBILE RESPONSIVE — per brand: title 38px on mobile
+       =══════════════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .tm-header-inner { padding: 12px 20px; gap: 12px; flex-wrap: wrap; }
+      .tm-logo-img { height: 36px; }
+      .tm-usps {
+        order: 3;
+        width: 100%;
+        gap: 4px;
+        margin-top: 4px;
+        justify-content: space-between;
+      }
+      .tm-usp {
+        font-size: 10px;
+        padding: 2px 6px 2px 2px;
+        gap: 4px;
+        flex: 0 1 auto;
+      }
+      .tm-usp-icon-img { width: 24px; height: 24px; }
 
-    @media (max-width: 768px) {
-      nav { padding: 14px 20px; }
-      .hero { grid-template-columns: 1fr; }
-      .hero-left { padding: 40px 24px; }
-      h1 { font-size: 32px; }
-      .hero-right { padding: 40px 24px; }
-      .prize-amount { font-size: 48px; }
-
-      .eyebrow-desktop { display: none; }
-      .eyebrow-mobile { display: inline-flex; margin-bottom: 0; margin-top: 20px; }
-
-      .trust-row { justify-content: center; gap: 16px; }
-
-      .proof-bar { padding: 20px 24px; gap: 12px; justify-content: center; text-align: center; }
-      .stat-divider { display: none; }
-      .award { width: fit-content; justify-content: center; }
-
-      .btn-primary { width: 100%; justify-content: center; }
-
-      .quiz-question { font-size: 26px; }
-      .choice-grid { grid-template-columns: 1fr; }
-      .choice-btn.full { grid-column: 1; }
-      .form-outer { padding: 32px 24px; }
-      .confirm-box { padding: 36px 24px; }
       .progress-wrap { padding: 10px 20px; }
-      .legal-text { padding: 0 24px 28px; }
-      .site-footer { padding: 18px 24px; }
+      .landing-inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 32px 20px;
+      }
+      .hero-image-wrap { order: -1; min-height: 280px; }
+      .hero-image { max-width: 320px; }
+      .value-bomb {
+        width: 104px; height: 104px;
+        top: 0; right: 0;
+      }
+      .value-bomb-amount { font-size: 20px; }
+      .value-bomb-label { font-size: 11px; }
 
-      /* Hide nav on scroll down, show on scroll up */
-      nav.nav-hidden { transform: translateY(-100%); }
+      h1.hero-title { font-size: 38px; letter-spacing: -0.5px; }
+      .hero-body { font-size: 16px; }
+
+      .award-badge-img { max-width: 320px; }
+
+      .quiz-question { font-size: 28px; }
+      .choice-grid { grid-template-columns: 1fr; }
+
+      .form-title { font-size: 26px; }
+      .form-sub { font-size: 14px; }
+      .form-fields { padding: 20px; }
+
+      .confirm-title { font-size: 30px; }
+      .confirm-sub { font-size: 16px; }
+
+      .legal-text { padding: 0 20px 32px; }
+      .site-footer { padding: 20px 20px; }
+      .modal-box { padding: 28px 22px; }
+      .cookie-banner { left: 12px; right: 12px; padding: 16px 18px; }
+
+      /* Mobile: hide nav on scroll down */
+      .tm-header.nav-hidden { transform: translateY(-100%); }
+    }
+
+    @media (max-width: 600px) {
+      .tm-usp { font-size: 0; gap: 0; padding: 0; }
+      .tm-usp-icon-img { width: 36px; height: 36px; }
+    }
+
+    @media (max-width: 480px) {
+      h1.hero-title { font-size: 32px; }
+      .quiz-question { font-size: 24px; }
+      .confirm-title { font-size: 26px; }
+      .form-title { font-size: 22px; }
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo">
-      <img src="Talkmore-Logo-RGB.png" alt="Talkmore" class="logo-img"/>
-    </div>
+<!-- ════════════════════════════════════════════════════════════
+     HEADER — Talkmore logo + 4 USPs
+     ════════════════════════════════════════════════════════════ -->
+<header class="tm-header" id="tm-header">
+  <div class="tm-header-inner">
+    <!-- Talkmore official logo -->
+    <a href="/" class="tm-logo" aria-label="Talkmore">
+      <img src="assets/talkmore-logo.png" alt="Talkmore" class="tm-logo-img"/>
+    </a>
 
-  </nav>
-
-  <div class="progress-wrap" id="progress-wrap">
-    <div class="progress-label" id="progress-label">Spørsmål 1 av 3</div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-fill" style="width: 33%"></div>
+    <!-- USP ROW — official brand icons -->
+    <div class="tm-usps" aria-label="Talkmore fordeler">
+      <span class="tm-usp">
+        <img class="tm-usp-icon-img" src="assets/usp-coverage.png" alt=""/>
+        Full Telenor-dekning
+      </span>
+      <span class="tm-usp">
+        <img class="tm-usp-icon-img" src="assets/usp-talk.png" alt=""/>
+        Fri tale, SMS og MMS
+      </span>
+      <span class="tm-usp">
+        <img class="tm-usp-icon-img" src="assets/usp-service.png" alt=""/>
+        Prisbelønt kundeservice
+      </span>
+      <span class="tm-usp">
+        <img class="tm-usp-icon-img" src="assets/usp-eu.png" alt=""/>
+        Fri bruk i hele EU/EØS
+      </span>
     </div>
   </div>
+</header>
 
-  <!-- SCREEN 1: LANDING -->
-  <div id="screen-1" class="screen active">
-    <div class="hero">
-      <div class="hero-left fade-in">
+<!-- Progress bar (hidden on landing) -->
+<div class="progress-wrap" id="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-label" id="progress-label">Spørsmål 1 av 3</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 33%"></div></div>
+  </div>
+</div>
 
-        <h1>
-          Norges mest<br>fornøyde kunder<br>
-          <span class="prize">vinner 10 000,– kr</span>
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 1 — LANDING (Template B)
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-1" class="screen active">
+  <section class="landing">
+    <div class="landing-inner">
+
+      <!-- LEFT: Shopping cart product photo with value-bomb overlay -->
+      <div class="hero-image-wrap fade-in">
+        <img class="hero-image" src="assets/shopping-cart.png" alt="Handlevogn med dagligvarer"/>
+
+        <!-- Value bomb (graphic circle) per brand: lime, black text, format 10 000,– -->
+        <div class="value-bomb" aria-hidden="true">
+          <span class="value-bomb-amount">10 000,–</span>
+          <span class="value-bomb-label">Verdi</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: Copy column -->
+      <div class="hero-copy fade-in">
+        <span class="hero-eyebrow">Norges mest fornøyde mobilkunder</span>
+        <h1 class="hero-title">
+          Har du riktig mobilabonnement?
         </h1>
-        <p class="hero-sub">
-          Svar på noen raske spørsmål om ditt mobilabonnement — og bli med i trekningen om et gavekort på 10 000,– kr til dagligvarebutikk.
+        <p class="hero-body">
+          Svar på noen raske spørsmål om mobilabonnementet ditt — og vær med i trekningen om et gavekort på 10 000,– på dagligvarebutikk.
         </p>
+
+        <ul class="hero-steps">
+          <li><span class="step-num">1</span><span>Svar på noen enkle spørsmål om mobilabonnementet ditt</span></li>
+          <li><span class="step-num">2</span><span>Legg igjen kontaktinformasjonen din</span></li>
+          <li><span class="step-num">3</span><span>Vær med i trekningen og motta et godt tilbud</span></li>
+        </ul>
+
         <button class="btn-primary" onclick="goTo(2)">
-          Delta nå — gratis
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          Start konkurransen
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 5l7 7-7 7"/>
           </svg>
         </button>
 
-        <div class="trust-row">
-          <div class="trust-item"><div class="trust-icon">🔒</div><span>Ingen spam</span></div>
-          <div class="trust-item"><div class="trust-icon">⚡</div><span>Tar 60 sekunder</span></div>
-          <div class="trust-item"><div class="trust-icon">🎁</div><span>Gratis å delta</span></div>
+        <!-- Award badge (combined Talkmore + Bytt.no Kundefavoritt — undated)
+             Per brand: only on white background, never on photos -->
+        <div class="award-row">
+          <img class="award-badge-img" src="assets/award-badge.png" alt="Talkmore feirer at vi har de mest fornøyde mobilkundene · Kundefavoritt på Bytt.no"/>
         </div>
       </div>
 
-      <div class="hero-right">
-        <div class="prize-card fade-in">
-          <div class="prize-label">Premie</div>
-          <div class="prize-amount">10 000,–</div>
-          <div class="prize-sub">kr gavekort til dagligvarebutikk</div>
-          <hr class="prize-divider">
-          <div class="steps">
-            <div class="step"><div class="step-num">1</div><span>Svar på noen enkle spørsmål om mobilabonnement</span></div>
-            <div class="step"><div class="step-num">2</div><span>Legg igjen kontaktinfo</span></div>
-            <div class="step"><div class="step-num">3</div><span>Bli med i trekningen og motta et godt tilbud</span></div>
+    </div>
+  </section>
+
+  <!-- Legal text -->
+  <div class="legal-text">
+    Premien er et gavekort til en verdi av 10 000,–. Konkurransen fra Talkmore går fra 10. april 2026 til og med 10. april 2027. Trekningen av vinneren og utdelingen av premien håndteres av Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern her</button>. <button class="modal-link" onclick="openModal('rules-modal')">Se fullstendige konkurranseregler</button>.
+  </div>
+
+  <footer class="site-footer">
+    Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 2 — JA / NEI
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-2" class="screen">
+  <div class="quiz-screen">
+    <div class="quiz-inner fade-in">
+      <h2 class="quiz-question">Betaler du mobilabonnement for deg selv eller andre i familien?</h2>
+      <div class="yn-grid">
+        <button class="yn-btn" onclick="answer('betaler','Ja'); goTo(3)">
+          <div class="yn-icon yes">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           </div>
-          <button class="prize-cta" onclick="goTo(2)">Start konkurransen →</button>
-          <p class="prize-disclaimer">Trekning håndteres av Meisel A/S. Ingen kjøpsplikt.</p>
-        </div>
+          <span class="yn-label">Ja</span>
+        </button>
+        <button class="yn-btn" onclick="answer('betaler','Nei'); goTo(3)">
+          <div class="yn-icon no">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </div>
+          <span class="yn-label">Nei</span>
+        </button>
       </div>
-    </div>
-
-    <div style="border-top: 1px solid #dde8d0;"></div>
-
-    <!-- Legal text above proof bar -->
-    <div class="legal-text">
-      Premien er et gavekort til en verdi av 10.000,–. Konkurransen fra Talkmore går fra 10. april 2026 til og med 10. april 2027. Trekningen av vinneren og utdelingen av premien håndteres av Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern her</button>. <button class="modal-link" onclick="openModal('rules-modal')">Se fullstendige konkurranseregler</button>.
-    </div>
-
-    <div class="proof-bar">
-      <div class="stat">
-        <span class="stat-num">+500k</span>
-        <span class="stat-label">fornøyde kunder</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-num">#1</span>
-        <span class="stat-label">mest fornøyde mobilkunder</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-num">4.7★</span>
-        <span class="stat-label">kundetilfredshet</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="award">
-        <div class="award-icon">🏆</div>
-        <div>
-          <span class="award-title">Kundefavoritt Jan. 2026</span>
-          <span class="award-sub">bytt.no kåring</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-      Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')" style="color:var(--green-mid);">Les personvernerklæringen her</button>.
-    </footer>
-  </div>
-
-  <!-- SCREEN 2: JA / NEI -->
-  <div id="screen-2" class="screen">
-    <div class="quiz-screen">
-      <div class="quiz-inner fade-in">
-        <div class="quiz-question">Betaler du mobilabonnement for deg selv eller andre i familien?</div>
-        <div class="yn-grid">
-          <button class="yn-btn" onclick="answer('betaler','Ja'); goTo(3)">
-            <div class="yn-icon yes">✓</div>
-            <span class="yn-label">Ja</span>
-          </button>
-          <button class="yn-btn" onclick="answer('betaler','Nei'); goTo(3)">
-            <div class="yn-icon no">✕</div>
-            <span class="yn-label">Nei</span>
-          </button>
-        </div>
-        <div class="quiz-footer">
-          Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')" style="color:#aaa;">Les personvernerklæringen her</button>.
-        </div>
+      <div class="quiz-footer">
+        Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
       </div>
     </div>
   </div>
+</div>
 
-  <!-- SCREEN 3: ALDER -->
-  <div id="screen-3" class="screen">
-    <div class="quiz-screen">
-      <div class="quiz-inner fade-in">
-        <div class="quiz-question">Hvor gammel er du?</div>
-        <div class="choice-grid">
-          <button class="choice-btn" onclick="answer('alder','45+'); goTo(4)">45+</button>
-          <button class="choice-btn" onclick="answer('alder','31-45'); goTo(4)">31 – 45</button>
-          <button class="choice-btn" onclick="answer('alder','25-30'); goTo(4)">25 – 30</button>
-          <button class="choice-btn" onclick="answer('alder','18-24'); goTo(4)">18 – 24</button>
-          <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(7)">Under 18</button>
-        </div>
-        <div class="quiz-footer">
-          Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')" style="color:#aaa;">Les personvernerklæringen her</button>.
-        </div>
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 3 — ALDER
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-3" class="screen">
+  <div class="quiz-screen">
+    <div class="quiz-inner fade-in">
+      <h2 class="quiz-question">Hvor gammel er du?</h2>
+      <div class="choice-grid">
+        <button class="choice-btn" onclick="answer('alder','45+'); goTo(4)">45+</button>
+        <button class="choice-btn" onclick="answer('alder','31-45'); goTo(4)">31 – 45</button>
+        <button class="choice-btn" onclick="answer('alder','25-30'); goTo(4)">25 – 30</button>
+        <button class="choice-btn" onclick="answer('alder','18-24'); goTo(4)">18 – 24</button>
+        <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(7)">Under 18</button>
+      </div>
+      <div class="quiz-footer">
+        Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
       </div>
     </div>
   </div>
+</div>
 
-  <!-- SCREEN 4: OPERATØR -->
-  <div id="screen-4" class="screen">
-    <div class="quiz-screen">
-      <div class="quiz-inner fade-in">
-        <div class="quiz-question">Hva er din nåværende mobiloperatør?</div>
-        <div class="choice-grid">
-          <button class="choice-btn" onclick="answer('operator','Bedriftsabonnement'); goTo(5)">Jeg har bedriftsabonnement</button>
-          <button class="choice-btn" onclick="answer('operator','Fjordkraft'); goTo(5)">Fjordkraft</button>
-          <button class="choice-btn" onclick="answer('operator','ICE'); goTo(5)">ICE</button>
-          <button class="choice-btn" onclick="answer('operator','MyCall'); goTo(5)">MyCall</button>
-          <button class="choice-btn" onclick="answer('operator','OneCall'); goTo(5)">OneCall</button>
-          <button class="choice-btn" onclick="answer('operator','Telia'); goTo(5)">Telia</button>
-          <button class="choice-btn" onclick="answer('operator','Telenor'); goTo(5)">Telenor</button>
-          <button class="choice-btn" onclick="answer('operator','Talkmore'); goTo(5)">Talkmore</button>
-          <button class="choice-btn full" onclick="answer('operator','Annet'); goTo(5)">Annet</button>
-        </div>
-        <div class="quiz-footer">
-          Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')" style="color:#aaa;">Les personvernerklæringen her</button>.
-        </div>
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 4 — OPERATØR
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-4" class="screen">
+  <div class="quiz-screen">
+    <div class="quiz-inner fade-in">
+      <h2 class="quiz-question">Hva er din nåværende mobiloperatør?</h2>
+      <div class="choice-grid">
+        <button class="choice-btn" onclick="answer('operator','Bedriftsabonnement'); goTo(5)">Jeg har bedriftsabonnement</button>
+        <button class="choice-btn" onclick="answer('operator','Fjordkraft'); goTo(5)">Fjordkraft</button>
+        <button class="choice-btn" onclick="answer('operator','ICE'); goTo(5)">ICE</button>
+        <button class="choice-btn" onclick="answer('operator','MyCall'); goTo(5)">MyCall</button>
+        <button class="choice-btn" onclick="answer('operator','OneCall'); goTo(5)">OneCall</button>
+        <button class="choice-btn" onclick="answer('operator','Telia'); goTo(5)">Telia</button>
+        <button class="choice-btn" onclick="answer('operator','Telenor'); goTo(5)">Telenor</button>
+        <button class="choice-btn" onclick="answer('operator','Talkmore'); goTo(5)">Talkmore</button>
+        <button class="choice-btn full" onclick="answer('operator','Annet'); goTo(5)">Annet</button>
+      </div>
+      <div class="quiz-footer">
+        Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
       </div>
     </div>
   </div>
+</div>
 
-  <!-- SCREEN 5: KONTAKTSKJEMA -->
-  <div id="screen-5" class="screen">
-    <div class="form-screen">
-      <div class="form-outer fade-in">
-        <div class="form-title">Nesten i mål! Fyll ut skjemaet og delta i konkurransen.</div>
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 5 — KONTAKTSKJEMA
+     Per brand: white bg, container w/ 1px outline, 16px corners.
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-5" class="screen">
+  <div class="form-screen">
+    <div class="form-card fade-in">
+      <h2 class="form-title">Nesten i mål</h2>
+      <p class="form-sub">Fyll ut kontaktinformasjonen din og bli med i trekningen.</p>
 
-        <div class="field-wrap">
-          <span class="field-icon">👤</span>
-          <input type="text" id="navn" placeholder="Ditt for- og etternavn" autocomplete="name"/>
-        </div>
+      <div class="form-fields">
+        <label class="field-label" for="navn">Fullt navn</label>
+        <input class="field" type="text" id="navn" placeholder="For- og etternavn" autocomplete="name"/>
         <div class="error-msg" id="err-navn">Vennligst fyll inn navn</div>
 
-        <div class="field-wrap">
-          <span class="field-icon">✉️</span>
-          <input type="email" id="epost" placeholder="Din e-postadresse" autocomplete="email"/>
-        </div>
+        <label class="field-label" for="epost">E-postadresse</label>
+        <input class="field" type="email" id="epost" placeholder="navn@eksempel.no" autocomplete="email"/>
         <div class="error-msg" id="err-epost">Vennligst fyll inn gyldig e-post</div>
 
-        <div class="field-wrap">
-          <div class="phone-prefix">🇳🇴 +47</div>
-          <input type="tel" id="telefon" placeholder="Ditt telefonnummer" autocomplete="tel"/>
+        <label class="field-label" for="telefon">Mobilnummer</label>
+        <div class="phone-wrap" id="phone-wrap">
+          <span class="phone-prefix">🇳🇴 +47</span>
+          <input type="tel" id="telefon" placeholder="000 00 000" autocomplete="tel"/>
         </div>
         <div class="error-msg" id="err-telefon">Vennligst fyll inn gyldig mobilnummer</div>
 
-        <div class="consent-wrap">
-          <input type="checkbox" id="consent-age"/>
-          <label for="consent-age" class="consent-text">
-            Jeg bekrefter at jeg er over <strong>18 år</strong> og ønsker å delta i trekningen om 10 000,– kr gavekort til REMA 1000. <span style="color:rgba(255,255,255,0.5);font-size:12px;">(Påkrevd)</span>
-          </label>
+        <div class="consent-block">
+          <div class="consent-row">
+            <input type="checkbox" id="consent-age"/>
+            <label for="consent-age" class="consent-text">
+              Jeg er over <strong>18 år</strong> og ønsker å delta i trekningen om gavekortet på 10 000,– <span class="consent-required">(påkrevd)</span>
+            </label>
+          </div>
+          <div class="consent-row">
+            <input type="checkbox" id="consent-tm"/>
+            <label for="consent-tm" class="consent-text">
+              Jeg ønsker å bli kontaktet per telefon av Meisel AS med tilbud på mobilabonnement fra Talkmore <span class="consent-required">(valgfritt)</span>
+            </label>
+          </div>
         </div>
-        <div class="consent-wrap" style="margin-top: -8px;">
-          <input type="checkbox" id="consent-tm"/>
-          <label for="consent-tm" class="consent-text">
-            Jeg ønsker å bli kontaktet per telefon av Meisel AS med tilbud på mobilabonnement fra Talkmore. <span style="color:rgba(255,255,255,0.5);font-size:12px;">(Valgfritt)</span>
-          </label>
-        </div>
-
-        <button class="btn-submit" id="submit-btn" onclick="submitForm()">Send inn</button>
-
-        <p class="form-footer">
-          Premien er et gavekort til en verdi av 10 000,–. Trekning håndteres av Meisel A/S.<br>
-          <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern her</button>. <button class="modal-link" onclick="openModal('rules-modal')">Se fullstendige konkurranseregler</button>.
-        </p>
       </div>
+
+      <button class="btn-submit" id="submit-btn" onclick="submitForm()">Send inn</button>
+
+      <p class="form-footer">
+        Premien er et gavekort til en verdi av 10 000,–. Trekning håndteres av Meisel A/S.<br>
+        <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern</button> &nbsp;·&nbsp; <button class="modal-link" onclick="openModal('rules-modal')">Konkurranseregler</button>
+      </p>
     </div>
   </div>
+</div>
 
-  <!-- SCREEN 6: BEKREFTELSE -->
-  <div id="screen-6" class="screen">
-    <div class="confirm-screen">
-      <div class="confirm-box fade-in">
-        <div class="confirm-icon">🎉</div>
-        <div class="confirm-title">Du er med i trekningen!</div>
-        <p class="confirm-sub" id="confirm-sub-text">
-          Takk for at du deltok. Hvis du vinner, hører du fra oss etter trekning.
-        </p>
-        <div class="confirm-prize">
-          <div class="confirm-prize-label">Du er med og kjemper om</div>
-          <div class="confirm-prize-amount">10 000,– kr</div>
-          <div class="confirm-prize-sub">Gavekort til dagligvarebutikk</div>
-        </div>
-        <p class="confirm-disclaimer">
-          Konkurransen fra Talkmore går til og med kampanjeslutt. Trekning og premieutdeling håndteres av Meisel A/S.
-          Les om <a href="https://talkmore.no/vilkar/personvern" target="_blank">personvern fra Talkmore her</a>.
-        </p>
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 6 — BEKREFTELSE (Confirmation Page B style)
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-6" class="screen">
+  <div class="confirm-screen">
+    <div class="confirm-card fade-in">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
+      <h2 class="confirm-title">Du er med i trekningen!</h2>
+      <p class="confirm-sub" id="confirm-sub-text">
+        Takk for at du deltok. Vi kontakter deg hvis du vinner.
+      </p>
+      <div class="confirm-prize-block">
+        <div class="confirm-prize-icon">
+          <svg viewBox="0 0 24 24" fill="#004400"><path d="M20 6h-2.18A3 3 0 0 0 12 3a3 3 0 0 0-5.82 3H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-7 12h-2v-7h-2V9h2V8a3 3 0 0 1 3-3v2a1 1 0 0 0-1 1v1h2v2h-2z"/></svg>
+        </div>
+        <div>
+          <div class="confirm-prize-label">Premie</div>
+          <div class="confirm-prize-amount">10 000 kr i gavekort</div>
+          <div class="confirm-prize-sub">til dagligvarebutikk</div>
+        </div>
+      </div>
+      <p class="confirm-disclaimer">
+        Konkurransen fra Talkmore går til og med kampanjeslutt. Trekning og premieutdeling håndteres av Meisel A/S.
+        <a href="https://talkmore.no/vilkar/personvern" target="_blank">Les om personvern fra Talkmore</a>.
+      </p>
     </div>
   </div>
+</div>
 
-  <!-- SCREEN 7: DISQUALIFIED (Under 18) -->
-  <div id="screen-7" class="screen">
-    <div class="confirm-screen">
-      <div class="confirm-box fade-in">
-        <div class="confirm-icon">😔</div>
-        <div class="confirm-title">Takk for at du svarte!</div>
-        <p class="confirm-sub">
-          Dessverre kan vi ikke inkludere deg i denne konkurransen. Konkurransen er kun åpen for personer over 18 år, og vi er derfor nødt til å ekskludere deg fra trekningen.
-        </p>
-        <div class="confirm-prize" style="text-align: center;">
-          <div class="confirm-prize-label">Vi håper du prøver igjen</div>
-          <div class="confirm-prize-amount" style="font-size: 20px; color: #888;">når du fyller 18 🎉</div>
-        </div>
-        <p class="confirm-disclaimer">
-          Har du spørsmål? Ta kontakt med Talkmore på <a href="https://talkmore.no" target="_blank">talkmore.no</a>.
-        </p>
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 7 — DISQUALIFIED (under 18)
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-7" class="screen">
+  <div class="confirm-screen disqualified">
+    <div class="confirm-card fade-in">
+      <div class="confirm-icon sad">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2M9 9h.01M15 9h.01"/></svg>
       </div>
+      <h2 class="confirm-title">Takk for at du svarte</h2>
+      <p class="confirm-sub">
+        Konkurransen er kun åpen for personer over 18 år, så vi kan dessverre ikke inkludere deg i trekningen denne gangen.
+      </p>
+      <p class="confirm-disclaimer">
+        Har du spørsmål? Ta kontakt med Talkmore på <a href="https://talkmore.no" target="_blank">talkmore.no</a>.
+      </p>
     </div>
   </div>
+</div>
 
-  <script>
-    const answers = {};
+<!-- ════════════════════════════════════════════════════════════
+     COOKIE BANNER
+     ════════════════════════════════════════════════════════════ -->
+<div class="cookie-banner" id="cookie-banner">
+  <div class="cookie-text">
+    Vi bruker informasjonskapsler (cookies) for analyse og funksjonalitet. Ved å klikke «Godta» samtykker du til dette. Du kan lese mer i vår <button class="modal-link" onclick="openModal('privacy-modal')">personvernerklæring</button>.
+  </div>
+  <div class="cookie-btns">
+    <button class="cookie-decline" onclick="declineCookies()">Avvis</button>
+    <button class="cookie-accept" onclick="acceptCookies()">Godta alle</button>
+  </div>
+</div>
 
-    const progressConfig = {
-      2: { label: 'Spørsmål 1 av 3', pct: 33 },
-      3: { label: 'Spørsmål 2 av 3', pct: 66 },
-      4: { label: 'Spørsmål 3 av 3', pct: 100 },
-      5: { label: 'Nesten ferdig!',   pct: 100 },
-      7: null,
-    };
+<!-- ════════════════════════════════════════════════════════════
+     MODALS
+     ════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="rules-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('rules-modal')" aria-label="Lukk">✕</button>
+    <div class="modal-title">Fullstendige konkurranseregler</div>
 
-    function showScreen(n) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById('screen-' + n).classList.add('active');
-      window.scrollTo(0, 0);
-      if (n === 6) updateConfirmScreen();
+    <div class="modal-section">
+      <h3>Arrangør</h3>
+      <p>Konkurransen arrangeres av Meisel AS, org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. E-post: vian@meisel.no. Konkurransen gjennomføres på vegne av Talkmore AS, org.nr. 876 839 342.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Konkurranseperiode</h3>
+      <p>Konkurransen løper fra 10. april 2026 til og med 10. april 2027. Bidrag mottatt etter dette tidspunktet er ikke gyldige.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Hvem kan delta</h3>
+      <p>Konkurransen er åpen for alle som er bosatt i Norge og har fylt 18 år. Ansatte hos Meisel AS og Talkmore AS, samt deres nærstående familiemedlemmer, kan ikke delta.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Slik deltar du</h3>
+      <p>For å delta må du: (1) besvare spørsmålene i skjemaet, (2) oppgi navn, e-postadresse og telefonnummer, og (3) bekrefte at du er over 18 år. Deltakelse er gratis og ingen kjøpsplikt foreligger.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Premie</h3>
+      <p>Én (1) vinner trekkes. Premien er et gavekort til REMA 1000 til en verdi av 10 000,–. Gavekortet kan ikke byttes inn i kontanter. Premien er ikke overførbar.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Trekning og varsling</h3>
+      <p>Vinneren trekkes tilfeldig blant alle gyldige deltakere etter konkurranseperiodens slutt, innen 30 dager etter 10. april 2027. Vinneren varsles per telefon og/eller e-post. Dersom vinneren ikke svarer innen 14 dager, forbeholder arrangøren seg retten til å trekke en ny vinner.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Personopplysninger</h3>
+      <p>Opplysningene du oppgir brukes til gjennomføring av konkurransen og, dersom du har samtykket til det, til markedsføring fra Talkmore. Les mer i vår <button class="modal-link" onclick="closeModal('rules-modal'); openModal('privacy-modal')">personvernerklæring</button>.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Øvrige vilkår</h3>
+      <p>Arrangøren forbeholder seg retten til å diskvalifisere deltakere som forsøker å manipulere konkurransen. Arrangøren er ikke ansvarlig for tekniske feil som hindrer deltakelse. Konkurransen er underlagt norsk rett, jf. markedsføringsloven.</p>
+    </div>
+  </div>
+</div>
 
-      const wrap = document.getElementById('progress-wrap');
-      if (progressConfig[n] && progressConfig[n] !== null) {
-        wrap.classList.add('visible');
-        document.getElementById('progress-label').textContent = progressConfig[n].label;
-        document.getElementById('progress-fill').style.width = progressConfig[n].pct + '%';
-      } else {
-        wrap.classList.remove('visible');
-      }
+<div class="modal-overlay" id="privacy-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('privacy-modal')" aria-label="Lukk">✕</button>
+    <div class="modal-title">Personvernerklæring</div>
 
-      document.querySelectorAll('#screen-' + n + ' .fade-in').forEach(el => {
-        el.style.animation = 'none';
-        el.offsetHeight;
-        el.style.animation = '';
-      });
+    <div class="modal-section">
+      <h3>1. Behandlingsansvarlig</h3>
+      <p>Denne nettsiden og konkurransen drives av Meisel AS («Meisel»), org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. Kontakt: vian@meisel.no. Konkurransen gjennomføres på vegne av Talkmore AS, org.nr. 876 839 342, som er selvstendig behandlingsansvarlig for videre behandling av dine data dersom du har samtykket til kontakt fra Talkmore.</p>
+    </div>
+    <div class="modal-section">
+      <h3>2. Formål og rettslig grunnlag</h3>
+      <p>Vi behandler dine personopplysninger for å: (1) gjennomføre konkurransen og kontakte vinneren – rettslig grunnlag: oppfyllelse av avtale (GDPR art. 6 (1) b), og (2) markedsføre Talkmores mobilabonnement per telefon dersom du har samtykket til dette – rettslig grunnlag: samtykke (GDPR art. 6 (1) a).</p>
+    </div>
+    <div class="modal-section">
+      <h3>3. Hvilke opplysninger samler vi inn</h3>
+      <p>Vi samler inn: navn, e-postadresse, telefonnummer, samt svar på spørsmål om mobilabonnement, alder og nåværende operatør. Kilden er alltid deg selv.</p>
+    </div>
+    <div class="modal-section">
+      <h3>4. Mottakere</h3>
+      <p>Dine opplysninger deles med Talkmore AS dersom du har samtykket til markedsføring fra Talkmore. Talkmore er da selvstendig behandlingsansvarlig. Vi benytter Airtable (USA) som databehandler for lagring, med standard databehandleravtale og EU SCCs.</p>
+    </div>
+    <div class="modal-section">
+      <h3>5. Informasjonskapsler (cookies)</h3>
+      <p>Vi bruker informasjonskapsler for analyse- og funksjonalitetsformål. Nødvendige cookies brukes alltid. Du kan når som helst endre ditt samtykke ved å slette cookies i nettleseren din.</p>
+    </div>
+    <div class="modal-section">
+      <h3>6. Lagringstid</h3>
+      <p>Kontaktopplysninger lagres så lenge konkurransen pågår, og slettes senest 3 måneder etter trekning. Dersom du har samtykket til markedsføring fra Talkmore, gjelder Talkmores egne lagringsregler. Du kan lese mer på <a href="https://talkmore.no/vilkar/personvern" target="_blank">talkmore.no/vilkar/personvern</a>.</p>
+    </div>
+    <div class="modal-section">
+      <h3>7. Dine rettigheter</h3>
+      <ul>
+        <li>Rett til innsyn i dine personopplysninger</li>
+        <li>Rett til retting eller sletting</li>
+        <li>Rett til å trekke tilbake samtykke når som helst</li>
+        <li>Rett til dataportabilitet</li>
+        <li>Rett til å klage til Datatilsynet: <a href="https://www.datatilsynet.no" target="_blank">datatilsynet.no</a></li>
+      </ul>
+      <p style="margin-top:8px;">Kontakt oss på vian@meisel.no for å benytte dine rettigheter.</p>
+    </div>
+    <div class="modal-section">
+      <h3>8. Sikkerhet</h3>
+      <p>Vi benytter leverandører som overholder god IT-sikkerhetspraksis. Data lagres innenfor EØS eller i land med tilstrekkelig databeskyttelsesnivå.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS — keep all working logic intact (Airtable, modals,
+     navigation, scroll-hide nav). Just updated for the new DOM.
+     ════════════════════════════════════════════════════════════ -->
+<script>
+  const answers = {};
+
+  const progressConfig = {
+    2: { label: 'Spørsmål 1 av 3', pct: 33 },
+    3: { label: 'Spørsmål 2 av 3', pct: 66 },
+    4: { label: 'Spørsmål 3 av 3', pct: 100 },
+    5: { label: 'Nesten ferdig',   pct: 100 },
+    7: null,
+  };
+
+  function showScreen(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + n).classList.add('active');
+    window.scrollTo(0, 0);
+    if (n === 6) updateConfirmScreen();
+
+    const wrap = document.getElementById('progress-wrap');
+    if (progressConfig[n] && progressConfig[n] !== null) {
+      wrap.classList.add('visible');
+      document.getElementById('progress-label').textContent = progressConfig[n].label;
+      document.getElementById('progress-fill').style.width = progressConfig[n].pct + '%';
+    } else {
+      wrap.classList.remove('visible');
     }
 
-    function goTo(n) {
-      // Push state so browser back/forward works
-      history.pushState({ screen: n }, '', '#steg-' + n);
-      showScreen(n);
-    }
-
-    // Handle browser back/forward buttons
-    window.addEventListener('popstate', function(e) {
-      const screen = (e.state && e.state.screen) ? e.state.screen : 1;
-      showScreen(screen);
+    document.querySelectorAll('#screen-' + n + ' .fade-in').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetHeight;
+      el.style.animation = '';
     });
+  }
 
-    // Handle direct URL load with hash
-    (function() {
-      const hash = window.location.hash;
-      const match = hash.match(/steg-(\d+)/);
-      if (match) {
-        showScreen(parseInt(match[1]));
-      } else {
-        // Set initial state so back button works from screen 1
-        history.replaceState({ screen: 1 }, '', window.location.href);
-      }
-    })();
+  function goTo(n) {
+    history.pushState({ screen: n }, '', '#steg-' + n);
+    showScreen(n);
+  }
 
-    function answer(key, val) { answers[key] = val; }
+  window.addEventListener('popstate', function(e) {
+    const screen = (e.state && e.state.screen) ? e.state.screen : 1;
+    showScreen(screen);
+  });
 
-    // Update confirmation screen based on TM consent
-    function updateConfirmScreen() {
-      const sub = document.getElementById('confirm-sub-text');
-      if (sub) {
-        sub.textContent = answers.tmSamtykke
-          ? 'Takk for at du deltok. Vi tar kontakt med et godt tilbud på mobilabonnement — og hvis du vinner, hører du fra oss etter trekning.'
-          : 'Takk for at du deltok. Hvis du vinner, hører du fra oss etter trekning.';
-      }
+  (function() {
+    const hash = window.location.hash;
+    const match = hash.match(/steg-(\d+)/);
+    if (match) {
+      showScreen(parseInt(match[1]));
+    } else {
+      history.replaceState({ screen: 1 }, '', window.location.href);
     }
+  })();
 
-    // ── MOBILE SCROLL-HIDE NAV ──
-    (function() {
-      let lastY = 0;
-      let ticking = false;
-      const nav = document.querySelector('nav');
+  function answer(key, val) { answers[key] = val; }
 
-      window.addEventListener('scroll', function() {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(function() {
-          if (window.innerWidth <= 768) {
-            const y = window.scrollY;
-            if (y > lastY && y > 60) {
-              nav.classList.add('nav-hidden');
-            } else {
-              nav.classList.remove('nav-hidden');
-            }
-            lastY = y;
-          } else {
-            nav.classList.remove('nav-hidden');
-          }
-          ticking = false;
-        });
+  function updateConfirmScreen() {
+    const sub = document.getElementById('confirm-sub-text');
+    if (sub) {
+      sub.textContent = answers.tmSamtykke
+        ? 'Takk for at du deltok. Vi tar kontakt med et godt tilbud på mobilabonnement — og hvis du vinner, hører du fra oss etter trekning.'
+        : 'Takk for at du deltok. Vi kontakter deg hvis du vinner.';
+    }
+  }
+
+  // Phone wrap focus styling
+  (function() {
+    const phoneInput = document.getElementById('telefon');
+    const phoneWrap  = document.getElementById('phone-wrap');
+    if (phoneInput && phoneWrap) {
+      phoneInput.addEventListener('focus', () => phoneWrap.classList.add('focused'));
+      phoneInput.addEventListener('blur',  () => phoneWrap.classList.remove('focused'));
+    }
+  })();
+
+  // Mobile scroll-hide nav
+  (function() {
+    let lastY = 0;
+    let ticking = false;
+    const nav = document.getElementById('tm-header');
+    window.addEventListener('scroll', function() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function() {
+        if (window.innerWidth <= 900) {
+          const y = window.scrollY;
+          if (y > lastY && y > 80) nav.classList.add('nav-hidden');
+          else nav.classList.remove('nav-hidden');
+          lastY = y;
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+        ticking = false;
       });
-    })();
+    });
+  })();
 
-    function submitForm() {
-      const navn    = document.getElementById('navn').value.trim();
-      const epost   = document.getElementById('epost').value.trim();
-      const telefon = document.getElementById('telefon').value.trim();
-      const consentAge = document.getElementById('consent-age').checked;
-      const consentTM  = document.getElementById('consent-tm').checked;
+  function submitForm() {
+    const navn    = document.getElementById('navn').value.trim();
+    const epost   = document.getElementById('epost').value.trim();
+    const telefon = document.getElementById('telefon').value.trim();
+    const consentAge = document.getElementById('consent-age').checked;
+    const consentTM  = document.getElementById('consent-tm').checked;
 
-      let valid = true;
-      document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+    let valid = true;
+    document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('visible'));
+    document.querySelectorAll('.field, .phone-wrap').forEach(e => e.classList.remove('error'));
 
-      if (!navn) { document.getElementById('err-navn').style.display = 'block'; valid = false; }
-      if (!epost || !epost.includes('@') || !epost.includes('.')) { document.getElementById('err-epost').style.display = 'block'; valid = false; }
-      if (!telefon || telefon.replace(/\s/g,'').length < 8) { document.getElementById('err-telefon').style.display = 'block'; valid = false; }
-      if (!consentAge) { alert('Du må bekrefte at du er over 18 år for å delta i trekningen.'); valid = false; }
-      if (!valid) return;
+    if (!navn) {
+      document.getElementById('err-navn').classList.add('visible');
+      document.getElementById('navn').classList.add('error');
+      valid = false;
+    }
+    if (!epost || !epost.includes('@') || !epost.includes('.')) {
+      document.getElementById('err-epost').classList.add('visible');
+      document.getElementById('epost').classList.add('error');
+      valid = false;
+    }
+    if (!telefon || telefon.replace(/\s/g,'').length < 8) {
+      document.getElementById('err-telefon').classList.add('visible');
+      document.getElementById('phone-wrap').classList.add('error');
+      valid = false;
+    }
+    if (!consentAge) {
+      alert('Du må bekrefte at du er over 18 år for å delta i trekningen.');
+      valid = false;
+    }
+    if (!valid) return;
 
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = true;
-      btn.textContent = 'Sender...';
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sender...';
 
-      // Replace these after setting up Airtable:
-      const AIRTABLE_PAT = 'patMBUFQqNtJqBopi.6b260b43566e9c7684accbfbaf489d151381231b0d4c375c05ba400a54957236';
-      const BASE_ID      = 'appn3POxvI8JlDIb4';
-      const TABLE_NAME   = 'tblLCeLqDuW027zbN';
+    // Airtable config (replace with your real PAT/base/table)
+    const AIRTABLE_PAT = 'patMBUFQqNtJqBopi.6b260b43566e9c7684accbfbaf489d151381231b0d4c375c05ba400a54957236';
+    const BASE_ID      = 'appn3POxvI8JlDIb4';
+    const TABLE_NAME   = 'tblLCeLqDuW027zbN';
 
-      fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${AIRTABLE_PAT}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          fields: {
-            'Navn':               navn,
-            'Epost':              epost,
-            'Telefon':            '+47 ' + telefon,
-            'Betaler abonnement': answers.betaler  || '',
-            'Alder':              answers.alder    || '',
-            'Operatør':           answers.operator || '',
-            'TM Samtykke':        consentTM ? 'Ja' : 'Nei',
-            'Dato':               new Date().toLocaleDateString('no-NO', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})
-          }
-        })
+    fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_PAT}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        fields: {
+          'Navn':               navn,
+          'Epost':              epost,
+          'Telefon':            '+47 ' + telefon,
+          'Betaler abonnement': answers.betaler  || '',
+          'Alder':              answers.alder    || '',
+          'Operatør':           answers.operator || '',
+          'TM Samtykke':        consentTM ? 'Ja' : 'Nei',
+          'Dato':               new Date().toLocaleDateString('no-NO', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})
+        }
       })
-      .then(res => { if (res.ok) { answers.tmSamtykke = consentTM; goTo(6); } else { return res.json().then(e => { throw e; }); } })
-      .catch(err => { console.error('Airtable error full:', JSON.stringify(err)); answers.tmSamtykke = consentTM; goTo(6); });
-    }
+    })
+    .then(res => {
+      if (res.ok) { answers.tmSamtykke = consentTM; goTo(6); }
+      else { return res.json().then(e => { throw e; }); }
+    })
+    .catch(err => {
+      console.error('Airtable error:', JSON.stringify(err));
+      answers.tmSamtykke = consentTM; goTo(6);
+    });
+  }
 
-    // ── MODALS (hash-based) ──
-    function openModal(id) {
-      // Map modal id to hash
-      const hashMap = { 'privacy-modal': 'personvern', 'rules-modal': 'regler' };
-      const hash = hashMap[id] || id;
-      history.pushState({ modal: id }, '', '#' + hash);
-      showModalById(id);
-    }
-
-    function closeModal(id) {
+  // Modals (hash-based)
+  function openModal(id) {
+    const hashMap = { 'privacy-modal': 'personvern', 'rules-modal': 'regler' };
+    const hash = hashMap[id] || id;
+    history.pushState({ modal: id }, '', '#' + hash);
+    showModalById(id);
+  }
+  function closeModal(id) {
+    history.pushState({}, '', window.location.pathname + window.location.search);
+    hideModalById(id);
+  }
+  function showModalById(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function hideModalById(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function hideAllModals() {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+    document.body.style.overflow = '';
+  }
+  function checkHashForModal() {
+    const hash = window.location.hash;
+    if (hash === '#personvern') showModalById('privacy-modal');
+    else if (hash === '#regler') showModalById('rules-modal');
+    else hideAllModals();
+  }
+  window.addEventListener('popstate', checkHashForModal);
+  checkHashForModal();
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeModal(overlay.id);
+    });
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      hideAllModals();
       history.pushState({}, '', window.location.pathname + window.location.search);
-      hideModalById(id);
     }
+  });
 
-    function showModalById(id) {
-      document.getElementById(id).classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function hideModalById(id) {
-      document.getElementById(id).classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    function hideAllModals() {
-      document.querySelectorAll('.modal-overlay').forEach(m => {
-        m.classList.remove('open');
-      });
-      document.body.style.overflow = '';
-    }
-
-    // Handle hash on page load (e.g. someone visits #personvern directly)
-    function checkHashForModal() {
-      const hash = window.location.hash;
-      if (hash === '#personvern') showModalById('privacy-modal');
-      else if (hash === '#regler') showModalById('rules-modal');
-      else hideAllModals();
-    }
-
-    window.addEventListener('popstate', function(e) {
-      checkHashForModal();
-    });
-
-    // Check on load
-    checkHashForModal();
-
-    // Close modal on overlay click
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-      overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) closeModal(overlay.id);
-      });
-    });
-
-    // Close on Escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        hideAllModals();
-        history.pushState({}, '', window.location.pathname + window.location.search);
-      }
-    });
-
-    // ── COOKIES ──
-    function acceptCookies() {
-      document.getElementById('cookie-banner').classList.remove('show');
-    }
-
-    function declineCookies() {
-      document.getElementById('cookie-banner').classList.remove('show');
-    }
-
-    function loadMetaPixel() { /* Pixel not configured */ }
-
-    // Always show cookie banner - wait for DOM to be fully ready
-    window.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('cookie-banner').classList.add('show');
-    });
-
-  </script>
-
-  <!-- ══════════════════════════════ -->
-  <!-- COOKIE BANNER                 -->
-  <!-- ══════════════════════════════ -->
-  <div class="cookie-banner" id="cookie-banner">
-    <div class="cookie-text">
-      Vi bruker informasjonskapsler (cookies) for analyse og funksjonalitet. Ved å klikke «Godta» samtykker du til dette. Du kan lese mer i vår <button class="modal-link" onclick="openModal('privacy-modal')">personvernerklæring</button>.
-    </div>
-    <div class="cookie-btns">
-      <button class="cookie-decline" onclick="declineCookies()">Avvis</button>
-      <button class="cookie-accept" onclick="acceptCookies()">Godta alle</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════ -->
-  <!-- COMPETITION RULES MODAL       -->
-  <!-- ══════════════════════════════ -->
-  <div class="modal-overlay" id="rules-modal">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeModal('rules-modal')">✕</button>
-      <div class="modal-title">Fullstendige konkurranseregler</div>
-
-      <div class="modal-section">
-        <h3>Arrangør</h3>
-        <p>Konkurransen arrangeres av Meisel AS, org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. E-post: vian@meisel.no. Konkurransen gjennomføres på vegne av Talkmore AS, org.nr. 876 839 342.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>Konkurranseperiode</h3>
-        <p>Konkurransen løper fra 10. april 2026 til og med 10. april 2027. Bidrag mottatt etter dette tidspunktet er ikke gyldige.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>Hvem kan delta</h3>
-        <p>Konkurransen er åpen for alle som er bosatt i Norge og har fylt 18 år. Ansatte hos Meisel AS og Talkmore AS, samt deres nærstående familiemedlemmer, kan ikke delta.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>Slik deltar du</h3>
-        <p>For å delta må du: (1) besvare spørsmålene i skjemaet, (2) oppgi navn, e-postadresse og telefonnummer, og (3) bekrefte at du er over 18 år. Deltakelse er gratis og ingen kjøpsplikt foreligger.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>Premie</h3>
-        <p>Én (1) vinner trekkes. Premien er et gavekort til REMA 1000 til en verdi av kr 10 000,–. Gavekortet kan ikke byttes inn i kontanter. Premien er ikke overførbar.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>Trekning og varsling</h3>
-        <p>Vinneren trekkes tilfeldig blant alle gyldige deltakere etter konkurranseperiodens slutt, innen 30 dager etter 10. april 2027. Vinneren varsles per telefon og/eller e-post. Dersom vinneren ikke svarer innen 14 dager, forbeholder arrangøren seg retten til å trekke en ny vinner.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>Personopplysninger</h3>
-        <p>Opplysningene du oppgir brukes til gjennomføring av konkurransen og, dersom du har samtykket til det, til markedsføring fra Talkmore. Les mer i vår <button class="modal-link" onclick="closeModal('rules-modal'); openModal('privacy-modal')">personvernerklæring</button>.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>Øvrige vilkår</h3>
-        <p>Arrangøren forbeholder seg retten til å diskvalifisere deltakere som forsøker å manipulere konkurransen. Arrangøren er ikke ansvarlig for tekniske feil som hindrer deltakelse. Konkurransen er underlagt norsk rett, jf. markedsføringsloven.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════ -->
-  <!-- PRIVACY POLICY MODAL          -->
-  <!-- ══════════════════════════════ -->
-  <div class="modal-overlay" id="privacy-modal">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeModal('privacy-modal')">✕</button>
-      <div class="modal-title">Personvernerklæring</div>
-
-      <div class="modal-section">
-        <h3>1. Behandlingsansvarlig</h3>
-        <p>Denne nettsiden og konkurransen drives av Meisel AS («Meisel»), org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. Kontakt: vian@meisel.no. Konkurransen gjennomføres på vegne av Talkmore AS, org.nr. 876 839 342, som er selvstendig behandlingsansvarlig for videre behandling av dine data dersom du har samtykket til kontakt fra Talkmore.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>2. Formål og rettslig grunnlag</h3>
-        <p>Vi behandler dine personopplysninger for å: (1) gjennomføre konkurransen og kontakte vinneren – rettslig grunnlag: oppfyllelse av avtale (GDPR art. 6 (1) b), og (2) markedsføre Talkmores mobilabonnement per telefon dersom du har samtykket til dette – rettslig grunnlag: samtykke (GDPR art. 6 (1) a).</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>3. Hvilke opplysninger samler vi inn</h3>
-        <p>Vi samler inn: navn, e-postadresse, telefonnummer, samt svar på spørsmål om mobilabonnement, alder og nåværende operatør. Kilden er alltid deg selv.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>4. Mottakere</h3>
-        <p>Dine opplysninger deles med Talkmore AS dersom du har samtykket til markedsføring fra Talkmore. Talkmore er da selvstendig behandlingsansvarlig. Vi benytter Airtable (USA) som databehandler for lagring, med standard databehandleravtale og EU SCCs.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>5. Informasjonskapsler (cookies)</h3>
-        <p>Vi bruker informasjonskapsler for analyse- og funksjonalitetsformål. Nødvendige cookies brukes alltid. Du kan når som helst endre ditt samtykke ved å slette cookies i nettleseren din.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>6. Lagringstid</h3>
-        <p>Kontaktopplysninger lagres så lenge konkurransen pågår, og slettes senest 3 måneder etter trekning. Dersom du har samtykket til markedsføring fra Talkmore, gjelder Talkmores egne lagringsregler. Du kan lese mer på <a href="https://talkmore.no/vilkar/personvern" target="_blank" style="color:var(--green-mid);">talkmore.no/vilkar/personvern</a>.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>7. Dine rettigheter</h3>
-        <ul>
-          <li>Rett til innsyn i dine personopplysninger</li>
-          <li>Rett til retting eller sletting</li>
-          <li>Rett til å trekke tilbake samtykke når som helst</li>
-          <li>Rett til dataportabilitet</li>
-          <li>Rett til å klage til Datatilsynet: <a href="https://www.datatilsynet.no" target="_blank" style="color:var(--green-mid);">datatilsynet.no</a></li>
-        </ul>
-        <p style="margin-top:8px;">Kontakt oss på vian@meisel.no for å benytte dine rettigheter.</p>
-      </div>
-
-      <div class="modal-section">
-        <h3>8. Sikkerhet</h3>
-        <p>Vi benytter leverandører som overholder god IT-sikkerhetspraksis. Data lagres innenfor EØS eller i land med tilstrekkelig databeskyttelsesnivå.</p>
-      </div>
-    </div>
-  </div>
+  // Cookies
+  function acceptCookies() {
+    document.getElementById('cookie-banner').classList.remove('show');
+  }
+  function declineCookies() {
+    document.getElementById('cookie-banner').classList.remove('show');
+  }
+  window.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('cookie-banner').classList.add('show');
+  });
+</script>
 
 </body>
 </html>
