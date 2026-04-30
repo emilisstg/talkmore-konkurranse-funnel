@@ -90,11 +90,11 @@
       display: block;
     }
 
-    /* USP row — official Talkmore icons (lime-square w/ black icon) */
+    /* USP row — official brand icons + HTML text labels */
     .tm-usps {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex: 1;
       flex-wrap: wrap;
     }
@@ -104,16 +104,19 @@
       gap: 8px;
       padding: 4px 14px 4px 4px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       color: var(--tm-text);
       white-space: nowrap;
     }
     .tm-usp-icon-img {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       display: block;
       flex-shrink: 0;
+    }
+    .tm-usp-text {
+      display: inline;
     }
 
     /* ═══════════════════════════════════════════════════════════
@@ -173,15 +176,19 @@
 
     /* Left: image + value bomb */
     .hero-image-wrap {
-      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 420px;
     }
+    .hero-image-box {
+      position: relative;
+      display: inline-block;
+      max-width: 480px;
+      width: 100%;
+    }
     .hero-image {
       width: 100%;
-      max-width: 480px;
       height: auto;
       display: block;
     }
@@ -312,18 +319,34 @@
     }
     .btn-primary svg { stroke: currentColor; }
 
-    /* Award badge (official Talkmore + Bytt.no Kundefavoritt combined image)
+    /* Award badge (custom HTML — emblem image + HTML text in pill container)
        Per brand: only on white background, never on photos */
     .award-row {
       margin-top: 28px;
       display: flex;
       align-items: center;
     }
-    .award-badge-img {
-      max-width: 380px;
-      width: 100%;
+    .award-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      background: #fff;
+      border: 1px solid var(--tm-border);
+      border-radius: 999px;
+      padding: 10px 28px 10px 12px;
+      max-width: 420px;
+    }
+    .award-badge-emblem {
+      width: 64px;
       height: auto;
       display: block;
+      flex-shrink: 0;
+    }
+    .award-badge-text {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--tm-text);
     }
 
     /* Legal text below landing */
@@ -911,17 +934,17 @@
       .tm-usps {
         order: 3;
         width: 100%;
-        gap: 4px;
+        gap: 2px;
         margin-top: 4px;
         justify-content: space-between;
       }
       .tm-usp {
-        font-size: 10px;
-        padding: 2px 6px 2px 2px;
+        font-size: 11px;
+        padding: 2px 8px 2px 2px;
         gap: 4px;
         flex: 0 1 auto;
       }
-      .tm-usp-icon-img { width: 24px; height: 24px; }
+      .tm-usp-icon-img { width: 28px; height: 28px; }
 
       .progress-wrap { padding: 10px 20px; }
       .landing-inner {
@@ -941,7 +964,15 @@
       h1.hero-title { font-size: 38px; letter-spacing: -0.5px; }
       .hero-body { font-size: 16px; }
 
-      .award-badge-img { max-width: 320px; }
+      /* Center award badge on mobile (per request) */
+      .award-row { justify-content: center; }
+      .award-badge {
+        gap: 14px;
+        padding: 10px 22px 10px 10px;
+        max-width: 100%;
+      }
+      .award-badge-emblem { width: 56px; }
+      .award-badge-text { font-size: 13px; }
 
       .quiz-question { font-size: 28px; }
       .choice-grid { grid-template-columns: 1fr; }
@@ -964,7 +995,9 @@
 
     @media (max-width: 600px) {
       .tm-usp { font-size: 0; gap: 0; padding: 0; }
-      .tm-usp-icon-img { width: 36px; height: 36px; }
+      .tm-usp-icon-img { width: 35px; height: 35px; }
+      /* Hide text labels on very small screens — icons stand alone */
+      .tm-usp-text { display: none; }
     }
 
     @media (max-width: 480px) {
@@ -987,23 +1020,35 @@
       <img src="assets/talkmore-logo.png" alt="Talkmore" class="tm-logo-img"/>
     </a>
 
-    <!-- USP ROW — official brand icons -->
+    <!-- USP ROW — official brand icons (separate sizes for desktop/mobile) -->
     <div class="tm-usps" aria-label="Talkmore fordeler">
       <span class="tm-usp">
-        <img class="tm-usp-icon-img" src="assets/usp-coverage.png" alt=""/>
-        Full Telenor-dekning
+        <picture>
+          <source media="(max-width: 600px)" srcset="assets/usp-coverage-sm.png"/>
+          <img class="tm-usp-icon-img" src="assets/usp-coverage.png" alt=""/>
+        </picture>
+        <span class="tm-usp-text">Full Telenor-dekning</span>
       </span>
       <span class="tm-usp">
-        <img class="tm-usp-icon-img" src="assets/usp-talk.png" alt=""/>
-        Fri tale, SMS og MMS
+        <picture>
+          <source media="(max-width: 600px)" srcset="assets/usp-talk-sm.png"/>
+          <img class="tm-usp-icon-img" src="assets/usp-talk.png" alt=""/>
+        </picture>
+        <span class="tm-usp-text">Fri tale, SMS og MMS</span>
       </span>
       <span class="tm-usp">
-        <img class="tm-usp-icon-img" src="assets/usp-service.png" alt=""/>
-        Prisbelønt kundeservice
+        <picture>
+          <source media="(max-width: 600px)" srcset="assets/usp-service-sm.png"/>
+          <img class="tm-usp-icon-img" src="assets/usp-service.png" alt=""/>
+        </picture>
+        <span class="tm-usp-text">Prisbelønt kundeservice</span>
       </span>
       <span class="tm-usp">
-        <img class="tm-usp-icon-img" src="assets/usp-eu.png" alt=""/>
-        Fri bruk i hele EU/EØS
+        <picture>
+          <source media="(max-width: 600px)" srcset="assets/usp-eu-sm.png"/>
+          <img class="tm-usp-icon-img" src="assets/usp-eu.png" alt=""/>
+        </picture>
+        <span class="tm-usp-text">Fri bruk i hele EU/EØS</span>
       </span>
     </div>
   </div>
@@ -1026,12 +1071,13 @@
 
       <!-- LEFT: Shopping cart product photo with value-bomb overlay -->
       <div class="hero-image-wrap fade-in">
-        <img class="hero-image" src="assets/shopping-cart.png" alt="Handlevogn med dagligvarer"/>
-
-        <!-- Value bomb (graphic circle) per brand: lime, black text, format 10 000,– -->
-        <div class="value-bomb" aria-hidden="true">
-          <span class="value-bomb-amount">10 000,–</span>
-          <span class="value-bomb-label">Verdi</span>
+        <div class="hero-image-box">
+          <img class="hero-image" src="assets/shopping-cart.png" alt="Handlevogn med dagligvarer"/>
+          <!-- Value bomb (graphic circle) per brand: lime, black text, format 10 000,– -->
+          <div class="value-bomb" aria-hidden="true">
+            <span class="value-bomb-amount">10 000,–</span>
+            <span class="value-bomb-label">Verdi</span>
+          </div>
         </div>
       </div>
 
@@ -1058,10 +1104,17 @@
           </svg>
         </button>
 
-        <!-- Award badge (combined Talkmore + Bytt.no Kundefavoritt — undated)
-             Per brand: only on white background, never on photos -->
+        <!-- Award badge (custom HTML — uses April 2026 Kundefavoritt emblem
+             + crisp HTML text. Per brand: only on white background) -->
         <div class="award-row">
-          <img class="award-badge-img" src="assets/award-badge.png" alt="Talkmore feirer at vi har de mest fornøyde mobilkundene · Kundefavoritt på Bytt.no"/>
+          <div class="award-badge">
+            <img class="award-badge-emblem"
+                 src="assets/kundefavoritt-april-2026.png"
+                 alt="Bytt.no Kundefavoritt April 2026"/>
+            <span class="award-badge-text">
+              Talkmore feirer at vi har de mest fornøyde mobilkundene!
+            </span>
+          </div>
         </div>
       </div>
 
@@ -1223,7 +1276,7 @@
         </div>
         <div>
           <div class="confirm-prize-label">Premie</div>
-          <div class="confirm-prize-amount">10 000 kr i gavekort</div>
+          <div class="confirm-prize-amount">10 000,– i gavekort</div>
           <div class="confirm-prize-sub">til dagligvarebutikk</div>
         </div>
       </div>
