@@ -929,22 +929,11 @@
        MOBILE RESPONSIVE — per brand: title 38px on mobile
        =══════════════════════════════════════════════════════════ */
     @media (max-width: 900px) {
-      .tm-header-inner { padding: 12px 20px; gap: 12px; flex-wrap: wrap; }
+      .tm-header-inner { padding: 12px 20px; gap: 12px; }
       .tm-logo-img { height: 36px; }
-      .tm-usps {
-        order: 3;
-        width: 100%;
-        gap: 2px;
-        margin-top: 4px;
-        justify-content: space-between;
-      }
-      .tm-usp {
-        font-size: 11px;
-        padding: 2px 8px 2px 2px;
-        gap: 4px;
-        flex: 0 1 auto;
-      }
-      .tm-usp-icon-img { width: 28px; height: 28px; }
+
+      /* Hide USP row on mobile — header is logo-only per Talkmore Header_Mobile spec */
+      .tm-usps { display: none; }
 
       .progress-wrap { padding: 10px 20px; }
       .landing-inner {
@@ -953,7 +942,7 @@
         padding: 32px 20px;
       }
       .hero-image-wrap { order: -1; min-height: 280px; }
-      .hero-image { max-width: 320px; }
+      .hero-image-box { max-width: 320px; }
       .value-bomb {
         width: 104px; height: 104px;
         top: 0; right: 0;
@@ -964,7 +953,7 @@
       h1.hero-title { font-size: 38px; letter-spacing: -0.5px; }
       .hero-body { font-size: 16px; }
 
-      /* Center award badge on mobile (per request) */
+      /* Center award badge on mobile */
       .award-row { justify-content: center; }
       .award-badge {
         gap: 14px;
@@ -991,13 +980,6 @@
 
       /* Mobile: hide nav on scroll down */
       .tm-header.nav-hidden { transform: translateY(-100%); }
-    }
-
-    @media (max-width: 600px) {
-      .tm-usp { font-size: 0; gap: 0; padding: 0; }
-      .tm-usp-icon-img { width: 35px; height: 35px; }
-      /* Hide text labels on very small screens — icons stand alone */
-      .tm-usp-text { display: none; }
     }
 
     @media (max-width: 480px) {
