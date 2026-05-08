@@ -10,12 +10,42 @@
   <link rel="apple-touch-icon" href="assets/favicon.png"/>
 
   <!--
-    BRAND FONT: Talkmore uses CircularXX (paid). Montserrat is the
-    officially listed FREE backup in the brand guide — using it here.
+    BRAND FONT: Talkmore CircularXX — official brand typeface.
+    WOFF loaded first (smallest), OTF as fallback for older browsers.
+    Montserrat kept as a Google Fonts fallback in case font files fail to load.
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══ CircularXX — Talkmore brand typeface (titles, body) ═══ */
+    @font-face {
+      font-family: 'CircularXX';
+      src: url('assets/fonts/CircularXX-Book.woff') format('woff'),
+           url('assets/fonts/CircularXX-Book.otf')  format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'CircularXX';
+      src: url('assets/fonts/CircularXX-Bold.woff') format('woff'),
+           url('assets/fonts/CircularXX-Bold.otf')  format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* ═══ Circular Pro — used for CTA buttons per brand spec ═══ */
+    @font-face {
+      font-family: 'CircularPro';
+      src: url('assets/fonts/CircularPro-Bold.woff') format('woff'),
+           url('assets/fonts/CircularPro-Bold.otf')  format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,8 +72,10 @@
       --tm-border:       #E5E5E5;   /* 1px outline on input containers */
       --tm-error:        #C8102E;
 
-      /* Typography per brand backup font (Montserrat) */
-      --font: 'Montserrat', system-ui, -apple-system, sans-serif;
+      /* Typography — CircularXX (Talkmore brand font), Montserrat fallback */
+      --font: 'CircularXX', 'Montserrat', system-ui, -apple-system, sans-serif;
+      /* Button font — Circular Pro per brand guide CTA spec */
+      --font-button: 'CircularPro', 'CircularXX', 'Montserrat', system-ui, -apple-system, sans-serif;
     }
 
     html, body {
@@ -105,7 +137,7 @@
       padding: 4px 14px 4px 4px;
       border-radius: 999px;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 400;
       color: var(--tm-text);
       white-space: nowrap;
     }
@@ -134,7 +166,7 @@
       font-size: 12px;
       color: #888;
       margin-bottom: 6px;
-      font-weight: 500;
+      font-weight: 400;
     }
     .progress-bar {
       height: 4px;
@@ -209,13 +241,13 @@
       align-items: center;
       justify-content: center;
       color: var(--tm-black);
-      font-weight: 500;
+      font-weight: 400;
       transform: rotate(-8deg);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
     .value-bomb-amount {
       font-size: 26px;
-      font-weight: 600;
+      font-weight: 400;
       letter-spacing: -0.5px;
       line-height: 1;
     }
@@ -237,7 +269,7 @@
       padding: 6px 14px;
       border-radius: 999px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--tm-green);
       letter-spacing: 0.4px;
       margin-bottom: 20px;
@@ -245,8 +277,8 @@
 
     h1.hero-title {
       font-family: var(--font);
-      font-weight: 400;            /* per brand: NOT bold on titles */
-      font-size: 45px;
+      font-weight: 400;            /* per brand: Book, NOT bold on titles */
+      font-size: 50px;
       line-height: 1.3;
       color: var(--tm-black);
       letter-spacing: -1px;
@@ -254,8 +286,8 @@
     }
 
     .hero-body {
-      font-size: 17px;
-      font-weight: 500;
+      font-size: 19px;
+      font-weight: 400;
       line-height: 1.55;
       color: var(--tm-text-muted);
       margin-bottom: 28px;
@@ -285,7 +317,7 @@
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     /* ═══════════════════════════════════════════════════════════
@@ -302,8 +334,8 @@
       border: none;
       padding: 16px 32px;
       font-size: 18px;
-      font-weight: 600;
-      font-family: var(--font);
+      font-weight: 700;
+      font-family: var(--font-button);
       border-radius: 999px;        /* fully rounded — 50px+ */
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
@@ -344,7 +376,7 @@
     }
     .award-badge-text {
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 400;
       line-height: 1.4;
       color: var(--tm-text);
     }
@@ -387,7 +419,7 @@
     .quiz-question {
       font-family: var(--font);
       font-weight: 400;
-      font-size: 38px;
+      font-size: 42px;
       color: var(--tm-black);
       text-align: center;
       margin-bottom: 40px;
@@ -407,7 +439,7 @@
       border-radius: 16px;
       padding: 22px 24px;
       font-size: 17px;
-      font-weight: 500;
+      font-weight: 400;
       font-family: var(--font);
       cursor: pointer;
       text-align: left;
@@ -457,7 +489,7 @@
     .yn-icon.no  { background: #FFE5E5; color: var(--tm-error); }
     .yn-label {
       font-size: 22px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--tm-text);
     }
 
@@ -491,7 +523,7 @@
     .form-title {
       font-family: var(--font);
       font-weight: 400;
-      font-size: 32px;
+      font-size: 36px;
       color: var(--tm-black);
       margin-bottom: 8px;
       letter-spacing: -0.5px;
@@ -499,7 +531,7 @@
       text-align: center;
     }
     .form-sub {
-      font-size: 15px;
+      font-size: 17px;
       color: var(--tm-text-muted);
       text-align: center;
       margin-bottom: 32px;
@@ -517,8 +549,8 @@
 
     .field-label {
       display: block;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 400;
       color: var(--tm-text);
       margin-bottom: 6px;
     }
@@ -526,7 +558,7 @@
     .field {
       width: 100%;
       padding: 14px 16px;
-      font-size: 15px;
+      font-size: 17px;
       font-family: var(--font);
       color: var(--tm-text);
       background: #fff;
@@ -564,7 +596,7 @@
       border-right: 1px solid var(--tm-border);
       font-size: 14px;
       color: var(--tm-text-muted);
-      font-weight: 500;
+      font-weight: 400;
     }
     .phone-wrap input {
       flex: 1;
@@ -629,7 +661,7 @@
       cursor: pointer;
       user-select: none;
     }
-    .consent-text strong { color: var(--tm-text); font-weight: 600; }
+    .consent-text strong { color: var(--tm-text); font-weight: 700; }
     .consent-required { color: #999; font-size: 11px; }
 
     .btn-submit {
@@ -639,8 +671,8 @@
       border: none;
       padding: 18px;
       font-size: 18px;
-      font-weight: 600;
-      font-family: var(--font);
+      font-weight: 700;
+      font-family: var(--font-button);
       border-radius: 999px;        /* per brand: 50+ corner radius */
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
@@ -693,7 +725,7 @@
     .confirm-title {
       font-family: var(--font);
       font-weight: 400;
-      font-size: 38px;
+      font-size: 42px;
       color: var(--tm-black);
       letter-spacing: -0.8px;
       margin-bottom: 16px;
@@ -701,11 +733,11 @@
     }
 
     .confirm-sub {
-      font-size: 17px;
+      font-size: 19px;
       color: var(--tm-text);
       line-height: 1.55;
       margin-bottom: 32px;
-      font-weight: 500;
+      font-weight: 400;
     }
 
     .confirm-prize-block {
@@ -735,11 +767,11 @@
       letter-spacing: 0.6px;
       color: #888;
       margin-bottom: 4px;
-      font-weight: 600;
+      font-weight: 700;
     }
     .confirm-prize-amount {
       font-size: 22px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--tm-green);
       letter-spacing: -0.3px;
       line-height: 1.2;
@@ -898,8 +930,8 @@
       padding: 10px 22px;
       border-radius: 999px;
       font-size: 14px;
-      font-weight: 600;
-      font-family: var(--font);
+      font-weight: 700;
+      font-family: var(--font-button);
       cursor: pointer;
     }
     .cookie-accept:hover { background: var(--tm-green-hover); }
@@ -911,7 +943,7 @@
       padding: 10px 22px;
       border-radius: 999px;
       font-size: 14px;
-      font-family: var(--font);
+      font-family: var(--font-button);
       cursor: pointer;
     }
     .cookie-decline:hover { border-color: #888; }
@@ -950,8 +982,8 @@
       .value-bomb-amount { font-size: 20px; }
       .value-bomb-label { font-size: 11px; }
 
-      h1.hero-title { font-size: 38px; letter-spacing: -0.5px; }
-      .hero-body { font-size: 16px; }
+      h1.hero-title { font-size: 42px; letter-spacing: -0.5px; }
+      .hero-body { font-size: 18px; }
 
       /* Center award badge on mobile */
       .award-row { justify-content: center; }
