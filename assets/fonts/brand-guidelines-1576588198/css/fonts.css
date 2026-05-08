@@ -1,0 +1,92 @@
+@font-face {
+    font-family: "Circular Std Book";
+    src:     url("../fonts/CircularStd-Book.eot?#iefix");
+    src: url("../fonts/CircularStd-Book.eot?#iefix") format("eot"),
+         url("../fonts/CircularStd-Book.woff2") format("woff2"),
+         url("../fonts/CircularStd-Book.woff") format("woff"),
+         url("../fonts/CircularStd-Book.svg") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Circular Std Bold";
+    src:     url("../fonts/CircularStd-Bold.eot?#iefix");
+    src: url("../fonts/CircularStd-Bold.eot?#iefix") format("eot"),
+         url("../fonts/CircularStd-Bold.woff2") format("woff2"),
+         url("../fonts/CircularStd-Bold.woff") format("woff"),
+         url("../fonts/CircularStd-Bold.svg") format("svg");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CircularPro-Bold";
+    src:          url("../fonts/CircularPro-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CircularPro-Book";
+    src:          url("../fonts/CircularPro-Book.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CircularXX-BoldItalic";
+    src:          url("../fonts/CircularXX-BoldItalic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "CircularXX-Bold";
+    src:          url("../fonts/CircularXX-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CircularXX-BookItalic";
+    src:          url("../fonts/CircularXX-BookItalic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "CircularXX-Book";
+    src:          url("../fonts/CircularXX-Book.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CircularXXTT-BoldItalic";
+    src:          url("../fonts/CircularXXTT-BoldItalic.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "CircularXXTT-Bold";
+    src:          url("../fonts/CircularXXTT-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CircularXXTT-BookItalic";
+    src:          url("../fonts/CircularXXTT-BookItalic.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "CircularXXTT-Book";
+    src:          url("../fonts/CircularXXTT-Book.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
