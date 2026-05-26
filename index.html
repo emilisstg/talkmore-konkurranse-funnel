@@ -5,22 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Talkmore — Vinn 10 000,– i gavekort</title>
 
-  <!-- Meta Pixel Code -->
+  <!-- Meta Pixel Code — CONSENT-GATED: only loads after cookie acceptance -->
   <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1356370719684682');
-  fbq('track', 'PageView');
+  // Stub fbq so calls before consent are queued, not lost
+  window.fbq = window.fbq || function() {
+    (window.fbq.queue = window.fbq.queue || []).push(arguments);
+  };
+  window._fbq = window.fbq;
+
+  function loadMetaPixel() {
+    if (window._metaPixelLoaded) return;
+    window._metaPixelLoaded = true;
+
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq && f.fbq.loaded)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '1356370719684682');
+    fbq('track', 'PageView');
+  }
+
+  // Auto-load pixel if user previously consented (same session)
+  if (document.cookie.indexOf('cookie_consent=accepted') !== -1) {
+    loadMetaPixel();
+  }
   </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1356370719684682&ev=PageView&noscript=1"
-  /></noscript>
+  <!-- noscript pixel also deferred — only injected on consent via JS -->
   <!-- End Meta Pixel Code -->
 
   <!-- Favicon (Talkmore mark) -->
@@ -1267,13 +1282,7 @@
           <div class="consent-row">
             <input type="checkbox" id="consent-age"/>
             <label for="consent-age" class="consent-text">
-              Jeg er over <strong>18 år</strong> og ønsker å delta i trekningen om gavekortet på 10 000,– <span class="consent-required">(påkrevd)</span>
-            </label>
-          </div>
-          <div class="consent-row">
-            <input type="checkbox" id="consent-tm"/>
-            <label for="consent-tm" class="consent-text">
-              Jeg ønsker å bli kontaktet per telefon av Meisel AS med tilbud på mobilabonnement fra Talkmore <span class="consent-required">(valgfritt)</span>
+              Ja, jeg er over <strong>18 år</strong> og Talkmore kan kontakte meg på telefon med et godt tilbud, selv om jeg har reservert meg mot det i reservasjonsregisteret. <span class="consent-required">(påkrevd)</span>
             </label>
           </div>
         </div>
@@ -1548,7 +1557,7 @@
     const epost   = document.getElementById('epost').value.trim();
     const telefon = document.getElementById('telefon').value.trim();
     const consentAge = document.getElementById('consent-age').checked;
-    const consentTM  = document.getElementById('consent-tm').checked;
+    const consentTM  = consentAge; // Single combined checkbox covers both
 
     let valid = true;
     document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('visible'));
@@ -1570,7 +1579,7 @@
       valid = false;
     }
     if (!consentAge) {
-      alert('Du må bekrefte at du er over 18 år for å delta i trekningen.');
+      alert('Du må bekrefte at du er over 18 år og godtar vilkårene for å delta.');
       valid = false;
     }
     if (!valid) return;
@@ -1604,12 +1613,12 @@
       })
     })
     .then(res => {
-      if (res.ok) { fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(6); }
+      if (res.ok) { if(window._metaPixelLoaded) fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(6); }
       else { return res.json().then(e => { throw e; }); }
     })
     .catch(err => {
       console.error('Airtable error:', JSON.stringify(err));
-      fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(6);
+      if(window._metaPixelLoaded) fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(6);
     });
   }
 
@@ -1658,13 +1667,18 @@
 
   // Cookies
   function acceptCookies() {
+    document.cookie = 'cookie_consent=accepted; path=/; max-age=' + (60*60*24*365) + '; SameSite=Lax';
     document.getElementById('cookie-banner').classList.remove('show');
+    loadMetaPixel();
   }
   function declineCookies() {
+    document.cookie = 'cookie_consent=declined; path=/; max-age=' + (60*60*24*365) + '; SameSite=Lax';
     document.getElementById('cookie-banner').classList.remove('show');
   }
   window.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('cookie-banner').classList.add('show');
+    if (document.cookie.indexOf('cookie_consent=') === -1) {
+      document.getElementById('cookie-banner').classList.add('show');
+    }
   });
 </script>
 
