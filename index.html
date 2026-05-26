@@ -1179,20 +1179,40 @@
 </div>
 
 <!-- ════════════════════════════════════════════════════════════
-     SCREEN 2 — JA / NEI
+     SCREEN 2 — DAGLIGVAREBUTIKK
      ════════════════════════════════════════════════════════════ -->
 <div id="screen-2" class="screen">
   <div class="quiz-screen">
     <div class="quiz-inner fade-in">
+      <h2 class="quiz-question">Hvilken dagligvarebutikk ønsker du å benytte gavekortet på?</h2>
+      <div class="choice-grid">
+        <button class="choice-btn" onclick="answer('butikk','Rema 1000'); goTo(3)">Rema 1000</button>
+        <button class="choice-btn" onclick="answer('butikk','Coop'); goTo(3)">Coop</button>
+        <button class="choice-btn" onclick="answer('butikk','Kiwi'); goTo(3)">Kiwi</button>
+        <button class="choice-btn full" onclick="answer('butikk','Annet'); goTo(3)">Annet</button>
+      </div>
+      <div class="quiz-footer">
+        Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 3 — JA / NEI
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-3" class="screen">
+  <div class="quiz-screen">
+    <div class="quiz-inner fade-in">
       <h2 class="quiz-question">Betaler du mobilabonnement for deg selv eller andre i familien?</h2>
       <div class="yn-grid">
-        <button class="yn-btn" onclick="answer('betaler','Ja'); goTo(3)">
+        <button class="yn-btn" onclick="answer('betaler','Ja'); goTo(4)">
           <div class="yn-icon yes">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           </div>
           <span class="yn-label">Ja</span>
         </button>
-        <button class="yn-btn" onclick="answer('betaler','Nei'); goTo(3)">
+        <button class="yn-btn" onclick="answer('betaler','Nei'); goTo(4)">
           <div class="yn-icon no">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </div>
@@ -1207,43 +1227,18 @@
 </div>
 
 <!-- ════════════════════════════════════════════════════════════
-     SCREEN 3 — ALDER
-     ════════════════════════════════════════════════════════════ -->
-<div id="screen-3" class="screen">
-  <div class="quiz-screen">
-    <div class="quiz-inner fade-in">
-      <h2 class="quiz-question">Hvor gammel er du?</h2>
-      <div class="choice-grid">
-        <button class="choice-btn" onclick="answer('alder','45+'); goTo(4)">45+</button>
-        <button class="choice-btn" onclick="answer('alder','31-45'); goTo(4)">31 – 45</button>
-        <button class="choice-btn" onclick="answer('alder','25-30'); goTo(4)">25 – 30</button>
-        <button class="choice-btn" onclick="answer('alder','18-24'); goTo(4)">18 – 24</button>
-        <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(7)">Under 18</button>
-      </div>
-      <div class="quiz-footer">
-        Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════════
-     SCREEN 4 — OPERATØR
+     SCREEN 4 — ALDER
      ════════════════════════════════════════════════════════════ -->
 <div id="screen-4" class="screen">
   <div class="quiz-screen">
     <div class="quiz-inner fade-in">
-      <h2 class="quiz-question">Hva er din nåværende mobiloperatør?</h2>
+      <h2 class="quiz-question">Hvor gammel er du?</h2>
       <div class="choice-grid">
-        <button class="choice-btn" onclick="answer('operator','Bedriftsabonnement'); goTo(5)">Jeg har bedriftsabonnement</button>
-        <button class="choice-btn" onclick="answer('operator','Fjordkraft'); goTo(5)">Fjordkraft</button>
-        <button class="choice-btn" onclick="answer('operator','ICE'); goTo(5)">ICE</button>
-        <button class="choice-btn" onclick="answer('operator','MyCall'); goTo(5)">MyCall</button>
-        <button class="choice-btn" onclick="answer('operator','OneCall'); goTo(5)">OneCall</button>
-        <button class="choice-btn" onclick="answer('operator','Telia'); goTo(5)">Telia</button>
-        <button class="choice-btn" onclick="answer('operator','Telenor'); goTo(5)">Telenor</button>
-        <button class="choice-btn" onclick="answer('operator','Talkmore'); goTo(5)">Talkmore</button>
-        <button class="choice-btn full" onclick="answer('operator','Annet'); goTo(5)">Annet</button>
+        <button class="choice-btn" onclick="answer('alder','45+'); goTo(5)">45+</button>
+        <button class="choice-btn" onclick="answer('alder','31-45'); goTo(5)">31 – 45</button>
+        <button class="choice-btn" onclick="answer('alder','25-30'); goTo(5)">25 – 30</button>
+        <button class="choice-btn" onclick="answer('alder','18-24'); goTo(5)">18 – 24</button>
+        <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(8)">Under 18</button>
       </div>
       <div class="quiz-footer">
         Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
@@ -1253,10 +1248,35 @@
 </div>
 
 <!-- ════════════════════════════════════════════════════════════
-     SCREEN 5 — KONTAKTSKJEMA
-     Per brand: white bg, container w/ 1px outline, 16px corners.
+     SCREEN 5 — OPERATØR
      ════════════════════════════════════════════════════════════ -->
 <div id="screen-5" class="screen">
+  <div class="quiz-screen">
+    <div class="quiz-inner fade-in">
+      <h2 class="quiz-question">Hva er din nåværende mobiloperatør?</h2>
+      <div class="choice-grid">
+        <button class="choice-btn" onclick="answer('operator','Bedriftsabonnement'); goTo(6)">Jeg har bedriftsabonnement</button>
+        <button class="choice-btn" onclick="answer('operator','Fjordkraft'); goTo(6)">Fjordkraft</button>
+        <button class="choice-btn" onclick="answer('operator','ICE'); goTo(6)">ICE</button>
+        <button class="choice-btn" onclick="answer('operator','MyCall'); goTo(6)">MyCall</button>
+        <button class="choice-btn" onclick="answer('operator','OneCall'); goTo(6)">OneCall</button>
+        <button class="choice-btn" onclick="answer('operator','Telia'); goTo(6)">Telia</button>
+        <button class="choice-btn" onclick="answer('operator','Telenor'); goTo(6)">Telenor</button>
+        <button class="choice-btn" onclick="answer('operator','Talkmore'); goTo(6)">Talkmore</button>
+        <button class="choice-btn full" onclick="answer('operator','Annet'); goTo(6)">Annet</button>
+      </div>
+      <div class="quiz-footer">
+        Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 6 — KONTAKTSKJEMA
+     Per brand: white bg, container w/ 1px outline, 16px corners.
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-6" class="screen">
   <div class="form-screen">
     <div class="form-card fade-in">
       <h2 class="form-title">Nesten i mål</h2>
@@ -1301,7 +1321,7 @@
 <!-- ════════════════════════════════════════════════════════════
      SCREEN 6 — BEKREFTELSE (Confirmation Page B style)
      ════════════════════════════════════════════════════════════ -->
-<div id="screen-6" class="screen">
+<div id="screen-7" class="screen">
   <div class="confirm-screen">
     <div class="confirm-card fade-in">
       <div class="confirm-icon">
@@ -1332,7 +1352,7 @@
 <!-- ════════════════════════════════════════════════════════════
      SCREEN 7 — DISQUALIFIED (under 18)
      ════════════════════════════════════════════════════════════ -->
-<div id="screen-7" class="screen">
+<div id="screen-8" class="screen">
   <div class="confirm-screen disqualified">
     <div class="confirm-card fade-in">
       <div class="confirm-icon sad">
@@ -1460,18 +1480,19 @@
   const answers = {};
 
   const progressConfig = {
-    2: { label: 'Spørsmål 1 av 3', pct: 33 },
-    3: { label: 'Spørsmål 2 av 3', pct: 66 },
-    4: { label: 'Spørsmål 3 av 3', pct: 100 },
-    5: { label: 'Nesten ferdig',   pct: 100 },
-    7: null,
+    2: { label: 'Spørsmål 1 av 4', pct: 25 },
+    3: { label: 'Spørsmål 2 av 4', pct: 50 },
+    4: { label: 'Spørsmål 3 av 4', pct: 75 },
+    5: { label: 'Spørsmål 4 av 4', pct: 100 },
+    6: { label: 'Nesten ferdig',   pct: 100 },
+    8: null,
   };
 
   function showScreen(n) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + n).classList.add('active');
     window.scrollTo(0, 0);
-    if (n === 6) updateConfirmScreen();
+    if (n === 7) updateConfirmScreen();
 
     const wrap = document.getElementById('progress-wrap');
     if (progressConfig[n] && progressConfig[n] !== null) {
@@ -1604,6 +1625,7 @@
           'Navn':               navn,
           'Epost':              epost,
           'Telefon':            '+47 ' + telefon,
+          'Butikk':             answers.butikk   || '',
           'Betaler abonnement': answers.betaler  || '',
           'Alder':              answers.alder    || '',
           'Operatør':           answers.operator || '',
@@ -1613,12 +1635,12 @@
       })
     })
     .then(res => {
-      if (res.ok) { if(window._metaPixelLoaded) fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(6); }
+      if (res.ok) { if(window._metaPixelLoaded) fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(7); }
       else { return res.json().then(e => { throw e; }); }
     })
     .catch(err => {
       console.error('Airtable error:', JSON.stringify(err));
-      if(window._metaPixelLoaded) fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(6);
+      if(window._metaPixelLoaded) fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(7);
     });
   }
 
