@@ -7,16 +7,28 @@
 
   <!-- Meta Pixel Code — CONSENT-GATED: only loads after cookie acceptance -->
   <script>
-  // Stub fbq so calls before consent are queued, not lost
-  window.fbq = window.fbq || function() {
-    (window.fbq.queue = window.fbq.queue || []).push(arguments);
-  };
-  window._fbq = window.fbq;
+  /**
+   * META PIXEL — consent-gated implementation.
+   *
+   * Flow:
+   *   1. Pixel does NOT load on page load (GDPR).
+   *   2. When user clicks "Godta alle" → acceptCookies() → loadMetaPixel().
+   *   3. loadMetaPixel() injects fbevents.js, inits pixel, fires PageView.
+   *   4. Returning visitors (cookie_consent=accepted) load pixel immediately.
+   *   5. Lead event fires on successful form submission via firePixelEvent().
+   *   6. If cookies were declined/not yet accepted, firePixelEvent() is a safe no-op.
+   */
+
+  // Flag: has the pixel been loaded and initialised?
+  window._metaPixelLoaded = false;
+  // Flag: prevent the same event from firing twice in one action
+  window._pixelEventFired = {};
 
   function loadMetaPixel() {
     if (window._metaPixelLoaded) return;
     window._metaPixelLoaded = true;
 
+    // Standard Meta Pixel base code
     !function(f,b,e,v,n,t,s)
     {if(f.fbq && f.fbq.loaded)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -28,14 +40,43 @@
 
     fbq('init', '1356370719684682');
     fbq('track', 'PageView');
+
+    // Inject noscript pixel as fallback (1×1 tracking image)
+    var ns = document.createElement('img');
+    ns.height = 1; ns.width = 1; ns.style.display = 'none';
+    ns.src = 'https://www.facebook.com/tr?id=1356370719684682&ev=PageView&noscript=1';
+    document.body.appendChild(ns);
   }
 
-  // Auto-load pixel if user previously consented (same session)
+  /**
+   * firePixelEvent — safe wrapper for tracking.
+   * Only fires if user consented (pixel loaded). Deduplicates within a page
+   * session so the same event can't fire twice on one form submission.
+   *
+   * @param {string} eventName  e.g. 'Lead', 'CompleteRegistration'
+   * @param {object} [params]   optional event parameters
+   */
+  function firePixelEvent(eventName, params) {
+    if (!window._metaPixelLoaded) return;           // No consent → silent no-op
+    if (window._pixelEventFired[eventName]) return;  // Already fired → skip
+    window._pixelEventFired[eventName] = true;
+
+    try {
+      if (params) {
+        fbq('track', eventName, params);
+      } else {
+        fbq('track', eventName);
+      }
+    } catch (e) {
+      console.warn('Meta Pixel event failed:', eventName, e);
+    }
+  }
+
+  // Auto-load pixel if user previously consented (returning visitor)
   if (document.cookie.indexOf('cookie_consent=accepted') !== -1) {
     loadMetaPixel();
   }
   </script>
-  <!-- noscript pixel also deferred — only injected on consent via JS -->
   <!-- End Meta Pixel Code -->
 
   <!-- Favicon (Talkmore mark) -->
@@ -993,6 +1034,98 @@
     /* ═══════════════════════════════════════════════════════════
        MOBILE RESPONSIVE — per brand: title 38px on mobile
        =══════════════════════════════════════════════════════════ */
+    /* 3-option grid for betaler question */
+    .yn-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ═══ Date-of-birth scroll selectors ═══ */
+    .dob-picker {
+      display: flex;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto 32px;
+      justify-content: center;
+    }
+    .dob-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      max-width: 150px;
+    }
+    .dob-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--tm-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .dob-select {
+      width: 100%;
+      padding: 16px 12px;
+      font-size: 18px;
+      font-family: var(--font);
+      color: var(--tm-text);
+      background: #fff;
+      border: 2px solid var(--tm-border);
+      border-radius: 14px;
+      outline: none;
+      transition: border-color 0.15s;
+      cursor: pointer;
+      text-align: center;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M1.4 0L6 4.6 10.6 0 12 1.4 6 7.4 0 1.4z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .dob-select:focus {
+      border-color: var(--tm-green);
+    }
+    .dob-select.placeholder {
+      color: #aaa;
+    }
+    .dob-error {
+      color: var(--tm-error);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 20px;
+      min-height: 20px;
+    }
+    .dob-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--tm-green);
+      color: #fff;
+      border: none;
+      padding: 16px 40px;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: var(--font-button);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin: 0 auto;
+      display: block;
+      text-align: center;
+    }
+    .dob-submit:hover { background: var(--tm-green-hover); }
+    .dob-submit:active { transform: translateY(1px); }
+    .dob-submit:disabled {
+      background: #e0e0e0;
+      color: #999;
+      cursor: not-allowed;
+    }
+
     @media (max-width: 900px) {
       .tm-header-inner { padding: 12px 20px; gap: 12px; }
       .tm-logo-img { height: 36px; }
@@ -1030,6 +1163,10 @@
 
       .quiz-question { font-size: 28px; }
       .choice-grid { grid-template-columns: 1fr; }
+      .yn-grid-3 { grid-template-columns: 1fr; max-width: 400px; }
+
+      .dob-picker { gap: 8px; }
+      .dob-select { padding: 14px 10px; font-size: 16px; padding-right: 32px; }
 
       .form-title { font-size: 26px; }
       .form-sub { font-size: 14px; }
@@ -1206,7 +1343,7 @@
   <div class="quiz-screen">
     <div class="quiz-inner fade-in">
       <h2 class="quiz-question">Betaler du mobilabonnement for deg selv eller andre i familien?</h2>
-      <div class="yn-grid">
+      <div class="yn-grid-3">
         <button class="yn-btn" onclick="answer('betaler','Ja'); goTo(4)">
           <div class="yn-icon yes">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1219,6 +1356,12 @@
           </div>
           <span class="yn-label">Nei</span>
         </button>
+        <button class="yn-btn" onclick="answer('betaler','Betaler ikke for meg selv'); goTo(4)">
+          <div class="yn-icon" style="background: #FFF3E0; color: #E67E22;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="yn-label" style="font-size:17px;">Betaler ikke for meg selv</span>
+        </button>
       </div>
       <div class="quiz-footer">
         Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
@@ -1228,19 +1371,43 @@
 </div>
 
 <!-- ════════════════════════════════════════════════════════════
-     SCREEN 4 — ALDER
+     SCREEN 4 — ALDER (date-of-birth picker)
      ════════════════════════════════════════════════════════════ -->
 <div id="screen-4" class="screen">
   <div class="quiz-screen">
     <div class="quiz-inner fade-in">
       <h2 class="quiz-question">Hvor gammel er du?</h2>
-      <div class="choice-grid">
-        <button class="choice-btn" onclick="answer('alder','45+'); goTo(5)">45+</button>
-        <button class="choice-btn" onclick="answer('alder','31-45'); goTo(5)">31 – 45</button>
-        <button class="choice-btn" onclick="answer('alder','25-30'); goTo(5)">25 – 30</button>
-        <button class="choice-btn" onclick="answer('alder','18-24'); goTo(5)">18 – 24</button>
-        <button class="choice-btn full" onclick="answer('alder','Under 18'); goTo(8)">Under 18</button>
+
+      <div class="dob-picker">
+        <div class="dob-col">
+          <span class="dob-label">Dag</span>
+          <select class="dob-select placeholder" id="dob-day" onchange="dobChanged(this)">
+            <option value="" disabled selected>Dag</option>
+          </select>
+        </div>
+        <div class="dob-col">
+          <span class="dob-label">Måned</span>
+          <select class="dob-select placeholder" id="dob-month" onchange="dobChanged(this)">
+            <option value="" disabled selected>Måned</option>
+          </select>
+        </div>
+        <div class="dob-col">
+          <span class="dob-label">År</span>
+          <select class="dob-select placeholder" id="dob-year" onchange="dobChanged(this)">
+            <option value="" disabled selected>År</option>
+          </select>
+        </div>
       </div>
+
+      <div class="dob-error" id="dob-error"></div>
+
+      <button class="dob-submit" id="dob-next-btn" disabled onclick="submitAge()">
+        Neste
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:4px;">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
+        </svg>
+      </button>
+
       <div class="quiz-footer">
         Kampanjen er utarbeidet i samarbeid med Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les personvernerklæringen her</button>.
       </div>
@@ -1552,6 +1719,101 @@
     }
   })();
 
+  // ═══ Date-of-birth picker logic ═══
+  (function() {
+    const daySelect   = document.getElementById('dob-day');
+    const monthSelect = document.getElementById('dob-month');
+    const yearSelect  = document.getElementById('dob-year');
+
+    // Populate days 1–31
+    for (let d = 1; d <= 31; d++) {
+      const opt = document.createElement('option');
+      opt.value = d;
+      opt.textContent = d;
+      daySelect.appendChild(opt);
+    }
+
+    // Populate months
+    const months = ['Januar','Februar','Mars','April','Mai','Juni','Juli','August','September','Oktober','November','Desember'];
+    months.forEach(function(name, i) {
+      const opt = document.createElement('option');
+      opt.value = i + 1;
+      opt.textContent = name;
+      monthSelect.appendChild(opt);
+    });
+
+    // Populate years (current year down to 1920)
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= 1920; y--) {
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      yearSelect.appendChild(opt);
+    }
+  })();
+
+  function dobChanged(el) {
+    // Remove placeholder class when a real value is selected
+    if (el.value) el.classList.remove('placeholder');
+    else el.classList.add('placeholder');
+
+    // Enable button only when all three are selected
+    const day   = document.getElementById('dob-day').value;
+    const month = document.getElementById('dob-month').value;
+    const year  = document.getElementById('dob-year').value;
+    const btn   = document.getElementById('dob-next-btn');
+    btn.disabled = !(day && month && year);
+
+    // Clear any error
+    document.getElementById('dob-error').textContent = '';
+  }
+
+  function submitAge() {
+    const day   = parseInt(document.getElementById('dob-day').value);
+    const month = parseInt(document.getElementById('dob-month').value);
+    const year  = parseInt(document.getElementById('dob-year').value);
+    const errEl = document.getElementById('dob-error');
+
+    if (!day || !month || !year) {
+      errEl.textContent = 'Vennligst velg dag, måned og år.';
+      return;
+    }
+
+    // Validate the date is real
+    const birthDate = new Date(year, month - 1, day);
+    if (birthDate.getDate() !== day || birthDate.getMonth() !== month - 1 || birthDate.getFullYear() !== year) {
+      errEl.textContent = 'Ugyldig dato. Vennligst sjekk dag og måned.';
+      return;
+    }
+
+    // Check not in the future
+    const today = new Date();
+    if (birthDate > today) {
+      errEl.textContent = 'Fødselsdatoen kan ikke være i fremtiden.';
+      return;
+    }
+
+    // Calculate age
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    // Store the age and formatted birthdate
+    const ageLabel = age < 18 ? 'Under 18' : age <= 24 ? '18-24' : age <= 30 ? '25-30' : age <= 45 ? '31-45' : '45+';
+    answer('alder', ageLabel);
+    answer('fodseldato', day + '.' + month + '.' + year);
+
+    errEl.textContent = '';
+
+    if (age < 18) {
+      goTo(8); // Disqualification
+    } else {
+      goTo(5); // Continue to operator question
+    }
+  }
+
   // Mobile scroll-hide nav
   (function() {
     let lastY = 0;
@@ -1636,12 +1898,13 @@
       })
     })
     .then(res => {
-      if (res.ok) { if(window._metaPixelLoaded) fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(7); }
+      if (res.ok) { firePixelEvent('Lead'); answers.tmSamtykke = consentTM; goTo(7); }
       else { return res.json().then(e => { throw e; }); }
     })
     .catch(err => {
       console.error('Airtable error:', JSON.stringify(err));
-      if(window._metaPixelLoaded) fbq('track', 'Lead'); answers.tmSamtykke = consentTM; goTo(7);
+      // Still count as a lead — user completed the form, Airtable just failed
+      firePixelEvent('Lead'); answers.tmSamtykke = consentTM; goTo(7);
     });
   }
 
