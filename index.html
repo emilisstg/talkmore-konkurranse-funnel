@@ -1800,10 +1800,10 @@
       age--;
     }
 
-    // Store the age and formatted birthdate
-    const ageLabel = age < 18 ? 'Under 18' : age <= 24 ? '18-24' : age <= 30 ? '25-30' : age <= 45 ? '31-45' : '45+';
-    answer('alder', ageLabel);
-    answer('fodseldato', day + '.' + month + '.' + year);
+    // Store the actual age number and formatted birthdate
+    const pad = function(n) { return n < 10 ? '0' + n : '' + n; };
+    answer('alder', String(age));
+    answer('fodseldato', pad(day) + '.' + pad(month) + '.' + year);
 
     errEl.textContent = '';
 
@@ -1888,10 +1888,10 @@
           'Navn':               navn,
           'Epost':              epost,
           'Telefon':            '+47 ' + telefon,
-          'Butikk':             answers.butikk   || '',
-          'Betaler abonnement': answers.betaler  || '',
-          'Alder':              answers.alder    || '',
-          'Operatør':           answers.operator || '',
+          'Butikk':             answers.butikk      || '',
+          'Betaler abonnement': answers.betaler     || '',
+          'Alder':              answers.fodseldato  || '',
+          'Operatør':           answers.operator    || '',
           'TM Samtykke':        consentTM ? 'Ja' : 'Nei',
           'Dato':               new Date().toLocaleDateString('no-NO', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})
         }
