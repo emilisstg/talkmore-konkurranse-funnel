@@ -80,8 +80,8 @@
   <!-- End Meta Pixel Code -->
 
   <!-- Favicon (Talkmore mark) -->
-  <link rel="icon" type="image/png" href="assets/favicon.png"/>
-  <link rel="apple-touch-icon" href="assets/favicon.png"/>
+  <link rel="icon" type="image/png" href="/assets/favicon.png"/>
+  <link rel="apple-touch-icon" href="/assets/favicon.png"/>
 
   <!--
     BRAND FONT: Talkmore CircularXX — official brand typeface.
@@ -96,16 +96,16 @@
     /* ═══ CircularXX — Talkmore brand typeface (titles, body) ═══ */
     @font-face {
       font-family: 'CircularXX';
-      src: url('assets/fonts/CircularXX-Book.woff') format('woff'),
-           url('assets/fonts/CircularXX-Book.otf')  format('opentype');
+      src: url('/assets/fonts/CircularXX-Book.woff') format('woff'),
+           url('/assets/fonts/CircularXX-Book.otf')  format('opentype');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'CircularXX';
-      src: url('assets/fonts/CircularXX-Bold.woff') format('woff'),
-           url('assets/fonts/CircularXX-Bold.otf')  format('opentype');
+      src: url('/assets/fonts/CircularXX-Bold.woff') format('woff'),
+           url('/assets/fonts/CircularXX-Bold.otf')  format('opentype');
       font-weight: 700;
       font-style: normal;
       font-display: swap;
@@ -113,8 +113,8 @@
     /* ═══ Circular Pro — used for CTA buttons per brand spec ═══ */
     @font-face {
       font-family: 'CircularPro';
-      src: url('assets/fonts/CircularPro-Bold.woff') format('woff'),
-           url('assets/fonts/CircularPro-Bold.otf')  format('opentype');
+      src: url('/assets/fonts/CircularPro-Bold.woff') format('woff'),
+           url('/assets/fonts/CircularPro-Bold.otf')  format('opentype');
       font-weight: 700;
       font-style: normal;
       font-display: swap;
@@ -1201,36 +1201,36 @@
   <div class="tm-header-inner">
     <!-- Talkmore official logo -->
     <a href="/" class="tm-logo" aria-label="Talkmore">
-      <img src="assets/talkmore-logo.png" alt="Talkmore" class="tm-logo-img"/>
+      <img src="/assets/talkmore-logo.png" alt="Talkmore" class="tm-logo-img"/>
     </a>
 
     <!-- USP ROW — official brand icons (separate sizes for desktop/mobile) -->
     <div class="tm-usps" aria-label="Talkmore fordeler">
       <span class="tm-usp">
         <picture>
-          <source media="(max-width: 600px)" srcset="assets/usp-coverage-sm.png"/>
-          <img class="tm-usp-icon-img" src="assets/usp-coverage.png" alt=""/>
+          <source media="(max-width: 600px)" srcset="/assets/usp-coverage-sm.png"/>
+          <img class="tm-usp-icon-img" src="/assets/usp-coverage.png" alt=""/>
         </picture>
         <span class="tm-usp-text">Full Telenor-dekning</span>
       </span>
       <span class="tm-usp">
         <picture>
-          <source media="(max-width: 600px)" srcset="assets/usp-talk-sm.png"/>
-          <img class="tm-usp-icon-img" src="assets/usp-talk.png" alt=""/>
+          <source media="(max-width: 600px)" srcset="/assets/usp-talk-sm.png"/>
+          <img class="tm-usp-icon-img" src="/assets/usp-talk.png" alt=""/>
         </picture>
         <span class="tm-usp-text">Sikkerhet inkludert</span>
       </span>
       <span class="tm-usp">
         <picture>
-          <source media="(max-width: 600px)" srcset="assets/usp-service-sm.png"/>
-          <img class="tm-usp-icon-img" src="assets/usp-service.png" alt=""/>
+          <source media="(max-width: 600px)" srcset="/assets/usp-service-sm.png"/>
+          <img class="tm-usp-icon-img" src="/assets/usp-service.png" alt=""/>
         </picture>
         <span class="tm-usp-text">1000,— i mobilrabatt</span>
       </span>
       <span class="tm-usp">
         <picture>
-          <source media="(max-width: 600px)" srcset="assets/usp-eu-sm.png"/>
-          <img class="tm-usp-icon-img" src="assets/usp-eu.png" alt=""/>
+          <source media="(max-width: 600px)" srcset="/assets/usp-eu-sm.png"/>
+          <img class="tm-usp-icon-img" src="/assets/usp-eu.png" alt=""/>
         </picture>
         <span class="tm-usp-text">Alltid data rollover</span>
       </span>
@@ -1256,7 +1256,7 @@
       <!-- LEFT: Shopping cart product photo with value-bomb overlay -->
       <div class="hero-image-wrap fade-in">
         <div class="hero-image-box">
-          <img class="hero-image" src="assets/shopping-cart.png" alt="Handlevogn med dagligvarer"/>
+          <img class="hero-image" src="/assets/shopping-cart.png" alt="Handlevogn med dagligvarer"/>
           <!-- Value bomb (graphic circle) per brand: lime, black text, format 10 000,– -->
           <div class="value-bomb" aria-hidden="true">
             <span class="value-bomb-amount">10 000,–</span>
@@ -1293,7 +1293,7 @@
         <div class="award-row">
           <div class="award-badge">
             <img class="award-badge-emblem"
-                 src="assets/kundefavoritt-april-2026.png"
+                 src="/assets/kundefavoritt-april-2026.png"
                  alt="Bytt.no Kundefavoritt April 2026"/>
             <span class="award-badge-text">
               Talkmore feirer at vi har de mest fornøyde mobilkundene!
@@ -1898,13 +1898,13 @@
       })
     })
     .then(res => {
-      if (res.ok) { firePixelEvent('Lead'); answers.tmSamtykke = consentTM; goTo(7); }
+      if (res.ok) { firePixelEvent('Lead', { content_name: 'dagligvare' }); answers.tmSamtykke = consentTM; goTo(7); }
       else { return res.json().then(e => { throw e; }); }
     })
     .catch(err => {
       console.error('Airtable error:', JSON.stringify(err));
       // Still count as a lead — user completed the form, Airtable just failed
-      firePixelEvent('Lead'); answers.tmSamtykke = consentTM; goTo(7);
+      firePixelEvent('Lead', { content_name: 'dagligvare' }); answers.tmSamtykke = consentTM; goTo(7);
     });
   }
 
