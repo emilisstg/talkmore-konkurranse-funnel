@@ -18,7 +18,7 @@ Each variant is a separate, near-identical copy of the same funnel — they shar
 | `reise/index.html` | `reise` (travel) | 10 000,– travel gift card | 4 questions (travel agency → pays? → age → operator) |
 | `mobilabonnement/index.html` | `mobilabonnement` | mobile subscription for a year | 3 questions (pays? → age → operator) |
 
-**There is no shared/partial include mechanism.** Any change to common funnel logic, styling, modals, consent, or the brand system must be replicated across all three files by hand. Treat them as parallel copies that must stay in sync.
+**There is no shared/partial include mechanism.** The three files are independent parallel copies that share structure today, but they are **allowed to diverge intentionally** per campaign (e.g. `reise` now has age-based lead-splitting the others don't). Syncing is no longer mandatory: when a change is *meant* to be shared, replicate it by hand across the relevant files and diff afterward; when a change is variant-specific, keep it scoped to that one file. Don't assume every edit must be mirrored across all three.
 
 ## Local development & deployment
 
