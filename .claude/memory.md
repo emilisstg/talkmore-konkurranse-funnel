@@ -51,12 +51,16 @@ project changes. Keep entries terse and dated where it helps.
   landing → quiz → form → confirmation, plus the under-18 path.
 - **`reise` only: age-based lead split at submit (2026-06).** `submitForm`
   recalculates age from the DOB dropdowns and routes 70-and-over leads to a
-  second Airtable base (`AIRTABLE_BASE_OVER70`, top of the main script) + a
-  separate ending (`OVER70_REDIRECT_URL`), with **no** Meta Pixel `Lead` event;
-  under-70 flow is unchanged. The over-70 base ID and redirect URL are currently
-  **placeholders** awaiting real values. `finishSubmission(isOver70, consentTM)`
-  centralizes the success/non-blocking-failure completion. dagligvare &
-  mobilabonnement do NOT have this — do not back-port unless asked.
+  second Airtable base (`AIRTABLE_BASE_OVER70` = `appap8dLTVgS183Pj`, same
+  `TABLE_NAME`/PAT as main) and to a dedicated **in-page** ending (`screen-9` /
+  `#steg-9`, via `goTo(9)` — no external redirect) with **no** Meta Pixel `Lead`
+  event; over-70s must never be pixeled (keeps the pixel off old, low-converting
+  leads). Under-70 flow is unchanged. `finishSubmission(isOver70, consentTM)`
+  centralizes the success/non-blocking-failure completion (both branches call
+  it). 70+ are still entered in the draw (legal compliance), just untracked.
+  This adds `screen-9` beyond the 1–8 ID contract — a deliberate reise-only
+  divergence. dagligvare & mobilabonnement do NOT have this — don't back-port
+  unless asked.
 
 ## Conventions
 
@@ -66,7 +70,5 @@ project changes. Keep entries terse and dated where it helps.
 
 ## Open TODOs
 
-- **`reise` over-70 split:** replace placeholders — `AIRTABLE_BASE_OVER70`
-  (`'PLACEHOLDER_OVER70_BASE_ID'`) and `OVER70_REDIRECT_URL` (`'/reise/over70'`) —
-  with the real base ID and ending URL once provided. Confirm the shared Airtable
-  PAT has write access to the new base.
+- (none) — `reise` over-70 split is live: real base `appap8dLTVgS183Pj` wired in,
+  in-page `screen-9` ending, shared PAT confirmed to have write access to it.

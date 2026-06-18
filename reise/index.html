@@ -1537,6 +1537,40 @@
 </div>
 
 <!-- ════════════════════════════════════════════════════════════
+     SCREEN 9 — CONFIRMATION (70 and over) — reise only, NO Meta Pixel
+     Reached via goTo(9) from finishSubmission. 70+ are still entered in the
+     draw (legal compliance) but are not tracked as a sales lead, so this path
+     never fires the pixel.
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-9" class="screen">
+  <div class="confirm-screen">
+    <div class="confirm-card fade-in">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2 class="confirm-title">Du er med i trekningen!</h2>
+      <p class="confirm-sub">
+        Takk for at du deltok. Vi kontakter deg hvis du vinner.
+      </p>
+      <div class="confirm-prize-block">
+        <div class="confirm-prize-icon">
+          <svg viewBox="0 0 24 24" fill="#004400"><path d="M20 6h-2.18A3 3 0 0 0 12 3a3 3 0 0 0-5.82 3H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-7 12h-2v-7h-2V9h2V8a3 3 0 0 1 3-3v2a1 1 0 0 0-1 1v1h2v2h-2z"/></svg>
+        </div>
+        <div>
+          <div class="confirm-prize-label">Premie</div>
+          <div class="confirm-prize-amount">10 000,– i reisegavekort</div>
+          <div class="confirm-prize-sub">til valgfritt reisebyrå</div>
+        </div>
+      </div>
+      <p class="confirm-disclaimer">
+        Konkurransen fra Talkmore går til og med kampanjeslutt. Trekning og premieutdeling håndteres av Meisel A/S.
+        <a href="https://talkmore.no/vilkar/personvern" target="_blank">Les om personvern fra Talkmore</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
      COOKIE BANNER
      ════════════════════════════════════════════════════════════ -->
 <div class="cookie-banner" id="cookie-banner">
@@ -1650,12 +1684,10 @@
   // Leads are split by age at form submission (see submitForm): under-70 go to
   // the main reise base; those 70-and-over are captured in a separate base so
   // they can be merged back in manually when the winner is drawn. The over-70
-  // base ID below is a PLACEHOLDER — swap in the real ID once provided.
+  // path is NOT tracked as a Meta Pixel lead and ends on its own in-page
+  // confirmation (screen-9 / #steg-9) — no external redirect.
   const AIRTABLE_BASE_MAIN   = 'appzz6aznFBVs0Rhy';
-  const AIRTABLE_BASE_OVER70 = 'PLACEHOLDER_OVER70_BASE_ID';
-
-  // PLACEHOLDER redirect target for the 70-and-over ending (final URL TBD).
-  const OVER70_REDIRECT_URL  = '/reise/over70';
+  const AIRTABLE_BASE_OVER70 = 'appap8dLTVgS183Pj';
 
   const progressConfig = {
     2: { label: 'Spørsmål 1 av 4', pct: 25 },
@@ -1848,12 +1880,12 @@
 
   // Completes a submission (called on both Airtable success and non-blocking
   // failure). Under-70 leads fire the Meta Pixel Lead event and advance to the
-  // confirmation screen; the 70-and-over path gets NO Lead event and is instead
-  // redirected to a separate ending.
+  // normal confirmation (screen-7); the 70-and-over path gets NO Lead event and
+  // is sent to its own in-page ending (screen-9) — it must never be pixeled.
   function finishSubmission(isOver70, consentTM) {
     answers.tmSamtykke = consentTM;
     if (isOver70) {
-      window.location.href = OVER70_REDIRECT_URL;
+      goTo(9); // over-70 ending — no firePixelEvent on this path
     } else {
       firePixelEvent('Lead', { content_name: 'reise' });
       goTo(7);
@@ -1899,8 +1931,9 @@
     // ── Age-based funnel split ────────────────────────────────────────────
     // Recalculate the user's age from the date-of-birth dropdowns at submit
     // time (same selects read by submitAge on the age gate). Leads aged 70 and
-    // over are routed to a separate Airtable base and a separate ending, and do
-    // NOT get a Meta Pixel Lead event; everyone under 70 flows exactly as before.
+    // over are routed to a separate Airtable base and a separate in-page ending
+    // (screen-9), and do NOT get a Meta Pixel Lead event; everyone under 70
+    // flows exactly as before.
     // NOTE: date parsing — day/month/year come straight from the dropdown values
     // as integers (month is 1-based here, hence month-1 when building the Date).
     // If the dropdown value format ever changes, adjust this block accordingly.
