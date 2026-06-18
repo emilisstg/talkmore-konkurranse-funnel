@@ -1646,6 +1646,17 @@
 <script>
   const answers = {};
 
+  // ── Airtable bases (reise) — age-based lead split ───────────────────────
+  // Leads are split by age at form submission (see submitForm): under-70 go to
+  // the main reise base; those 70-and-over are captured in a separate base so
+  // they can be merged back in manually when the winner is drawn. The over-70
+  // base ID below is a PLACEHOLDER — swap in the real ID once provided.
+  const AIRTABLE_BASE_MAIN   = 'appzz6aznFBVs0Rhy';
+  const AIRTABLE_BASE_OVER70 = 'PLACEHOLDER_OVER70_BASE_ID';
+
+  // PLACEHOLDER redirect target for the 70-and-over ending (final URL TBD).
+  const OVER70_REDIRECT_URL  = '/reise/over70';
+
   const progressConfig = {
     2: { label: 'Spørsmål 1 av 4', pct: 25 },
     3: { label: 'Spørsmål 2 av 4', pct: 50 },
@@ -1835,6 +1846,20 @@
     });
   })();
 
+  // Completes a submission (called on both Airtable success and non-blocking
+  // failure). Under-70 leads fire the Meta Pixel Lead event and advance to the
+  // confirmation screen; the 70-and-over path gets NO Lead event and is instead
+  // redirected to a separate ending.
+  function finishSubmission(isOver70, consentTM) {
+    answers.tmSamtykke = consentTM;
+    if (isOver70) {
+      window.location.href = OVER70_REDIRECT_URL;
+    } else {
+      firePixelEvent('Lead', { content_name: 'reise' });
+      goTo(7);
+    }
+  }
+
   function submitForm() {
     const navn    = document.getElementById('navn').value.trim();
     const epost   = document.getElementById('epost').value.trim();
@@ -1871,10 +1896,31 @@
     btn.disabled = true;
     btn.textContent = 'Sender...';
 
-    // Airtable config (replace with your real PAT/base/table)
+    // ── Age-based funnel split ────────────────────────────────────────────
+    // Recalculate the user's age from the date-of-birth dropdowns at submit
+    // time (same selects read by submitAge on the age gate). Leads aged 70 and
+    // over are routed to a separate Airtable base and a separate ending, and do
+    // NOT get a Meta Pixel Lead event; everyone under 70 flows exactly as before.
+    // NOTE: date parsing — day/month/year come straight from the dropdown values
+    // as integers (month is 1-based here, hence month-1 when building the Date).
+    // If the dropdown value format ever changes, adjust this block accordingly.
+    const dobDay   = parseInt(document.getElementById('dob-day').value);
+    const dobMonth = parseInt(document.getElementById('dob-month').value);
+    const dobYear  = parseInt(document.getElementById('dob-year').value);
+    const dobDate  = new Date(dobYear, dobMonth - 1, dobDay);
+    const now      = new Date();
+    let age = now.getFullYear() - dobDate.getFullYear();
+    const monthDiff = now.getMonth() - dobDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < dobDate.getDate())) {
+      age--;
+    }
+    const isOver70 = age >= 70;
+
+    // Airtable config (replace with your real PAT/table). Base is chosen by age:
+    // 70-and-over → AIRTABLE_BASE_OVER70, otherwise → AIRTABLE_BASE_MAIN.
     const AIRTABLE_PAT = 'patMBUFQqNtJqBopi.6b260b43566e9c7684accbfbaf489d151381231b0d4c375c05ba400a54957236';
-    const BASE_ID      = 'appzz6aznFBVs0Rhy';
     const TABLE_NAME   = 'tblLCeLqDuW027zbN';
+    const BASE_ID      = isOver70 ? AIRTABLE_BASE_OVER70 : AIRTABLE_BASE_MAIN;
 
     fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
       method: 'POST',
@@ -1897,13 +1943,14 @@
       })
     })
     .then(res => {
-      if (res.ok) { firePixelEvent('Lead', { content_name: 'reise' }); answers.tmSamtykke = consentTM; goTo(7); }
+      if (res.ok) { finishSubmission(isOver70, consentTM); }
       else { return res.json().then(e => { throw e; }); }
     })
     .catch(err => {
       console.error('Airtable error:', JSON.stringify(err));
-      // Still count as a lead — user completed the form, Airtable just failed
-      firePixelEvent('Lead', { content_name: 'reise' }); answers.tmSamtykke = consentTM; goTo(7);
+      // Still complete — user finished the form, Airtable just failed. Under-70
+      // still fire Lead; 70-and-over still redirect with no pixel.
+      finishSubmission(isOver70, consentTM);
     });
   }
 

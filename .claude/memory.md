@@ -8,8 +8,10 @@ project changes. Keep entries terse and dated where it helps.
 
 - **Three parallel variants, no shared includes.** `index.html` (dagligvare /
   groceries), `reise/index.html` (travel), `mobilabonnement/index.html` (mobile
-  sub). Any change to shared funnel logic, styles, modals, consent, or brand
-  tokens must be hand-replicated across all three.
+  sub). They share structure today but are **allowed to diverge intentionally**
+  per campaign — syncing is no longer mandatory. Replicate by hand only when a
+  change is *meant* to be shared; keep variant-specific changes scoped to the one
+  file (e.g. `reise` has age-based lead-splitting the others don't).
 - **No build system / framework / deps.** Each page is one self-contained
   ~2000-line HTML file: inline `<style>` + inline `<script>`. Only external
   assets are images/fonts under `assets/`.
@@ -47,13 +49,24 @@ project changes. Keep entries terse and dated where it helps.
   when restyling.
 - **No tests / linter / CI.** Verification is manual: walk each variant through
   landing → quiz → form → confirmation, plus the under-18 path.
+- **`reise` only: age-based lead split at submit (2026-06).** `submitForm`
+  recalculates age from the DOB dropdowns and routes 70-and-over leads to a
+  second Airtable base (`AIRTABLE_BASE_OVER70`, top of the main script) + a
+  separate ending (`OVER70_REDIRECT_URL`), with **no** Meta Pixel `Lead` event;
+  under-70 flow is unchanged. The over-70 base ID and redirect URL are currently
+  **placeholders** awaiting real values. `finishSubmission(isOver70, consentTM)`
+  centralizes the success/non-blocking-failure completion. dagligvare &
+  mobilabonnement do NOT have this — do not back-port unless asked.
 
 ## Conventions
 
-- Edit all three variants together for shared concerns; diff them afterward to
-  confirm they stayed in sync.
+- Edit variants together only for genuinely shared concerns, then diff them to
+  confirm intended parity; don't mirror variant-specific changes by reflex.
 - Keep Norwegian copy (`lang="no"`) — don't introduce English user-facing text.
 
 ## Open TODOs
 
-- (none yet)
+- **`reise` over-70 split:** replace placeholders — `AIRTABLE_BASE_OVER70`
+  (`'PLACEHOLDER_OVER70_BASE_ID'`) and `OVER70_REDIRECT_URL` (`'/reise/over70'`) —
+  with the real base ID and ending URL once provided. Confirm the shared Airtable
+  PAT has write access to the new base.
