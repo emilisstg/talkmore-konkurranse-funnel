@@ -61,6 +61,23 @@ project changes. Keep entries terse and dated where it helps.
   This adds `screen-9` beyond the 1–8 ID contract — a deliberate reise-only
   divergence. dagligvare & mobilabonnement do NOT have this — don't back-port
   unless asked.
+- **`reise` only: duplicate guard at submit (2026-06).** Before the POST,
+  `submitForm` calls `isDuplicateLead(...)` which queries the **MAIN** base
+  (`appzz6aznFBVs0Rhy`) via `filterByFormula` for a matching `Epost` (case-
+  insensitive) OR `Telefon` (stored `+47 NNNNNNNN` format). A hit → `goTo(10)`
+  ("Du er allerede med!" `screen-10`) with **no** POST / pixel / lead. The
+  over-70 base is intentionally NOT checked (those aren't called on). **Fails
+  open**: any lookup error (missing PAT read scope, network, non-200) resolves
+  false so a real lead is never blocked. Needs PAT `data.records:read` scope.
+  Adds `screen-10` (also beyond the 1–8 contract, reise-only). Soft check by
+  design — bypassable, but the goal is honest repeat-submitters who get called
+  twice, not abuse.
+- **`reise` only: phone field is digits-only, exactly 8 (2026-06).** An `input`
+  listener on `#telefon` strips non-digits (blocks `+`) and caps at 8; the field
+  has `inputmode="numeric" maxlength="8"`; `submitForm` validation now requires
+  exactly 8 digits (`!== 8`). UI still shows the `+47` prefix and stores
+  `+47 NNNNNNNN`. Pasted full numbers (`+47 …`) collapse to their first 8 digits
+  by design (no country-prefix stripping — local numbers can start with 47).
 
 ## Conventions
 

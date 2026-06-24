@@ -1461,7 +1461,7 @@
         <label class="field-label" for="telefon">Mobilnummer</label>
         <div class="phone-wrap" id="phone-wrap">
           <span class="phone-prefix">🇳🇴 +47</span>
-          <input type="tel" id="telefon" placeholder="000 00 000" autocomplete="tel"/>
+          <input type="tel" id="telefon" inputmode="numeric" maxlength="8" placeholder="00000000" autocomplete="tel"/>
         </div>
         <div class="error-msg" id="err-telefon">Vennligst fyll inn gyldig mobilnummer</div>
 
@@ -1565,6 +1565,28 @@
       <p class="confirm-disclaimer">
         Konkurransen fra Talkmore går til og med kampanjeslutt. Trekning og premieutdeling håndteres av Meisel A/S.
         <a href="https://talkmore.no/vilkar/personvern" target="_blank">Les om personvern fra Talkmore</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN 10 — ALREADY ENTERED (duplicate email/phone) — reise only
+     Reached via goTo(10) from submitForm when the email or phone is already in
+     the MAIN reise base. No Airtable POST, no Meta Pixel event.
+     ════════════════════════════════════════════════════════════ -->
+<div id="screen-10" class="screen">
+  <div class="confirm-screen">
+    <div class="confirm-card fade-in">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2 class="confirm-title">Du er allerede med!</h2>
+      <p class="confirm-sub">
+        Vi har allerede registrert en påmelding med denne e-postadressen eller dette mobilnummeret. Du er med i trekningen — du trenger ikke melde deg på flere ganger.
+      </p>
+      <p class="confirm-disclaimer">
+        Har du spørsmål? Ta kontakt med Talkmore på <a href="https://talkmore.no" target="_blank">talkmore.no</a>.
       </p>
     </div>
   </div>
@@ -1758,6 +1780,15 @@
     if (phoneInput && phoneWrap) {
       phoneInput.addEventListener('focus', () => phoneWrap.classList.add('focused'));
       phoneInput.addEventListener('blur',  () => phoneWrap.classList.remove('focused'));
+      // Norwegian numbers are 8 digits and we already prefix "+47", so keep the
+      // field digits-only (this also blocks "+") and capped at 8. Runs on type
+      // and on paste. NOTE: a pasted full "+47 12345678" collapses to its first
+      // 8 digits ("47123456") — we deliberately don't strip a country prefix,
+      // because valid local numbers can also start with 47.
+      phoneInput.addEventListener('input', () => {
+        const cleaned = phoneInput.value.replace(/\D/g, '').slice(0, 8);
+        if (cleaned !== phoneInput.value) phoneInput.value = cleaned;
+      });
     }
   })();
 
@@ -1892,6 +1923,26 @@
     }
   }
 
+  // Duplicate guard. Resolves true if this email OR phone is already in the
+  // MAIN reise base (appzz6aznFBVs0Rhy — the under-70, called-on list). Only that
+  // base is checked; the over-70 base is excluded by design. FAILS OPEN: any
+  // error (missing read scope, network, Airtable down, non-200) resolves false,
+  // so a genuine entrant is never blocked by a backend problem.
+  // NOTE: phone is matched in the stored "+47 NNNNNNNN" format; legacy records
+  // saved with a different phone format won't match (email is the safer key).
+  function isDuplicateLead(epost, telefonField, pat, table) {
+    const strip   = s => String(s).replace(/"/g, '');   // guard the formula string
+    const emailLc = strip(epost.toLowerCase());
+    const phone   = strip(telefonField);
+    const formula = 'OR(LOWER({Epost})="' + emailLc + '",{Telefon}="' + phone + '")';
+    const url = 'https://api.airtable.com/v0/' + AIRTABLE_BASE_MAIN + '/' + table +
+                '?maxRecords=1&filterByFormula=' + encodeURIComponent(formula);
+    return fetch(url, { headers: { 'Authorization': 'Bearer ' + pat } })
+      .then(function(res) { return res.ok ? res.json() : null; })
+      .then(function(data) { return !!(data && data.records && data.records.length > 0); })
+      .catch(function() { return false; });
+  }
+
   function submitForm() {
     const navn    = document.getElementById('navn').value.trim();
     const epost   = document.getElementById('epost').value.trim();
@@ -1913,7 +1964,7 @@
       document.getElementById('epost').classList.add('error');
       valid = false;
     }
-    if (!telefon || telefon.replace(/\s/g,'').length < 8) {
+    if (telefon.replace(/\D/g,'').length !== 8) {
       document.getElementById('err-telefon').classList.add('visible');
       document.getElementById('phone-wrap').classList.add('error');
       valid = false;
@@ -1925,6 +1976,7 @@
     if (!valid) return;
 
     const btn = document.getElementById('submit-btn');
+    const btnLabel = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'Sender...';
 
@@ -1949,41 +2001,55 @@
     }
     const isOver70 = age >= 70;
 
-    // Airtable config (replace with your real PAT/table). Base is chosen by age:
-    // 70-and-over → AIRTABLE_BASE_OVER70, otherwise → AIRTABLE_BASE_MAIN.
+    // Airtable config. Base is chosen by age: 70-and-over → AIRTABLE_BASE_OVER70,
+    // otherwise → AIRTABLE_BASE_MAIN.
     const AIRTABLE_PAT = 'patMBUFQqNtJqBopi.6b260b43566e9c7684accbfbaf489d151381231b0d4c375c05ba400a54957236';
     const TABLE_NAME   = 'tblLCeLqDuW027zbN';
-    const BASE_ID      = isOver70 ? AIRTABLE_BASE_OVER70 : AIRTABLE_BASE_MAIN;
+    const telefonField = '+47 ' + telefon; // stored format — also used for the dup check
 
-    fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${AIRTABLE_PAT}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        fields: {
-          'Navn':               navn,
-          'Epost':              epost,
-          'Telefon':            '+47 ' + telefon,
-          'Butikk':             answers.butikk      || '',
-          'Betaler abonnement': answers.betaler     || '',
-          'Alder':              answers.fodseldato  || '',
-          'Operatør':           answers.operator    || '',
-          'TM Samtykke':        consentTM ? 'Ja' : 'Nei',
-          'Dato':               new Date().toLocaleDateString('no-NO', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})
-        }
+    // ── Duplicate guard ───────────────────────────────────────────────────
+    // Block a repeat entry whose email OR phone already exists in the MAIN reise
+    // base. Fails open, so the POST below only runs once we know it isn't a
+    // duplicate (or the check couldn't be completed).
+    isDuplicateLead(epost, telefonField, AIRTABLE_PAT, TABLE_NAME).then(function(isDup) {
+      if (isDup) {
+        btn.disabled = false;
+        btn.textContent = btnLabel;
+        goTo(10); // "already entered" screen — no POST, no pixel, no lead counted
+        return;
+      }
+
+      const BASE_ID = isOver70 ? AIRTABLE_BASE_OVER70 : AIRTABLE_BASE_MAIN;
+      fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${AIRTABLE_PAT}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fields: {
+            'Navn':               navn,
+            'Epost':              epost,
+            'Telefon':            telefonField,
+            'Butikk':             answers.butikk      || '',
+            'Betaler abonnement': answers.betaler     || '',
+            'Alder':              answers.fodseldato  || '',
+            'Operatør':           answers.operator    || '',
+            'TM Samtykke':        consentTM ? 'Ja' : 'Nei',
+            'Dato':               new Date().toLocaleDateString('no-NO', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})
+          }
+        })
       })
-    })
-    .then(res => {
-      if (res.ok) { finishSubmission(isOver70, consentTM); }
-      else { return res.json().then(e => { throw e; }); }
-    })
-    .catch(err => {
-      console.error('Airtable error:', JSON.stringify(err));
-      // Still complete — user finished the form, Airtable just failed. Under-70
-      // still fire Lead; 70-and-over still redirect with no pixel.
-      finishSubmission(isOver70, consentTM);
+      .then(res => {
+        if (res.ok) { finishSubmission(isOver70, consentTM); }
+        else { return res.json().then(e => { throw e; }); }
+      })
+      .catch(err => {
+        console.error('Airtable error:', JSON.stringify(err));
+        // Still complete — user finished the form, Airtable just failed. Under-70
+        // still fire Lead; 70-and-over still go to their in-page ending, no pixel.
+        finishSubmission(isOver70, consentTM);
+      });
     });
   }
 
