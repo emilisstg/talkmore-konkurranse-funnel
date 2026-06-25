@@ -72,6 +72,19 @@ project changes. Keep entries terse and dated where it helps.
   Adds `screen-10` (also beyond the 1–8 contract, reise-only). Soft check by
   design — bypassable, but the goal is honest repeat-submitters who get called
   twice, not abuse.
+- **`reise` only: pixel-exclusion by answer at submit (2026-06).** Beyond the
+  age split, `submitForm` now also keeps the Meta Pixel off low-value answers via
+  `isPixelExcludedAnswer()`: `operator` ∈ {Talkmore, Bedriftsabonnement / "Jeg
+  har bedriftsabonnement"} OR `betaler` ∈ {"Betaler ikke for meg selv", "Jeg har
+  bedriftsabonnement"} (match is trim + case-insensitive). Matching leads are
+  treated exactly like 70+: routed to `AIRTABLE_BASE_OVER70` and the no-pixel
+  ending (`screen-9`), with **no** `Lead` event — they still enter the draw, just
+  untracked. Implemented by collapsing both reasons into one `skipPixel` flag
+  (`isOver70 || isPixelExcludedAnswer()`); `finishSubmission`'s first param was
+  renamed `isOver70`→`skipPixel`, and `screen-9` is now the **shared** no-pixel
+  ending (over-70 + excluded answers). The exclusion lists live next to
+  `finishSubmission` — add/adjust values there. dagligvare & mobilabonnement do
+  NOT have this — don't back-port unless asked.
 - **`reise` only: phone field is digits-only, exactly 8 (2026-06).** An `input`
   listener on `#telefon` strips non-digits (blocks `+`) and caps at 8; the field
   has `inputmode="numeric" maxlength="8"`; `submitForm` validation now requires
