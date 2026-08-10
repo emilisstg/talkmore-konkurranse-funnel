@@ -91,6 +91,20 @@ project changes. Keep entries terse and dated where it helps.
   exactly 8 digits (`!== 8`). UI still shows the `+47` prefix and stores
   `+47 NNNNNNNN`. Pasted full numbers (`+47 …`) collapse to their first 8 digits
   by design (no country-prefix stripping — local numbers can start with 47).
+- **`reise` only: screen-3 "pays?" cut to 2 options + under-20 split (2026-08).**
+  Question is now "Betaler du mobilabonnement for deg selv?" with two choices:
+  "Ja, betaler for meg selv" (stores `betaler='Ja'`, tracked) and "Nei, betaler
+  ikke for meg selv." (stores `betaler='Betaler ikke for meg selv'`). The old
+  third option is gone; the "Nei" value deliberately reuses the existing
+  `PIXEL_EXCLUDED_BETALER` entry, so it routes to the over-70 base + no-pixel
+  `screen-9` (no `Lead`) with **no** config change. Grid switched `yn-grid-3` →
+  `yn-grid` (2-col); the `.yn-grid-3` CSS block is now unused in reise but left
+  in place (shared style still used by the other variants). ALSO: `submitForm`
+  now adds `isUnder20 = age < 20` to `skipPixel`, so 18-19 yr olds join the 70+ /
+  excluded-answer group → over-70 base + `screen-9`, no `Lead` (they still enter
+  the draw). Under-18 is **unchanged** — still hard-DQ'd at the age gate
+  (`submitAge` → `screen-8`), never entered in the draw (contest is 18+).
+  dagligvare & mobilabonnement do NOT have any of this.
 
 ## Conventions
 
