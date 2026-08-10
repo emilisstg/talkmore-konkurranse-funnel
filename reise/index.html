@@ -1341,25 +1341,19 @@
 <div id="screen-3" class="screen">
   <div class="quiz-screen">
     <div class="quiz-inner fade-in">
-      <h2 class="quiz-question">Betaler du mobilabonnement for deg selv eller andre i familien?</h2>
-      <div class="yn-grid-3">
+      <h2 class="quiz-question">Betaler du mobilabonnement for deg selv?</h2>
+      <div class="yn-grid">
         <button class="yn-btn" onclick="answer('betaler','Ja'); goTo(4)">
           <div class="yn-icon yes">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           </div>
-          <span class="yn-label">Ja</span>
+          <span class="yn-label" style="font-size:17px;">Ja, betaler for meg selv</span>
         </button>
-        <button class="yn-btn" onclick="answer('betaler','Nei'); goTo(4)">
+        <button class="yn-btn" onclick="answer('betaler','Betaler ikke for meg selv'); goTo(4)">
           <div class="yn-icon no">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </div>
-          <span class="yn-label">Nei</span>
-        </button>
-        <button class="yn-btn" onclick="answer('betaler','Betaler ikke for meg selv'); goTo(4)">
-          <div class="yn-icon" style="background: #FFF3E0; color: #E67E22;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <span class="yn-label" style="font-size:17px;">Betaler ikke for meg selv</span>
+          <span class="yn-label" style="font-size:17px;">Nei, betaler ikke for meg selv.</span>
         </button>
       </div>
       <div class="quiz-footer">
@@ -1539,11 +1533,12 @@
 <!-- ════════════════════════════════════════════════════════════
      SCREEN 9 — CONFIRMATION (untracked leads) — reise only, NO Meta Pixel
      Shared no-pixel ending. Reached via goTo(9) from finishSubmission for any
-     lead we deliberately keep off the pixel: those 70-and-over, and those whose
-     quiz answers are pixel-excluded (Talkmore / business subscription / doesn't
-     pay for own subscription — see isPixelExcludedAnswer). These leads are still
-     entered in the draw (legal compliance) but are not tracked as a sales lead,
-     so this path never fires the pixel.
+     lead we deliberately keep off the pixel: those 70-and-over, those under 20
+     (18-19), and those whose quiz answers are pixel-excluded (Talkmore /
+     business subscription / doesn't pay for own subscription — see
+     isPixelExcludedAnswer). These leads are still entered in the draw (legal
+     compliance) but are not tracked as a sales lead, so this path never fires
+     the pixel.
      ════════════════════════════════════════════════════════════ -->
 <div id="screen-9" class="screen">
   <div class="confirm-screen">
@@ -1710,11 +1705,11 @@
   // untracked group. Tracked leads go to the main reise base; untracked leads go
   // to the separate AIRTABLE_BASE_OVER70 base so they can be merged back in
   // manually when the winner is drawn. A lead is untracked when it is
-  // 70-and-over OR when its quiz answers are pixel-excluded (see
-  // isPixelExcludedAnswer). Untracked leads get NO Meta Pixel lead and end on
-  // their own in-page confirmation (screen-9 / #steg-9) — no external redirect.
-  // (AIRTABLE_BASE_OVER70 keeps its name though it now also holds answer-
-  // excluded leads.)
+  // 70-and-over, under 20 (18-19), OR when its quiz answers are pixel-excluded
+  // (see isPixelExcludedAnswer). Untracked leads get NO Meta Pixel lead and end
+  // on their own in-page confirmation (screen-9 / #steg-9) — no external redirect.
+  // (AIRTABLE_BASE_OVER70 keeps its name though it now also holds under-20 and
+  // answer-excluded leads.)
   const AIRTABLE_BASE_MAIN   = 'appzz6aznFBVs0Rhy';
   const AIRTABLE_BASE_OVER70 = 'appap8dLTVgS183Pj';
 
@@ -1934,9 +1929,9 @@
 
   // Completes a submission (called on both Airtable success and non-blocking
   // failure). Tracked leads fire the Meta Pixel Lead event and advance to the
-  // normal confirmation (screen-7). Pixel-excluded leads (70-and-over, or quiz
-  // answers flagged by isPixelExcludedAnswer) get NO Lead event and are sent to
-  // the shared no-pixel ending (screen-9) — they must never be pixeled.
+  // normal confirmation (screen-7). Pixel-excluded leads (70-and-over, under 20,
+  // or quiz answers flagged by isPixelExcludedAnswer) get NO Lead event and are
+  // sent to the shared no-pixel ending (screen-9) — they must never be pixeled.
   function finishSubmission(skipPixel, consentTM) {
     answers.tmSamtykke = consentTM;
     if (skipPixel) {
@@ -2007,8 +2002,9 @@
     // ── Lead split: by age and by answer ─────────────────────────────────
     // Recalculate the user's age from the date-of-birth dropdowns at submit
     // time (same selects read by submitAge on the age gate). Leads aged 70 and
-    // over — and leads whose quiz answers are pixel-excluded (see
-    // isPixelExcludedAnswer) — are routed to the separate over-70 Airtable base
+    // over, leads aged under 20 (18-19; under-18 is already DQ'd at the age
+    // gate), and leads whose quiz answers are pixel-excluded (see
+    // isPixelExcludedAnswer) are routed to the separate over-70 Airtable base
     // and the no-pixel in-page ending (screen-9), and do NOT get a Meta Pixel
     // Lead event; every other lead flows exactly as before.
     // NOTE: date parsing — day/month/year come straight from the dropdown values
@@ -2025,12 +2021,13 @@
       age--;
     }
     const isOver70  = age >= 70;
-    // Collapse both exclusion reasons (age 70+, or pixel-excluded answers) into
-    // one flag that drives the base choice and the ending screen below.
-    const skipPixel = isOver70 || isPixelExcludedAnswer();
+    const isUnder20 = age < 20; // 18-19 yr olds (under-18 is already DQ'd at the age gate)
+    // Collapse the exclusion reasons (age 70+, under 20, or pixel-excluded
+    // answers) into one flag that drives the base choice and the ending screen below.
+    const skipPixel = isOver70 || isUnder20 || isPixelExcludedAnswer();
 
-    // Airtable config. Base is chosen by skipPixel: excluded leads (70+ OR
-    // pixel-excluded answers) → AIRTABLE_BASE_OVER70, otherwise → AIRTABLE_BASE_MAIN.
+    // Airtable config. Base is chosen by skipPixel: excluded leads (70+, under 20,
+    // OR pixel-excluded answers) → AIRTABLE_BASE_OVER70, otherwise → AIRTABLE_BASE_MAIN.
     const AIRTABLE_PAT = 'patMBUFQqNtJqBopi.6b260b43566e9c7684accbfbaf489d151381231b0d4c375c05ba400a54957236';
     const TABLE_NAME   = 'tblLCeLqDuW027zbN';
     const telefonField = '+47 ' + telefon; // stored format — also used for the dup check
