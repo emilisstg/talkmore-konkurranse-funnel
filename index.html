@@ -159,57 +159,6 @@
     body { min-height: 100vh; overflow-x: hidden; }
 
     /* ═══════════════════════════════════════════════════════════
-       HEADER (4 USPs)
-       Per brand: only used at top of page, on white background.
-       =══════════════════════════════════════════════════════════ */
-    .tm-header {
-      background: #fff;
-      border-bottom: 1px solid #f0f0f0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      transition: transform 0.3s ease;
-    }
-
-    .tm-header-inner {
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 14px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-    }
-
-    /* USP row — official brand icons + HTML text labels */
-    .tm-usps {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-    .tm-usp {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 14px 4px 4px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--tm-text);
-      white-space: nowrap;
-    }
-    .tm-usp-icon-img {
-      width: 36px;
-      height: 36px;
-      display: block;
-      flex-shrink: 0;
-    }
-    .tm-usp-text {
-      display: inline;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
        PROGRESS BAR
        =══════════════════════════════════════════════════════════ */
     .progress-wrap {
@@ -1082,10 +1031,6 @@
     }
 
     @media (max-width: 900px) {
-      .tm-header-inner { padding: 12px 20px; gap: 12px; }
-      /* Hide header on mobile — USP row doesn't fit and there is no logo */
-      .tm-header { display: none; }
-
       .progress-wrap { padding: 10px 20px; }
       .landing-inner {
         grid-template-columns: 1fr;
@@ -1122,9 +1067,6 @@
       .site-footer { padding: 20px 20px; }
       .modal-box { padding: 28px 22px; }
       .cookie-banner { left: 12px; right: 12px; padding: 16px 18px; }
-
-      /* Mobile: hide nav on scroll down */
-      .tm-header.nav-hidden { transform: translateY(-100%); }
     }
 
     @media (max-width: 480px) {
@@ -1136,45 +1078,6 @@
   </style>
 </head>
 <body>
-
-<!-- ════════════════════════════════════════════════════════════
-     HEADER — 4 USPs
-     ════════════════════════════════════════════════════════════ -->
-<header class="tm-header" id="tm-header">
-  <div class="tm-header-inner">
-    <!-- USP ROW — official brand icons (separate sizes for desktop/mobile) -->
-    <div class="tm-usps" aria-label="Fordeler">
-      <span class="tm-usp">
-        <picture>
-          <source media="(max-width: 600px)" srcset="/assets/usp-coverage-sm.png"/>
-          <img class="tm-usp-icon-img" src="/assets/usp-coverage.png" alt=""/>
-        </picture>
-        <span class="tm-usp-text">Full Telenor-dekning</span>
-      </span>
-      <span class="tm-usp">
-        <picture>
-          <source media="(max-width: 600px)" srcset="/assets/usp-talk-sm.png"/>
-          <img class="tm-usp-icon-img" src="/assets/usp-talk.png" alt=""/>
-        </picture>
-        <span class="tm-usp-text">Sikkerhet inkludert</span>
-      </span>
-      <span class="tm-usp">
-        <picture>
-          <source media="(max-width: 600px)" srcset="/assets/usp-service-sm.png"/>
-          <img class="tm-usp-icon-img" src="/assets/usp-service.png" alt=""/>
-        </picture>
-        <span class="tm-usp-text">1000,— i mobilrabatt</span>
-      </span>
-      <span class="tm-usp">
-        <picture>
-          <source media="(max-width: 600px)" srcset="/assets/usp-eu-sm.png"/>
-          <img class="tm-usp-icon-img" src="/assets/usp-eu.png" alt=""/>
-        </picture>
-        <span class="tm-usp-text">Alltid data rollover</span>
-      </span>
-    </div>
-  </div>
-</header>
 
 <!-- Progress bar (hidden on landing) -->
 <div class="progress-wrap" id="progress-wrap">
@@ -1567,7 +1470,7 @@
 
 <!-- ════════════════════════════════════════════════════════════
      SCRIPTS — keep all working logic intact (Airtable, modals,
-     navigation, scroll-hide nav). Just updated for the new DOM.
+     navigation). Just updated for the new DOM.
      ════════════════════════════════════════════════════════════ -->
 <script>
   const answers = {};
@@ -1738,28 +1641,6 @@
       goTo(5); // Continue to operator question
     }
   }
-
-  // Mobile scroll-hide nav
-  (function() {
-    let lastY = 0;
-    let ticking = false;
-    const nav = document.getElementById('tm-header');
-    window.addEventListener('scroll', function() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(function() {
-        if (window.innerWidth <= 900) {
-          const y = window.scrollY;
-          if (y > lastY && y > 80) nav.classList.add('nav-hidden');
-          else nav.classList.remove('nav-hidden');
-          lastY = y;
-        } else {
-          nav.classList.remove('nav-hidden');
-        }
-        ticking = false;
-      });
-    });
-  })();
 
   function submitForm() {
     const navn    = document.getElementById('navn').value.trim();
