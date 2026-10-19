@@ -107,8 +107,9 @@ project changes. Keep entries terse and dated where it helps.
   dagligvare & mobilabonnement do NOT have any of this.
 - **All variants: Talkmore branding removed (2026-10).** No Talkmore name, logo,
   favicon or bytt.no "Kundefavoritt" award badge on any page (image files
-  deleted; reise hero renamed `assets/hero-reise.png`). Header is USPs-only on
-  desktop and hidden entirely on mobile (≤900px). Legal text now names only
+  deleted; reise hero renamed `assets/hero-reise.png`). The top header (USP
+  row) was then removed entirely — markup, CSS, mobile scroll-hide JS and the
+  `usp-*.png` icons. Pages now start with the progress bar / landing. Legal text now names only
   Meisel AS; the marketing recipient is referred to as "vår
   samarbeidspartner". Contact lines point to `vian@meisel.no`. The **operator
   quiz option "Talkmore" is intentionally kept** (factual answer; drives
