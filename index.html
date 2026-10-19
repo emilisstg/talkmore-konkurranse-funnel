@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Talkmore — Vinn 10 000,– i gavekort</title>
+  <title>Vinn 10 000,– i gavekort</title>
 
   <!-- Meta Pixel Code — CONSENT-GATED: only loads after cookie acceptance -->
   <script>
@@ -79,12 +79,8 @@
   </script>
   <!-- End Meta Pixel Code -->
 
-  <!-- Favicon (Talkmore mark) -->
-  <link rel="icon" type="image/png" href="/assets/favicon.png"/>
-  <link rel="apple-touch-icon" href="/assets/favicon.png"/>
-
   <!--
-    BRAND FONT: Talkmore CircularXX — official brand typeface.
+    BRAND FONT: CircularXX — brand typeface.
     WOFF loaded first (smallest), OTF as fallback for older browsers.
     Montserrat kept as a Google Fonts fallback in case font files fail to load.
   -->
@@ -93,7 +89,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ═══ CircularXX — Talkmore brand typeface (titles, body) ═══ */
+    /* ═══ CircularXX — brand typeface (titles, body) ═══ */
     @font-face {
       font-family: 'CircularXX';
       src: url('/assets/fonts/CircularXX-Book.woff') format('woff'),
@@ -125,7 +121,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     /* ═══════════════════════════════════════════════════════════
-       TALKMORE BRAND TOKENS
+       BRAND TOKENS
        Colors per brand guide — DO NOT change these values.
        =══════════════════════════════════════════════════════════ */
     :root {
@@ -146,7 +142,7 @@
       --tm-border:       #E5E5E5;   /* 1px outline on input containers */
       --tm-error:        #C8102E;
 
-      /* Typography — CircularXX (Talkmore brand font), Montserrat fallback */
+      /* Typography — CircularXX (brand font), Montserrat fallback */
       --font: 'CircularXX', 'Montserrat', system-ui, -apple-system, sans-serif;
       /* Button font — Circular Pro per brand guide CTA spec */
       --font-button: 'CircularPro', 'CircularXX', 'Montserrat', system-ui, -apple-system, sans-serif;
@@ -163,7 +159,7 @@
     body { min-height: 100vh; overflow-x: hidden; }
 
     /* ═══════════════════════════════════════════════════════════
-       HEADER (Talkmore logo + 4 USPs)
+       HEADER (4 USPs)
        Per brand: only used at top of page, on white background.
        =══════════════════════════════════════════════════════════ */
     .tm-header {
@@ -183,18 +179,6 @@
       align-items: center;
       justify-content: center;
       gap: 32px;
-    }
-
-    /* Talkmore official wordmark */
-    .tm-logo {
-      display: inline-flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .tm-logo-img {
-      height: 44px;
-      width: auto;
-      display: block;
     }
 
     /* USP row — official brand icons + HTML text labels */
@@ -396,7 +380,7 @@
 
     /* ═══════════════════════════════════════════════════════════
        PRIMARY CTA BUTTON (per brand spec)
-       Talkmore green #004400, 18px, 50px corner radius,
+       Brand green #004400, 18px, 50px corner radius,
        no exclamation marks, no all-caps.
        =══════════════════════════════════════════════════════════ */
     .btn-primary {
@@ -425,35 +409,6 @@
     }
     .btn-primary svg { stroke: currentColor; }
 
-    /* Award badge (custom HTML — emblem image + HTML text in pill container)
-       Per brand: only on white background, never on photos */
-    .award-row {
-      margin-top: 28px;
-      display: flex;
-      align-items: center;
-    }
-    .award-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 18px;
-      background: #fff;
-      border: 1px solid var(--tm-border);
-      border-radius: 999px;
-      padding: 10px 28px 10px 12px;
-      max-width: 420px;
-    }
-    .award-badge-emblem {
-      width: 64px;
-      height: auto;
-      display: block;
-      flex-shrink: 0;
-    }
-    .award-badge-text {
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.4;
-      color: var(--tm-text);
-    }
 
     /* Legal text below landing */
     .legal-text {
@@ -1128,10 +1083,8 @@
 
     @media (max-width: 900px) {
       .tm-header-inner { padding: 12px 20px; gap: 12px; }
-      .tm-logo-img { height: 36px; }
-
-      /* Hide USP row on mobile — header is logo-only per Talkmore Header_Mobile spec */
-      .tm-usps { display: none; }
+      /* Hide header on mobile — USP row doesn't fit and there is no logo */
+      .tm-header { display: none; }
 
       .progress-wrap { padding: 10px 20px; }
       .landing-inner {
@@ -1150,16 +1103,6 @@
 
       h1.hero-title { font-size: 42px; letter-spacing: -0.5px; }
       .hero-body { font-size: 18px; }
-
-      /* Center award badge on mobile */
-      .award-row { justify-content: center; }
-      .award-badge {
-        gap: 14px;
-        padding: 10px 22px 10px 10px;
-        max-width: 100%;
-      }
-      .award-badge-emblem { width: 56px; }
-      .award-badge-text { font-size: 13px; }
 
       .quiz-question { font-size: 28px; }
       .choice-grid { grid-template-columns: 1fr; }
@@ -1195,17 +1138,12 @@
 <body>
 
 <!-- ════════════════════════════════════════════════════════════
-     HEADER — Talkmore logo + 4 USPs
+     HEADER — 4 USPs
      ════════════════════════════════════════════════════════════ -->
 <header class="tm-header" id="tm-header">
   <div class="tm-header-inner">
-    <!-- Talkmore official logo -->
-    <a href="/" class="tm-logo" aria-label="Talkmore">
-      <img src="/assets/talkmore-logo.png" alt="Talkmore" class="tm-logo-img"/>
-    </a>
-
     <!-- USP ROW — official brand icons (separate sizes for desktop/mobile) -->
-    <div class="tm-usps" aria-label="Talkmore fordeler">
+    <div class="tm-usps" aria-label="Fordeler">
       <span class="tm-usp">
         <picture>
           <source media="(max-width: 600px)" srcset="/assets/usp-coverage-sm.png"/>
@@ -1287,19 +1225,6 @@
             <path d="M5 12h14M13 5l7 7-7 7"/>
           </svg>
         </button>
-
-        <!-- Award badge (custom HTML — uses April 2026 Kundefavoritt emblem
-             + crisp HTML text. Per brand: only on white background) -->
-        <div class="award-row">
-          <div class="award-badge">
-            <img class="award-badge-emblem"
-                 src="/assets/kundefavoritt-april-2026.png"
-                 alt="Bytt.no Kundefavoritt April 2026"/>
-            <span class="award-badge-text">
-              Talkmore feirer at vi har de mest fornøyde mobilkundene!
-            </span>
-          </div>
-        </div>
       </div>
 
     </div>
@@ -1307,7 +1232,7 @@
 
   <!-- Legal text -->
   <div class="legal-text">
-    Premien er et gavekort til en verdi av 10 000,–. Konkurransen fra Talkmore går fra 10. april 2026 til og med 10. april 2027. Trekningen av vinneren og utdelingen av premien håndteres av Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern her</button>. <button class="modal-link" onclick="openModal('rules-modal')">Se fullstendige konkurranseregler</button>.
+    Premien er et gavekort til en verdi av 10 000,–. Konkurransen går fra 10. april 2026 til og med 10. april 2027. Trekningen av vinneren og utdelingen av premien håndteres av Meisel A/S. <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern her</button>. <button class="modal-link" onclick="openModal('rules-modal')">Se fullstendige konkurranseregler</button>.
   </div>
 
   <footer class="site-footer">
@@ -1470,7 +1395,7 @@
           <div class="consent-row">
             <input type="checkbox" id="consent-age"/>
             <label for="consent-age" class="consent-text">
-              Ja, jeg er over <strong>18 år</strong> og Talkmore kan kontakte meg på telefon med et godt tilbud, selv om jeg har reservert meg mot det i reservasjonsregisteret. <span class="consent-required">(påkrevd)</span>
+              Ja, jeg er over <strong>18 år</strong> og kan kontaktes på telefon med et godt tilbud, selv om jeg har reservert meg mot det i reservasjonsregisteret. <span class="consent-required">(påkrevd)</span>
             </label>
           </div>
         </div>
@@ -1510,8 +1435,8 @@
         </div>
       </div>
       <p class="confirm-disclaimer">
-        Konkurransen fra Talkmore går til og med kampanjeslutt. Trekning og premieutdeling håndteres av Meisel A/S.
-        <a href="https://talkmore.no/vilkar/personvern" target="_blank">Les om personvern fra Talkmore</a>.
+        Konkurransen går til og med kampanjeslutt. Trekning og premieutdeling håndteres av Meisel A/S.
+        <button class="modal-link" onclick="openModal('privacy-modal')">Les om personvern her</button>.
       </p>
     </div>
   </div>
@@ -1531,7 +1456,7 @@
         Konkurransen er kun åpen for personer over 18 år, så vi kan dessverre ikke inkludere deg i trekningen denne gangen.
       </p>
       <p class="confirm-disclaimer">
-        Har du spørsmål? Ta kontakt med Talkmore på <a href="https://talkmore.no" target="_blank">talkmore.no</a>.
+        Har du spørsmål? Ta kontakt med oss på <a href="mailto:vian@meisel.no">vian@meisel.no</a>.
       </p>
     </div>
   </div>
@@ -1560,7 +1485,7 @@
 
     <div class="modal-section">
       <h3>Arrangør</h3>
-      <p>Konkurransen arrangeres av Meisel AS, org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. E-post: vian@meisel.no. Konkurransen gjennomføres på vegne av Talkmore AS, org.nr. 876 839 342.</p>
+      <p>Konkurransen arrangeres av Meisel AS, org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. E-post: vian@meisel.no.</p>
     </div>
     <div class="modal-section">
       <h3>Konkurranseperiode</h3>
@@ -1568,7 +1493,7 @@
     </div>
     <div class="modal-section">
       <h3>Hvem kan delta</h3>
-      <p>Konkurransen er åpen for alle som er bosatt i Norge og har fylt 18 år. Ansatte hos Meisel AS og Talkmore AS, samt deres nærstående familiemedlemmer, kan ikke delta.</p>
+      <p>Konkurransen er åpen for alle som er bosatt i Norge og har fylt 18 år. Ansatte hos Meisel AS, samt deres nærstående familiemedlemmer, kan ikke delta.</p>
     </div>
     <div class="modal-section">
       <h3>Slik deltar du</h3>
@@ -1584,7 +1509,7 @@
     </div>
     <div class="modal-section">
       <h3>Personopplysninger</h3>
-      <p>Opplysningene du oppgir brukes til gjennomføring av konkurransen og, dersom du har samtykket til det, til markedsføring fra Talkmore. Les mer i vår <button class="modal-link" onclick="closeModal('rules-modal'); openModal('privacy-modal')">personvernerklæring</button>.</p>
+      <p>Opplysningene du oppgir brukes til gjennomføring av konkurransen og, dersom du har samtykket til det, til markedsføring av mobilabonnement. Les mer i vår <button class="modal-link" onclick="closeModal('rules-modal'); openModal('privacy-modal')">personvernerklæring</button>.</p>
     </div>
     <div class="modal-section">
       <h3>Øvrige vilkår</h3>
@@ -1600,11 +1525,11 @@
 
     <div class="modal-section">
       <h3>1. Behandlingsansvarlig</h3>
-      <p>Denne nettsiden og konkurransen drives av Meisel AS («Meisel»), org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. Kontakt: vian@meisel.no. Konkurransen gjennomføres på vegne av Talkmore AS, org.nr. 876 839 342, som er selvstendig behandlingsansvarlig for videre behandling av dine data dersom du har samtykket til kontakt fra Talkmore.</p>
+      <p>Denne nettsiden og konkurransen drives av Meisel AS («Meisel»), org.nr. 925 908 445, Vestre Strandgate 29, 4611 Kristiansand S. Kontakt: vian@meisel.no. Dersom du har samtykket til kontakt, er vår samarbeidspartner selvstendig behandlingsansvarlig for videre behandling av dine data.</p>
     </div>
     <div class="modal-section">
       <h3>2. Formål og rettslig grunnlag</h3>
-      <p>Vi behandler dine personopplysninger for å: (1) gjennomføre konkurransen og kontakte vinneren – rettslig grunnlag: oppfyllelse av avtale (GDPR art. 6 (1) b), og (2) markedsføre Talkmores mobilabonnement per telefon dersom du har samtykket til dette – rettslig grunnlag: samtykke (GDPR art. 6 (1) a).</p>
+      <p>Vi behandler dine personopplysninger for å: (1) gjennomføre konkurransen og kontakte vinneren – rettslig grunnlag: oppfyllelse av avtale (GDPR art. 6 (1) b), og (2) markedsføre mobilabonnement per telefon dersom du har samtykket til dette – rettslig grunnlag: samtykke (GDPR art. 6 (1) a).</p>
     </div>
     <div class="modal-section">
       <h3>3. Hvilke opplysninger samler vi inn</h3>
@@ -1612,7 +1537,7 @@
     </div>
     <div class="modal-section">
       <h3>4. Mottakere</h3>
-      <p>Dine opplysninger deles med Talkmore AS dersom du har samtykket til markedsføring fra Talkmore. Talkmore er da selvstendig behandlingsansvarlig. Vi benytter Airtable (USA) som databehandler for lagring, med standard databehandleravtale og EU SCCs.</p>
+      <p>Dine opplysninger deles med vår samarbeidspartner dersom du har samtykket til markedsføring. Samarbeidspartneren er da selvstendig behandlingsansvarlig. Vi benytter Airtable (USA) som databehandler for lagring, med standard databehandleravtale og EU SCCs.</p>
     </div>
     <div class="modal-section">
       <h3>5. Informasjonskapsler (cookies)</h3>
@@ -1620,7 +1545,7 @@
     </div>
     <div class="modal-section">
       <h3>6. Lagringstid</h3>
-      <p>Kontaktopplysninger lagres så lenge konkurransen pågår, og slettes senest 3 måneder etter trekning. Dersom du har samtykket til markedsføring fra Talkmore, gjelder Talkmores egne lagringsregler. Du kan lese mer på <a href="https://talkmore.no/vilkar/personvern" target="_blank">talkmore.no/vilkar/personvern</a>.</p>
+      <p>Kontaktopplysninger lagres så lenge konkurransen pågår, og slettes senest 3 måneder etter trekning. Dersom du har samtykket til markedsføring, gjelder samarbeidspartnerens egne lagringsregler.</p>
     </div>
     <div class="modal-section">
       <h3>7. Dine rettigheter</h3>
